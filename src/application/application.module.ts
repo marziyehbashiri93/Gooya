@@ -20,7 +20,6 @@ import { ZoomComponent } from './map-view/controller/zoom/zoom.component';
 import { DirectionComponent } from './map-view/utility/direction/direction.component';
 import { MenuComponent } from './map-view/utility/menu/menu.component';
 import { AboutUsComponent } from './map-view/utility/menu/navigation/about-us/about-us.component';
-import { LableComponent } from './map-view/utility/menu/navigation/lable/lable.component';
 import { NavigationComponent } from './map-view/utility/menu/navigation/navigation.component';
 import { OddEvenComponent } from './map-view/utility/menu/navigation/odd-even/odd-even.component';
 import { StyleModeComponent } from './map-view/utility/menu/navigation/style-mode/style-mode.component';
@@ -56,6 +55,7 @@ import { HoverButtonDirective } from './shared/directive/hover-button.directive'
 import { TooltipsDirective } from './shared/directive/tooltips.directive';
 import { NoCommaPipe } from './shared/pipe/no-comma.pipe';
 
+
 @NgModule({
  declarations: [
   BaseMapComponent,
@@ -79,7 +79,6 @@ import { NoCommaPipe } from './shared/pipe/no-comma.pipe';
   SearchBoxComponent,
   NavigationComponent,
   AboutUsComponent,
-  LableComponent,
   OddEvenComponent,
   SwitchPoiComponent,
   TerrainComponent,
@@ -123,11 +122,13 @@ import { NoCommaPipe } from './shared/pipe/no-comma.pipe';
     'http://45.82.138.85:4001/api/user/CheckEmailUnique',
     // 'http://45.82.138.85:3000/api/map/identify',
     'https://freegeoip.app/json/',
-    'https://api.ipify.org?format=json'
+    'https://api.ipify.org?format=json',
    ],
   }),
  ],
- exports: [ BaseMapComponent ],
+ exports: [
+  BaseMapComponent,
+ ],
  providers: [
   ReportErrorComponent,
   AddMissingPlaceComponent,

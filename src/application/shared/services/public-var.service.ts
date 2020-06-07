@@ -1,5 +1,3 @@
-import GeoJSON from 'ol/format/GeoJSON';
-import { Status } from './../interface/status';
 import { Injectable } from '@angular/core';
 import { Draw } from 'ol/interaction';
 import TileLayer from 'ol/layer/Tile';
@@ -8,20 +6,17 @@ import Map from 'ol/Map';
 import Overlay from 'ol/Overlay';
 import { get as getProjection } from 'ol/proj';
 import OSM from 'ol/source/OSM';
+import TileWMS from 'ol/source/TileWMS';
 import VectorSource from 'ol/source/Vector';
 import WMTS from 'ol/source/WMTS';
 import XYZ from 'ol/source/XYZ';
-import TileWMS from 'ol/source/TileWMS';
-
 import { Fill, Stroke, Style } from 'ol/style';
 import WMTSTileGrid from 'ol/tilegrid/WMTS';
 import { CtientInfo } from '../interface/ctient-info';
 import { DeviceInfos } from '../interface/device-info';
+import { Status } from './../interface/status';
 import { MapService } from './map.service';
 
-// import {Tile as TileLayer, Vector as VectorLayer} from 'ol/layer';
-import { bbox as bboxStrategy } from 'ol/loadingstrategy';
-import { setInterval } from 'timers';
 declare const prayTimes: any;
 @Injectable({
  providedIn: 'root',
@@ -40,12 +35,10 @@ export class PublicVarService {
  WMTSDayFaPoiLayerName = 'KCE_DAY_FA_POI';
  WMTSDayEnLayerName = 'KCE_DAY_EN';
  WMTSDayEnPoiLayerName = 'KCE_DAY_EN_POI';
-
  WMTSNightFaLayerName = 'KCE_NIGHT_FA';
  WMTSNightFaPoiLayerName = 'KCE_NIGHT_FA_POI';
  WMTSNightEnLayerName = 'KCE_NIGHT_EN';
  WMTSNightEnPoiLayerName = 'KCE_NIGHT_EN_POI';
-
  WMTSTerrainLayerName = 'IranDEM30m';
  WMTSOddEvenLayerName = 'ODDEVEN_AREAS';
  WMTSTrafficLayerName = 'traffic';
@@ -62,7 +55,6 @@ export class PublicVarService {
  isOpenPopupSuccess = false;
  isOpenPopupError = false;
  isOpenMeasure = false;
- //  time = 500;
  // ----more Search ----
  isOpenMoreSearch = false;
  isOpenIntersect = false;
@@ -72,14 +64,13 @@ export class PublicVarService {
  // ---- menu ----
  isOpenNavigation = false;
  isOpenAboutUs = false;
- //  isLabelON = true;
  isOddEvenON: boolean = false;
  isPoiON: boolean = true;
  isTerrainON: boolean = false;
  isTrafficON: boolean = false;
  isTrafficAreaON: boolean = false;
  isOpenPlaces = false;
- //  isStyleAuto = true;
+
  isNight = false;
  hour;
  hourSunset;
@@ -115,7 +106,6 @@ export class PublicVarService {
  isErrorMapInIran: boolean;
  errorMapCenter: string;
  // ---- for error map ----
-
  // ---- for mini map ----
  miniMap: Map;
  isMap = true;
@@ -148,6 +138,9 @@ export class PublicVarService {
  helpTooltip: Overlay;
  sketch;
  // ---- Mesuare ----
+ // ---- for local storage ----
+ status: Status;
+
  mousePositionProject = 'EPSG:4326';
  // ----for add wmts laye to map----
  projLike = this.mapservice.project;
@@ -169,7 +162,6 @@ export class PublicVarService {
  //  ];
 
  // --------------- DAY  -------------
- // poi and label
  WMTSLayerDAYFAPOI = new TileLayer({
   opacity: 1,
   source: new WMTS({
@@ -194,7 +186,6 @@ export class PublicVarService {
   }),
   zIndex: 2,
  });
- // just label
  WMTSLayerDAYFA = new TileLayer({
   opacity: 1,
   source: new WMTS({
@@ -222,7 +213,6 @@ export class PublicVarService {
   }),
   zIndex: 2,
  });
- // poi and label
  WMTSLayerDAYENPOI = new TileLayer({
   opacity: 1,
   source: new WMTS({
@@ -247,7 +237,6 @@ export class PublicVarService {
   }),
   zIndex: 2,
  });
- // just label
  WMTSLayerDAYEN = new TileLayer({
   opacity: 1,
   source: new WMTS({
@@ -276,7 +265,6 @@ export class PublicVarService {
   zIndex: 2,
  });
  // --------------- night  -------------
- // ----poi and label----
  WMTSLayerNIGHTFAPOI = new TileLayer({
   opacity: 1,
   source: new WMTS({
@@ -304,7 +292,6 @@ export class PublicVarService {
   }),
   zIndex: 2,
  });
- // ----just label----
  WMTSLayerNIGHTFA = new TileLayer({
   opacity: 1,
   source: new WMTS({
@@ -332,7 +319,6 @@ export class PublicVarService {
   }),
   zIndex: 2,
  });
- // ----poi and label----
  WMTSLayerNIGHTENPOI = new TileLayer({
   opacity: 1,
   source: new WMTS({
@@ -360,7 +346,6 @@ export class PublicVarService {
   }),
   zIndex: 2,
  });
- // ----just label----
  WMTSLayerNIGHTEN = new TileLayer({
   opacity: 1,
   source: new WMTS({
@@ -455,7 +440,6 @@ export class PublicVarService {
   }),
   zIndex: 4,
  });
-
  // ----oddEvenArea----
  WMTSLayerOddEvenArea = new TileLayer({
   opacity: 1,
@@ -506,7 +490,6 @@ export class PublicVarService {
   }),
   zIndex: 4,
  });
-
  // ----OSM----
  OSMLayer = new TileLayer({
   source: new OSM({
@@ -589,15 +572,11 @@ export class PublicVarService {
   zIndex: 2,
  });
 
- status: Status;
-
  tileLoader(tile, src) {
   const client = new XMLHttpRequest();
   client.open('GET', src);
-  // client.setRequestHeader('Authorization', 'Bearer ' + window.location.host);
-  // client.setRequestHeader('Access-Control-Allow-Origin', '*');
   client.responseType = 'arraybuffer';
-  client.onload = function() {
+  client.onload = function(){
    if (this.status === 200) {
     const arrayBufferView = new Uint8Array(this.response);
     const blob = new Blob(
@@ -606,8 +585,6 @@ export class PublicVarService {
      ],
      { type: 'image/png' },
     );
-    // console.log(src);
-    // console.log(blob.size);
     const urlCreator = window.URL; // || window.webkitURL;
     const imageUrl = urlCreator.createObjectURL(blob);
     tile.getImage().src = imageUrl;
@@ -645,7 +622,6 @@ export class PublicVarService {
   trafficAreaStatus,
   trafficStatus,
  ) {
-  // console.log('wichLayerAdd');
   if (styleStatus === 'Auto') {
    const time = new Date();
    const pray = prayTimes.getTimes(time, [
