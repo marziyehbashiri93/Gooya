@@ -22,9 +22,6 @@ import { MapService } from './map.service';
 // import {Tile as TileLayer, Vector as VectorLayer} from 'ol/layer';
 import { bbox as bboxStrategy } from 'ol/loadingstrategy';
 import { setInterval } from 'timers';
-// import XYZ from 'ol/source/XYZ';
-// import VectorSource from 'ol/source/Vector';
-// import {Stroke, Style} from 'ol/style';
 declare const prayTimes: any;
 @Injectable({
  providedIn: 'root',
@@ -593,7 +590,7 @@ export class PublicVarService {
  });
 
  status: Status;
- //  layers = [this.WMTSLayerFAPOI, this.OSMLayer ];
+
  tileLoader(tile, src) {
   const client = new XMLHttpRequest();
   client.open('GET', src);
