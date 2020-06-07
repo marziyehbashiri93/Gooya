@@ -32,7 +32,6 @@ export class YourPlacesComponent implements OnInit {
     if (this.publicVar.isOpenMeasure) {
       this.measure.openMeasure();
     }
-    this.publicVar.isOpenMoreSearch = false;
     this.publicVar.isOpenPlaces = true;
   }
 }

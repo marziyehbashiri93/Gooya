@@ -71,7 +71,6 @@ export class SearchBoxComponent implements OnInit {
    console.log(url);
    // bayad cros origin baz shavad
    this.publicVar.isOpenSearchResult = true;
-   this.publicVar.isOpenMoreSearch = false;
    // barye inke aval k baz mishavad street ha chek hastand va
    //  chon az ng if estefade shode nemitavan ba document element gereft
   }

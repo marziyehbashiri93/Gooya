@@ -8,10 +8,6 @@ import { MapService } from 'src/application/shared/services/map.service';
 import { PublicVarService } from 'src/application/shared/services/public-var.service';
 import { ReportErrorComponent } from 'src/application/partial/report-error/report-error.component';
 import { AddMissingPlaceComponent } from 'src/application/partial/add-missing-place/add-missing-place.component';
-import { CoordinateComponent } from '../utility/more-search/coordinate/coordinate.component';
-import { PoiComponent } from '../utility/more-search/poi/poi.component';
-import { IntersectionComponent } from '../utility/more-search/intersection/intersection.component';
-import { StreetComponent } from '../utility/more-search/street/street.component';
 import { IranBoundryService } from 'src/application/shared/services/iran-boundry.service';
 
 @Component({
@@ -37,10 +33,6 @@ export class ContextMenuComponent implements OnInit {
   public missingPlace: AddMissingPlaceComponent,
   public yourPlaces: YourPlacesComponent,
   public measure: MeasureComponent,
-  private coordinateComp: CoordinateComponent,
-  private PoiComp: PoiComponent,
-  private IntersectionComp: IntersectionComponent,
-  private StreetComp: StreetComponent
  ) {}
 
  ngOnInit() {
@@ -67,11 +59,7 @@ export class ContextMenuComponent implements OnInit {
     // sepas baresi mikonin k aya jaye k click shode context menu kamel namayesh dadeh mishavad
     if (
      this.publicVar.isOpenPlaces ||
-     this.publicVar.isOpenDirection ||
-     this.publicVar.isOpenStreet ||
-     this.publicVar.isOpenIntersect ||
-     this.publicVar.isOpenPoi ||
-     this.publicVar.isOpenCoordinate
+     this.publicVar.isOpenDirection
     ) {
      browserSizeX = browserSizeX - 380 - 1; // -1 For a better view -380 width direction va ...;
     }
@@ -119,10 +107,6 @@ export class ContextMenuComponent implements OnInit {
  DirectionFromToHere(elemntID: string) {
   // this.publicVar.isOpenDirection = true;
   // chon ng if darim a=bayad timeout bezarim vagar na focus nemikonad
-  this.coordinateComp.closeCoordinate();
-  this.PoiComp.closePoi();
-  this.IntersectionComp.closeIntersection();
-  this.StreetComp.closeStreet();
   if (!this.publicVar.isOpenDirection) {
    this.publicVar.isOpenDirection = true;
   }

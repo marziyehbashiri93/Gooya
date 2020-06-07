@@ -8,7 +8,6 @@ import { transform } from 'ol/proj';
 import OSM from 'ol/source/OSM';
 import View from 'ol/View';
 import { MeasureComponent } from 'src/application/map-view/controller/measure/measure.component';
-import { CoordinateComponent } from 'src/application/map-view/utility/more-search/coordinate/coordinate.component';
 import { fadeAnimation } from 'src/application/shared/animation/fadeAnimation';
 import { LoginInfo } from 'src/application/shared/interface/login-info';
 import { IranBoundryService } from 'src/application/shared/services/iran-boundry.service';
@@ -52,7 +51,6 @@ export class AddMissingPlaceComponent implements OnInit {
   public publicVar: PublicVarService,
   public IranBoundry: IranBoundryService,
   public measure: MeasureComponent,
-  private coordinatecomp: CoordinateComponent,
   private httpClient: HttpClient,
  ) {}
 
@@ -148,11 +146,6 @@ export class AddMissingPlaceComponent implements OnInit {
   // close other element
   this.publicVar.isOpenDirection = false;
   this.publicVar.isOpenPlaces = false;
-  this.coordinatecomp.closeCoordinate();
-  this.publicVar.isOpenStreet = false;
-  this.publicVar.isOpenPoi = false;
-  this.publicVar.isOpenIntersect = false;
-  this.publicVar.isOpenMoreSearch = false;
   if (this.publicVar.isOpenMeasure) {
    this.measure.openMeasure();
   }

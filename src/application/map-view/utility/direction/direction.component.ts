@@ -40,7 +40,6 @@ export class DirectionComponent implements OnInit {
   this.publicVar.DirectionFocusInput = focusElement;
   this.publicVar.isOpenPopupAttribute = false;
   // close other element
-  this.publicVar.isOpenMoreSearch = false;
   // chon function close direction ra nemitavanim dar barkhi az component ha call konim in 2 value ra inja null mikonim
   this.publicVar.DirectionEndPointValue = null;
   this.publicVar.DirectionStartPointValue = null;

@@ -73,11 +73,6 @@ class MeasureComponent implements OnInit {
    // colse other element
    this.publicVar.isOpenDirection = false;
    this.publicVar.isOpenPlaces = false;
-   this.publicVar.isOpenMoreSearch = false;
-   this.publicVar.isOpenStreet = false;
-   this.publicVar.isOpenPoi = false;
-   this.publicVar.isOpenIntersect = false;
-   this.publicVar.isOpenCoordinate = false;
    this.mapservice.map.addLayer(this.publicVar.measureLayer);
    this.publicVar.isOpenMeasure = true;
    this.publicVar.mouseCursor = 'default';

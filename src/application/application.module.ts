@@ -30,11 +30,6 @@ import { TrafficComponent } from './map-view/utility/menu/navigation/traffic/tra
 import { FavoritHomeComponent } from './map-view/utility/menu/navigation/your-places/favorit-home/favorit-home.component';
 import { FavoritWorkComponent } from './map-view/utility/menu/navigation/your-places/favorit-work/favorit-work.component';
 import { YourPlacesComponent } from './map-view/utility/menu/navigation/your-places/your-places.component';
-import { CoordinateComponent } from './map-view/utility/more-search/coordinate/coordinate.component';
-import { IntersectionComponent } from './map-view/utility/more-search/intersection/intersection.component';
-import { MoreSearchComponent } from './map-view/utility/more-search/more-search.component';
-import { PoiComponent } from './map-view/utility/more-search/poi/poi.component';
-import { StreetComponent } from './map-view/utility/more-search/street/street.component';
 import { SearchBoxComponent } from './map-view/utility/search-box/search-box.component';
 import { UtilityComponent } from './map-view/utility/utility.component';
 import { AddMissingPlaceComponent } from './partial/add-missing-place/add-missing-place.component';
@@ -72,7 +67,6 @@ import { NoCommaPipe } from './shared/pipe/no-comma.pipe';
   UtilityComponent,
   DirectionComponent,
   MenuComponent,
-  MoreSearchComponent,
   AutofocusDirective,
   HoverButtonDirective,
   TooltipsDirective,
@@ -87,10 +81,6 @@ import { NoCommaPipe } from './shared/pipe/no-comma.pipe';
   YourPlacesComponent,
   FavoritHomeComponent,
   FavoritWorkComponent,
-  CoordinateComponent,
-  IntersectionComponent,
-  PoiComponent,
-  StreetComponent,
   NoCommaPipe,
   AddMissingPlaceComponent,
   CloseComponent,
@@ -139,10 +129,6 @@ import { NoCommaPipe } from './shared/pipe/no-comma.pipe';
   FavoritWorkComponent,
   FavoritHomeComponent,
   MeasureComponent,
-  CoordinateComponent,
-  PoiComponent,
-  IntersectionComponent,
-  StreetComponent,
  ],
 })
 export class ApplicationModule {}

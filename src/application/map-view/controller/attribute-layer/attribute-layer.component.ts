@@ -45,10 +45,6 @@ export class AttributeLayerComponent implements OnInit {
     !this.publicVar.isOpenDirection &&
     !this.publicVar.isOpenPlaces &&
     !this.publicVar.isOpenMeasure &&
-    !this.publicVar.isOpenStreet &&
-    !this.publicVar.isOpenIntersect &&
-    !this.publicVar.isOpenPoi &&
-    !this.publicVar.isOpenCoordinate &&
     this.publicVar.isMiniMapSatellite
    ) {
     // baraye anke agar ro search click shode bood az halat fucos darbiyayad

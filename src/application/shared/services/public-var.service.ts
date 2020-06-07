@@ -51,16 +51,9 @@ export class PublicVarService {
  isOpenReportError = false;
  isOpenMissingPlace = false;
  isOpenDirection = false;
- isOpenStreet = false;
  isOpenPopupSuccess = false;
  isOpenPopupError = false;
  isOpenMeasure = false;
- // ----more Search ----
- isOpenMoreSearch = false;
- isOpenIntersect = false;
- isOpenPoi = false;
- isOpenCoordinate = false;
- markerSourceMoreSearch = new VectorSource();
  // ---- menu ----
  isOpenNavigation = false;
  isOpenAboutUs = false;

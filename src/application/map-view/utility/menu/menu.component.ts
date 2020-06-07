@@ -19,6 +19,5 @@ export class MenuComponent implements OnInit {
   openNavigation() {
     this.publicVar.isOpenPopupAttribute = false;
     this.publicVar.isOpenNavigation = true;
-    this.publicVar.isOpenMoreSearch = false;
   }
 }

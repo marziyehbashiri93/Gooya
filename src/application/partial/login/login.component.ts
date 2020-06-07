@@ -58,11 +58,6 @@ export class LoginComponent implements OnInit {
   // close other element
   this.publicVar.isOpenDirection = false;
   this.publicVar.isOpenPlaces = false;
-  this.publicVar.isOpenCoordinate = false;
-  this.publicVar.isOpenStreet = false;
-  this.publicVar.isOpenPoi = false;
-  this.publicVar.isOpenIntersect = false;
-  this.publicVar.isOpenMoreSearch = false;
   this.loginVar.isOpenChangePassword = false;
   this.loginVar.SuccessReportChangePass = false;
   if (this.publicVar.isOpenMeasure) {

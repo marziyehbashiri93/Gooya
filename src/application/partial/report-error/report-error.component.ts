@@ -7,7 +7,6 @@ import { MapService } from 'src/application/shared/services/map.service';
 import { PublicVarService } from 'src/application/shared/services/public-var.service';
 import { IranBoundryService } from 'src/application/shared/services/iran-boundry.service';
 import { MeasureComponent } from 'src/application/map-view/controller/measure/measure.component';
-import { CoordinateComponent } from 'src/application/map-view/utility/more-search/coordinate/coordinate.component';
 import { HttpClient } from '@angular/common/http';
 import Map from 'ol/Map';
 import OSM from 'ol/source/OSM';
@@ -49,7 +48,6 @@ export class ReportErrorComponent implements OnInit {
   public IranBoundry: IranBoundryService,
   public yourPlaces: YourPlacesComponent,
   public measure: MeasureComponent,
-  private coordinatecomp: CoordinateComponent,
   private httpClient: HttpClient,
  ) {
   this.formValidator();
@@ -57,13 +55,6 @@ export class ReportErrorComponent implements OnInit {
  ngOnInit() {}
  openReportError() {
   this.publicVar.isOpenReportError = true;
-  this.publicVar.isOpenMoreSearch = false;
-
-  this.coordinatecomp.closeCoordinate();
-  this.publicVar.isOpenStreet = false;
-  this.publicVar.isOpenPoi = false;
-  this.publicVar.isOpenIntersect = false;
-  this.publicVar.isOpenMoreSearch = false;
   if (this.publicVar.isOpenMeasure) {
    this.measure.openMeasure();
   }

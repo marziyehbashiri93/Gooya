@@ -34,7 +34,6 @@ import { PublicVarService } from 'src/application/shared/services/public-var.ser
       </div>
     </div>
   </div>
-  <app-more-search id="more-search"></app-more-search>
 `,
  styleUrls: [ './utility.component.scss' ],
 })
