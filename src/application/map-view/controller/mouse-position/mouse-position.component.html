@@ -1,0 +1,31 @@
+<div class="container-mouse-position col-12 row">
+  <div id="mouse-position" #mousePosition></div>
+  <div
+    class="mouse-position-fromat"
+    [ngClass]="{ mouse_position_fromat_en: !this.publicVar.isPersian }"
+  >
+    {{ mousePositionValue }}
+  </div>
+  <div class="toggle-mouseposition" id="toggle-mouseposition">
+    <label class="switch">
+      <input
+        id="checkboxMouseposition"
+        type="checkbox"
+        #checkboxMouseposition
+      />
+      <div class="slider-mouse">
+        <div class="off" [ngClass]="{ off_en: !this.publicVar.isPersian }">
+          <span *ngIf="this.publicVar.isPersian">متر</span>
+          <span *ngIf="!this.publicVar.isPersian">meter</span>
+        </div>
+        <div
+          class="on"
+          [ngStyle]="{ right: this.publicVar.isPersian ? '14px' : '16px' }"
+        >
+          <span *ngIf="this.publicVar.isPersian">درجه</span>
+          <span *ngIf="!this.publicVar.isPersian">deg</span>
+        </div>
+      </div>
+    </label>
+  </div>
+</div>

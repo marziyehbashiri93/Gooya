@@ -1,0 +1,18 @@
+@import '../../../../assets/scss/utility/utility.scss';
+#scale-line {
+  .ol-scale-line {
+    position: inherit;
+    background-color: rgba(lighten($color: $color-dark, $amount: 80), 0.9);
+    border-radius: 0px;
+    height: 19px;
+    box-sizing: border-box;
+    padding: 1px 3px;
+    .ol-scale-line-inner {
+      border: 1px solid lighten($color: $color-dark, $amount: 30);
+      border-top: none;
+      color: lighten($color: $color-dark, $amount: 30);
+      direction: ltr;
+      margin-top: 3px;
+    }
+  }
+}

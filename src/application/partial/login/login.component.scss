@@ -1,0 +1,130 @@
+@import '../../../assets/scss/utility/utility.scss';
+$padding: 12px;
+.container-login {
+ @extend %disableBox;
+ width: 100vw;
+ height: 100vh;
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ position: absolute;
+ top: 0;
+ .container {
+  position: relative;
+  @extend %shadow;
+  border-radius: 4px;
+  background: $color-light;
+  display: flex;
+  width: 480px;
+  height: 300px;
+
+  .login-closer {
+   position: absolute;
+   top: 0;
+   padding: 7px;
+   z-index: 1;
+   app-close {
+    height: 13px;
+    width: 11px;
+    fill: inherit;
+   }
+  }
+ }
+}
+
+.login-btn {
+ @extend %radius;
+ @extend %shadow;
+ @extend %transition;
+ width: inherit;
+ height: inherit;
+ background: $color-light-blue;
+ border: 1px solid rgba($color-gray-svg, 0.6);
+ padding-bottom: 5px;
+ display: flex;
+ justify-content: space-around;
+ align-items: center;
+ min-width: 55px;
+ width: 66px;
+ height: 30px;
+ margin: 10px 12px;
+ &:hover {
+  @extend %transition;
+  background: $color-light;
+ }
+ svg {
+  width: 28%;
+ }
+ span {
+  color: inherit;
+ }
+}
+
+.login_btn_en {
+  width: 69px;
+  height: 33px;
+ flex-direction: row-reverse;
+ span {
+  margin-top: 5px;
+  font-weight: bold;
+  font-size: 15px;
+ }
+ svg {
+  width: 23%;
+ }
+}
+
+.login-btn-box-auth {
+ width: 40px;
+ height: 40px;
+ border: none;
+ margin: 14px 12px;
+ position: absolute;
+ top: 0;
+ background: transparent;
+ border-radius: 100%;
+ cursor: pointer;
+}
+.login-box-auth {
+ // width: inherit;
+ height: 39px;
+ background-color: #ffffff;
+ margin: 14px 21px;
+ border-radius: 28px;
+ display: flex;
+ justify-content: flex-start;
+ flex-direction: row-reverse;
+ align-items: center;
+ :first-child {
+  opacity: 0.7;
+  margin-bottom: 1px;
+  font-size: 0.9em;
+  font-weight: bold;
+  overflow: hidden;
+  max-height: 14px;
+  word-break: break-all;
+ }
+ .exit {
+  width: 21px;
+  opacity: 0.5;
+  cursor: pointer;
+ }
+ .changepass {
+  width: 20px;
+  margin: 0 8px;
+  opacity: 0.5;
+  cursor: pointer;
+ }
+ .exit:hover,
+ .changepass:hover {
+  fill: #1865e4;
+  &:first-child {
+   stroke: #1865e4;
+  }
+ }
+}
+
+app-login-page,
+app-signin {
+ width: 100%;
+}

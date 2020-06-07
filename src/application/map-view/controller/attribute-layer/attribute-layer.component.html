@@ -1,0 +1,37 @@
+<div
+  class="ol-popup"
+  *ngIf="this.publicVar.isOpenPopupAttribute"
+  [style.top.px]="posTop"
+  [style.left.px]="posLeft"
+>
+  <div class="attribute-container">
+    <div class="close" (click)="this.publicVar.isOpenPopupAttribute = false">
+      <app-close></app-close>
+    </div>
+    <div class="feature-att">
+      <div class="feature-name">{{ featureName }}</div>
+      <P class="feature-property">{{ featureCoord }}</P>
+    </div>
+  </div>
+
+  <div id="arrow-bottom" *ngIf="showArrow === 'bottom'">
+    <div class="circle1">
+      <div class="circle2"></div>
+    </div>
+  </div>
+  <div id="arrow-top" *ngIf="showArrow === 'top'">
+    <div class="circle1">
+      <div class="circle2"></div>
+    </div>
+  </div>
+  <div id="arrow-right" *ngIf="showArrow === 'right'">
+    <div class="circle1">
+      <div class="circle2"></div>
+    </div>
+  </div>
+  <div id="arrow-left" *ngIf="showArrow === 'left'">
+    <div class="circle1">
+      <div class="circle2"></div>
+    </div>
+  </div>
+</div>

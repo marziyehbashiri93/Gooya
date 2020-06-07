@@ -1,0 +1,110 @@
+@import "../../../../assets/scss/utility/utility.scss";
+.measure {
+ @include square(30px);
+ @extend %radius;
+ background-color: $color-light;
+ box-shadow: $boxShadow;
+ border: none;
+ cursor: pointer;
+}
+svg {
+ line {
+  stroke: #000 !important;
+ }
+}
+.measure:hover {
+ svg {
+  fill: #1671bf;
+  line {
+   stroke: #1671bf !important;
+  }
+ }
+}
+.measueBox {
+ width: 190px;
+ height: 30px;
+ background-color: $color-light;
+ position: absolute;
+ box-shadow:$boxShadow;
+ display: flex;
+ flex-direction: row-reverse;
+ justify-content: flex-start;
+ align-items: center;
+ .line,
+ .polygon {
+  height: 27px;
+  width: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+ }
+ .polygon {
+  opacity: 0.7;
+ }
+ input:checked {
+  & + svg {
+   fill: #1865e4 !important;
+  }
+ }
+}
+.measueBox_fa {
+ bottom: 1px;
+ left: 32px;
+ border-radius: 0 3px 3px 0;
+ .polygon,
+ .line {
+  border-right: 1px dashed rgba(55, 58, 60, 0.68);
+ }
+ .text {
+  border-radius: 0 3px 3px 0;
+ }
+}
+.measueBox_en {
+ bottom: 0px;
+ right: 31px;
+ border-radius: 3px 0 0 3px;
+ .polygon,
+ .line {
+  border-left: 1px dashed rgba(55, 58, 60, 0.68);
+ }
+ .text {
+  border-radius: 3px 0 0 3px;
+ }
+}
+.lineInput,
+.polygonInput {
+ position: absolute;
+ width: inherit;
+ height: 100%;
+ opacity: 0;
+ cursor: pointer;
+ z-index: 2;
+}
+.svgIcon {
+ width: 25.5px;
+ padding-top: 1.5px;
+ padding-right: 2.5px;
+}
+.helpMassage {
+ position: absolute;
+}
+.txt {
+ height: 28px;
+ width: 123px;
+ background-color: #eee7e7;
+ direction: ltr;
+ overflow: hidden;
+ display: flex;
+ justify-content: center;
+ align-items: center;
+}
+.ol-tooltip {
+ position: relative;
+ background: rgba(0, 0, 0, 0.9);
+ border-radius: 4px;
+ color: white;
+ padding: 4px 8px;
+ opacity: 0.7;
+ white-space: nowrap;
+ font-size: 12px;
+}

@@ -1,0 +1,170 @@
+@import '../../../../assets/scss/utility/utility.scss';
+@import '../../../../assets/scss/utility/tools';
+.dirct-icon {
+ display: flex;
+ justify-content: center;
+ .button {
+  width: 37px;
+  height: 45px;
+  fill: $color-light-blue;
+  background-color: transparent;
+  border: none;
+  opacity: 0.8;
+  font-size: 0.8em;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: rotateY(180deg);
+  svg {
+   margin-right: 6px;
+  }
+ }
+ .button_en {
+  transform: rotateY(0deg);
+  margin: -9px;
+ }
+ .rout {
+  @extend %shadow;
+  position: absolute;
+  top: -11px;
+  width: 380px;
+  background-color: $color-light;
+  height: 100vh;
+  overflow-x: hidden;
+  z-index: 1;
+  .section-directon {
+   background: $color-light-blue;
+   height: 180px;
+   display: flex;
+   flex-direction: column;
+   .icondir {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 18px 26px 19px 20px;
+    .menu {
+     cursor: pointer;
+     app-menu-icon {
+      height: 18px;
+      width: 22px;
+      stroke: $color-light;
+     }
+    }
+    .dir-closer {
+     cursor: pointer;
+     app-close {
+      @include square(15px);
+      fill: $color-light;
+     }
+    }
+   }
+   .dir-base {
+    display: flex;
+    justify-content: center;
+    margin-right: 11px;
+    > div:first-child {
+     display: flex;
+     flex-direction: column;
+     justify-content: center;
+     align-items: center;
+    }
+    .more {
+     margin: 6px 0 6px 0;
+    }
+    .point {
+     margin-bottom: 3px;
+    }
+    .change {
+     padding-top: 30px;
+     margin-right: 4px;
+     fill: #97bcf9;
+     &:hover {
+      cursor: pointer;
+      fill: $color-light;
+     }
+    }
+    .directions-searchbox {
+     background: transparent;
+     border: none;
+     margin: -8px 21px 0 20px;
+     .input-srart {
+      width: 230px;
+      background: transparent;
+      border: none;
+      color: $color-light;
+      font-size: 0.95em;
+      &::placeholder {
+       color: $color-direction-text;
+       opacity: 1; /* Firefox */
+      }
+      &:-ms-input-placeholder {
+       /* Internet Explorer 10-11 */
+       color: $color-direction-text;
+      }
+      &::-ms-input-placeholder {
+       /* Microsoft Edge */
+       color: $color-direction-text;
+      }
+     }
+     .searchIcon {
+      fill: $color-direction-text;
+      // opacity: 0;
+      visibility: visible;
+      &:hover {
+       cursor: pointer;
+       fill: $color-light;
+      }
+     }
+    }
+    .input-underline {
+     display: block;
+     bottom: -1px;
+     height: 5px;
+     border-bottom: 1px solid #97bcf9;
+     padding-left: 70px;
+     width: 180px;
+    }
+   }
+   .go-box {
+    display: flex;
+    justify-content: flex-end;
+    padding: 18px 79px 0 66px;
+    .go {
+     padding: 3px;
+     box-sizing: border-box;
+     font-size: 0.85em;
+     width: 60px;
+     height: 27px;
+     background: transparent;
+     border: none;
+     border-radius: 3px;
+     color: $color-light;
+     border: 1px solid #97bcf9;
+     line-height: 0;
+     &:hover {
+      @extend %transition;
+      background: $color-light;
+      color: $color-blue-hover;
+      border: $color-blue-hover;
+     }
+    }
+   }
+  }
+  .result {
+   width: 100%;
+   height: auto;
+   .error {
+    display: flex;
+    align-items: flex-end;
+    margin: 10px;
+    color: $color-red-required;
+    font-size: 0.95em;
+    svg {
+     width: 5.2%;
+     padding: 0 10px;
+    }
+   }
+  }
+ }
+}

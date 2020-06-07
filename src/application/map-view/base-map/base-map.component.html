@@ -1,0 +1,120 @@
+<div class="container col-12 " [style.height]="innertHeight">
+  <ngx-ui-loader
+    overlayColor="rgba(40,40,40,.1)"
+    fgsColor="#1671bf"
+  ></ngx-ui-loader>
+  <div
+    #baseMap
+    class="base-map"
+    [@baseMapWidth]="
+      this.publicVar.isOpenPlaces ||
+      this.publicVar.isOpenDirection ||
+      this.publicVar.isOpenSearchResult ||
+      this.publicVar.isOpenCoordinate ||
+      this.publicVar.isOpenIntersect ||
+      this.publicVar.isOpenPoi ||
+      this.publicVar.isOpenStreet
+        ? 'changeWidth'
+        : 'dontchangeWidth'
+    "
+    [style.cursor]="this.publicVar.mouseCursor"
+    [ngStyle]="{
+      float: this.publicVar.isPersian ? 'left' : 'right'
+    }"
+  >
+    <div id="map" [ngClass]="{ canvas_en: !this.publicVar.isPersian }"></div>
+    <div class="some-control" *ngIf="this.publicVar.deviceType != 'Mobile'">
+      <!-- Mini map -->
+      <div class="mini-map-box">
+        <app-mini-map></app-mini-map>
+      </div>
+      <!-- Mini map -->
+      <div class="mouse-position-box">
+        <app-mouse-position></app-mouse-position>
+      </div>
+      <div id="scale-line-box" class="scale-line-box">
+        <app-scale-line></app-scale-line>
+      </div>
+      <div class="send-feedback-box" id="send-feedback-box">
+        <app-send-feedback></app-send-feedback>
+      </div>
+    </div>
+  </div>
+  <!-- login -->
+  <div
+    class="login"
+    id="login"
+    *ngIf="this.publicVar.deviceType != 'Mobile'"
+    [ngStyle]="{
+      left: this.publicVar.isPersian ? '0' : '',
+      right: this.publicVar.isPersian ? '' : '0'
+    }"
+  >
+    <app-login></app-login>
+  </div>
+  <!-- login -->
+  <!-- user location -->
+  <!-- [ngClass]="{left_control_fa: !this.publicVar.isPersian }" -->
+
+  <div
+    class="left-control"
+    *ngIf="this.publicVar.deviceType != 'Mobile'"
+    [ngClass]="{
+      left_control_fa: this.publicVar.isPersian,
+      left_control_en: !this.publicVar.isPersian
+    }"
+  >
+    <div class="user-location-box" id="user-location-box">
+      <app-user-location></app-user-location>
+    </div>
+    <!-- user location -->
+    <!-- Zoom -->
+    <div class="zoom-controller-box">
+      <app-zoom></app-zoom>
+    </div>
+    <!-- Zoom -->
+    <!-- measure -->
+    <div class="measure-box" id="measure-box">
+      <app-measure></app-measure>
+    </div>
+    <!-- measure -->
+  </div>
+  <!-- ---user location alert popup -->
+  <app-popup-location></app-popup-location>
+  <!-- ---user location alert popup -->
+  <!-- ---utiliy -->
+  <div class="utiliy col-3-5" id="utiliy">
+    <!-- ng style baraye inke direction k baz shod search ro nayoftad -->
+    <app-utility></app-utility>
+    <!-- agar ng if nazarim search box roye routing mioftad -->
+  </div>
+  <!-- ---utiliy -->
+  <!-- ---navigation -->
+  <app-navigation class="navigation col-12"></app-navigation>
+  <div class="about-us-box" *ngIf="this.publicVar.isOpenAboutUs" @fadeAnimation>
+    <app-about-us></app-about-us>
+  </div>
+  <!-- ---navigation -->
+  <!-- Send FeedBack -->
+  <app-report-error class="report-error-box"></app-report-error>
+  <!-- Send FeedBack -->
+  <!-- Add Missin Place -->
+  <app-add-missing-place class="missing-place-box"></app-add-missing-place>
+  <!-- Add Missin Place -->
+  <!--context-menu -->
+  <div
+    class="context-menu"
+    id="context-menu"
+    *ngIf="this.publicVar.deviceType != 'Mobile'"
+  >
+    <app-context-menu></app-context-menu>
+  </div>
+  <!--context-menu -->
+
+  <!-- <div class="attribute-layer " id="attribute-layer">
+    <app-attribute-layer></app-attribute-layer>
+  </div> -->
+  <div *ngIf="this.publicVar.isOpenMustLogin" class="must-login" @fadeAnimation>
+    <app-must-login></app-must-login>
+  </div>
+</div>

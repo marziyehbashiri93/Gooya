@@ -1,0 +1,56 @@
+@import "../../../../../../assets/scss/utility/utility.scss";
+.places {
+ @extend %shadow;
+ position: absolute;
+ top: 0px;
+ width: 380px;
+ background-color: $color-light;
+ height: 100vh;
+ overflow-x: hidden;
+ .section-places {
+  .iconPlaces {
+   background: $color-light-blue;
+   height: 58px;
+   display: flex;
+   justify-content: space-between;
+   padding: 10px 20px 10px 20px;
+   align-items: center;
+   box-sizing: border-box;
+   app-menu-icon {
+    cursor: pointer;
+    height: 18px;
+    width: 22px;
+    stroke: $color-light;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+   }
+   .places-closer {
+    cursor: pointer;
+    height: 15px;
+    width: 15px;
+    fill: $color-light;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+   }
+  }
+  .place-items {
+   align-items: center;
+   position: relative;
+   width: 100%;
+   box-sizing: border-box;
+   color: darken($color: $color-gray-svg, $amount: 30);
+   .place-item {
+    width: 100%;
+    border-bottom: 1px solid lighten($color: $color-gray-svg, $amount: 30);
+    box-sizing: border-box;
+    padding: 0 20px;
+   }
+   #place-item-home,
+   #place-item-work {
+    transition: all 0.5s linear;
+   }
+  }
+ }
+}

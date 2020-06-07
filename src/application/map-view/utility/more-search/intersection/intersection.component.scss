@@ -1,0 +1,117 @@
+@import "../../../../../assets/scss/utility/utility.scss";
+.intersect {
+ @extend %transition;
+ @extend %shadow;
+ position: absolute;
+ right: -9px;
+ top: -11px;
+ width: 380px;
+ background-color: $color-light;
+ height: 100vh;
+ transition: 0.5s;
+ overflow-x: hidden;
+ z-index: 1;
+ .section-intersect {
+  background: $color-light-blue;
+  height: 180px;
+
+  .iconInter {
+   display: flex;
+   justify-content: space-between;
+   padding: 18px 26px 19px 20px;
+   align-items: center;
+   .menu {
+    cursor: pointer;
+    app-menu-icon {
+     height: 18px;
+     width: 22px;
+     stroke: $color-light;
+    }
+   }
+   .intersect-closer {
+    cursor: pointer;
+    app-close {
+     width: 15px;
+     height: 15px;
+     fill: $color-light;
+    }
+   }
+  }
+  .intersect-base {
+   display: flex;
+   margin-top: 2px;
+   padding: 0 30px;
+   > div:first-child {
+    margin-left: -9px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+   }
+   .more {
+    fill: $color-direction-text;
+    margin-left: -3px;
+    margin-right: 4px;
+   }
+   .intersect-searchbox {
+    background: transparent;
+    border: none;
+    font-size: 0.95em;
+    margin: 0 20px;
+
+    .input-srart {
+     width: 256px;
+     background: transparent;
+     border: none;
+     color: $color-light;
+     &::placeholder {
+      color: $color-direction-text;
+      opacity: 1; /* Firefox */
+     }
+
+     &:-ms-input-placeholder {
+      /* Internet Explorer 10-11 */
+      color: $color-direction-text;
+     }
+
+     &::-ms-input-placeholder {
+      /* Microsoft Edge */
+      color: $color-direction-text;
+     }
+    }
+   }
+   .input-underline {
+    display: block;
+    bottom: -1px;
+    height: 5px;
+    border-bottom: 1px solid #97bcf9;
+    padding-left: 70px;
+    width: 187px;
+   }
+  }
+  .go-box {
+   display: flex;
+   justify-content: flex-end;
+   padding: 20px 65px 0 65px;
+   .go {
+    padding: 3px;
+    box-sizing: border-box;
+    font-size: 0.85em;
+    width: 60px;
+    height: 27px;
+    background: transparent;
+    border: none;
+    border-radius: 3px;
+    color: $color-light;
+    border: 1px solid #97bcf9;
+    cursor: pointer;
+    &:hover {
+     @extend %transition;
+     background: $color-light;
+     color: $color-blue-hover;
+     border: $color-blue-hover;
+    }
+   }
+  }
+ }
+}

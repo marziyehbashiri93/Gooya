@@ -1,0 +1,19 @@
+<div
+  class="full-box-popup"
+  #fullBoxPopup
+  *ngIf="this.publicVar.isOpenPopupLocation"
+  @fadeAnimation
+>
+  <div class="popup-location">
+    <div class="rectangle">
+      <img src="assets/img/locationn-popup.svg" />
+    </div>
+    <div class="triangle"></div>
+    <p *ngIf="this.publicVar.isPersian">لطفا پس از اجازه دسترسی مجددا تلاش نمایید.</p>
+    <p *ngIf="!this.publicVar.isPersian">Your location could not be determined,Try again!</p>
+    <button class="buttonBlue button" id="accept" (click)="this.publicVar.isOpenPopupLocation = false">
+      <span *ngIf="this.publicVar.isPersian">تایید</span>
+      <span *ngIf="!this.publicVar.isPersian">Close</span>
+    </button>
+  </div>
+</div>

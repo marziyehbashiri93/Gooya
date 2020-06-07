@@ -1,0 +1,57 @@
+@import '../../../../../assets/scss/utility/utility.scss';
+$width: 350;
+$height: 300;
+$darken: #b0e0f6;
+// ---- popup ----
+.full-box-popup {
+  @extend %disableBox;
+  width: 100%;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $color-gray-svg;
+  z-index: 3;
+}
+.popup-location {
+  @extend %radius;
+  width: 365px;
+  height: 200px;
+  background-color: $color-light;
+  border: 2px solid $darken;
+  box-shadow: $boxShadow;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  .rectangle {
+    height: 109px;
+    width: 100%;
+    img {
+      border-radius: 5px 5px 0 0;
+      width: 100%;
+    }
+  }
+  p {
+    line-height: 1.2em;
+    margin: 4px;
+  }
+  .triangle {
+    @extend %center;
+    @include square(0);
+    border-style: solid;
+    border-width: 13px 10px 0 10px;
+    border-color: $darken transparent transparent transparent;
+  }
+  .button {
+    width: 70px;
+    margin-top: 10px;
+    padding-bottom: 3px;
+    -webkit-transition: color 300ms ease-in-out;
+    transition: color 300ms ease-in-out;
+  }
+}

@@ -1,0 +1,91 @@
+@import '../../../assets/scss/utility/utility.scss';
+$width: 350;
+$height: 300;
+$darken: #b0e0f6;
+
+// ---- popup ----
+.popup-location {
+ @extend %radius;
+ width: 365px;
+ height: 200px;
+ background-color: $color-light;
+ box-shadow: $boxShadow;
+ box-sizing: border-box;
+ display: flex;
+ flex-direction: column;
+ justify-content: flex-start;
+ align-items: center;
+ color: $color-gray-svg;
+ background: #d9d9e0;
+ background: -moz-linear-gradient(top, #f4e9e4 68%, #d9d9e0 75%, #9dcee9 100%);
+ background: -webkit-gradient(
+  left top,
+  left bottom,
+  color-stop(68%, #f4e9e4),
+  color-stop(75%, #d9d9e0),
+  color-stop(100%, #9dcee9)
+ );
+ background: -webkit-linear-gradient(top, #f4e9e4 68%, #d9d9e0 75%, #9dcee9 100%);
+ background: -o-linear-gradient(top,#f4e9e4 68%, #d9d9e0 75%, #9dcee9 100%);
+ background: -ms-linear-gradient(top, #f4e9e4 68%, #d9d9e0 75%, #9dcee9 100%);
+ background: linear-gradientto bottom, #f4e9e4 68%, #d9d9e0 72%, #9dcee9 100%;
+ filter: progid:DXImageTransform.Microsoft.gradient(
+   startColorstr='#f4e9e4',
+   endColorstr='#9dcee9',
+   GradientType=0
+  );
+
+ .rectangle1 {
+  height: 57%;
+  width: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100%;
+  border-radius: 26px 0;
+  img {
+   border-radius: 5px 5px 0 0;
+   width: 100%;
+  }
+ }
+
+ p {
+  line-height: 1.2em;
+  margin: 4px;
+ }
+
+ .triangle {
+  @extend %center;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 10px 8px 0 8px;
+  border-color: #b0e0f6 transparent transparent transparent;
+  margin-bottom: 5px;
+ }
+
+ .button {
+  width: 55px;
+  margin-top: 10px;
+  padding-bottom: 3px;
+  -webkit-transition: color 300ms ease-in-out;
+  transition: color 300ms ease-in-out;
+ }
+}
+svg {
+ width: 28%;
+}
+
+.rectangle2 {
+  height: 43%;
+  width: 98.8%;
+  padding-bottom: 0;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+  margin-right: 2px;
+  margin-left: 3px;
+  margin-top: -2px;
+  border-radius: 0 0 2px 2px;
+}

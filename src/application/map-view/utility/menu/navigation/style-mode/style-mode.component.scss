@@ -1,0 +1,68 @@
+@import '../../../../../../assets/scss/utility/utility.scss';
+$h: 14px;
+$colors: #18beca, #bec3c7, #777;
+.style-mode {
+ position: relative;
+ font-size: 0.69em;
+ display: inline-block;
+ color: darken(nth($colors, 3), 20);
+ cursor: pointer;
+}
+.style-mode.active,
+.style-mode:focus {
+ outline: none;
+}
+.selected {
+ -moz-box-sizing: border-box;
+ box-sizing: border-box;
+ height: $h;
+ width: 58px;
+ border-radius: 8px; /* 4px */
+ box-shadow: 0 .1em .2em rgba(0, 0, 0, .45); /* 0 1px 2px */
+ display: flex;
+ align-items: center;
+ justify-content: flex-end;
+ background: nth($colors, 2);
+}
+.selected .value {
+ display: inline-block;
+ width: 62%;
+ overflow: hidden;
+ vertical-align: top;
+ white-space: nowrap;
+ text-overflow: ellipsis;
+}
+.triangle {
+ box-sizing: border-box;
+ @include square( $h);
+ background-color: nth($colors, 1);
+ color: #fff;
+ padding: 4px 3px;
+ font-size: 7.5px;
+}
+.style-mode {
+ .optList {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  overflow: hidden;
+  z-index: 2;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  border-radius: 0 0 .4em .4em; /* 0 0 4px 4px */
+  box-shadow: 0 .2em .4em rgba(0, 0, 0, .4); /* 0 2px 4px */
+  background: lighten(nth($colors, 2), 10);
+  text-align: center;
+  width: 94%;
+  margin: 2px 2px;
+  text-align: center;
+  transition: all 0.5s linear;
+ }
+}
+.style-mode .option {
+ padding: 4px 0;
+ cursor: pointer;
+}
+.option:hover {
+ background: #18beca42;
+}

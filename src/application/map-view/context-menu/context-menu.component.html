@@ -1,0 +1,69 @@
+<div
+  class="menu"
+  id="menu"
+  #contextMenuDiv
+  *ngIf="this.publicVar.isOpenContextMenu"
+  [style.top.px]="contextMenuY"
+  [style.left.px]="contextMenuX"
+>
+  <ul
+    class="menu-options"
+    *ngIf="
+      !this.publicVar.isOpenMissingPlace &&
+      !this.publicVar.isOpenReportError &&
+      !this.publicVar.isOpenPlaces &&
+      !this.publicVar.isOpenMeasure &&
+      !this.publicVar.isOpenNavigation
+    "
+  >
+    <li class="menu-option" (click)="DirectionFromToHere('start-point')">
+      <span *ngIf="this.publicVar.isPersian">مسیر از اینجا</span>
+      <span *ngIf="!this.publicVar.isPersian">Directions from here</span>
+    </li>
+    <li class="menu-option" (click)="DirectionFromToHere('end-point')">
+      <span *ngIf="this.publicVar.isPersian">مسیر به اینجا</span>
+      <span *ngIf="!this.publicVar.isPersian">Directions to here</span>
+    </li>
+    <div *ngIf="!this.publicVar.isOpenDirection">
+      <li
+        class="menu-option"
+        (click)="
+          this.publicVar.isauthenticate
+            ? this.missingPlace.openMissingPlace()
+            : (this.publicVar.isOpenMustLogin = true);
+          changeExtent()
+        "
+      >
+      <span *ngIf="this.publicVar.isPersian">افزودن مکان ثبت نشده</span>
+      <span *ngIf="!this.publicVar.isPersian">Add mising place</span>
+      </li>
+      <li
+        class="menu-option"
+        (click)="
+          this.publicVar.isauthenticate
+            ? this.ReportError.openReportError()
+            : (this.publicVar.isOpenMustLogin = true);
+          changeExtent()
+        "
+      >
+      <span *ngIf="this.publicVar.isPersian">گزارش خطا</span>
+      <span *ngIf="!this.publicVar.isPersian">Report a data problem</span>
+      </li>
+      <li
+        class="menu-option"
+        (click)="
+          this.publicVar.isauthenticate
+            ? openYourPlace()
+            : (this.publicVar.isOpenMustLogin = true)
+        "
+      >
+      <span *ngIf="this.publicVar.isPersian">مکان مورد علاقه</span>
+      <span *ngIf="!this.publicVar.isPersian">Your places</span>
+      </li>
+      <li class="menu-option" (click)="openMeasure()">
+        <span *ngIf="this.publicVar.isPersian">اندازه گیری فاصله</span>
+        <span *ngIf="!this.publicVar.isPersian">Measure distance</span>
+      </li>
+    </div>
+  </ul>
+</div>

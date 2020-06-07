@@ -1,0 +1,135 @@
+<div class="dirct-icon" id="dirct-icon">
+  <div>
+    <button class="button" [ngClass]="{ button_en: !this.publicVar.isPersian }" (click)="openDirection('start-point')">
+      <svg [appTooltips]="this.publicVar.isPersian ? 'مسیریابی' : 'Direction'" placement="bottom" delay="500"
+        width="20px" height="20px" viewBox="0 0 287.6 300">
+        <path
+          d="M281.9 174.4l-101.2-56.3c-7.5-3.8-13.1 0-13.1 7.5v30c-30 0-52.5 11.3-75 28.1v-71.3h28.1c7.5 0 9.4-5.6 5.6-11.3L70.1 5.6c-3.8-7.5-9.4-7.5-13.1 0L.7 101.3c-1.9 5.6 0 11.3 7.5 11.3h28.1V300h56.3v-1.9c0-46.9 30-84.4 76.9-86.3v26.3c-1.9 5.6 3.7 9.4 11.2 5.6L282 189.3c7.4-5.5 7.4-11.2-.1-14.9z" />
+      </svg>
+    </button>
+  </div>
+
+  <div class="rout" id="rout" *ngIf="this.publicVar.isOpenDirection" [@slide]="{
+      value: undefined,
+      params: { moveX: this.publicVar.isPersian ? '380px' : '-380px' }
+    }" [ngStyle]="{
+      left: this.publicVar.isPersian ? '' : '-9px',
+      right: this.publicVar.isPersian ? '-9px' : ''
+    }">
+    <div class="section-directon">
+      <div class="icondir">
+        <div class="menu" (click)="this.publicVar.isOpenNavigation = true">
+          <app-menu-icon></app-menu-icon>
+        </div>
+        <div id="dir-closer" class="dir-closer" (click)="closeDirection()">
+          <app-close></app-close>
+        </div>
+      </div>
+
+      <div class="dir-base">
+        <div>
+          <div class="point">
+            <svg width="11px" height="11px" fill="#fff" viewBox="0 0 1000 1000">
+              <path
+                d="M500 173.3c180.1 0 326.7 146.5 326.7 326.7S680.1 826.7 500 826.7 173.3 680.2 173.3 500 319.9 173.3 500 173.3M500 10C229.4 10 10 229.4 10 500c0 270.5 219.4 490 490 490 270.5 0 490-219.5 490-490 0-270.6-219.5-490-490-490z" />
+            </svg>
+          </div>
+          <div class="more">
+            <svg width="13px" height="13px" fill="#fff" viewBox="0 0 408 408">
+              <path
+                d="M204 102c28.05 0 51-22.95 51-51S232.05 0 204 0s-51 22.95-51 51 22.95 51 51 51zm0 51c-28.05 0-51 22.95-51 51s22.95 51 51 51 51-22.95 51-51-22.95-51-51-51zm0 153c-28.05 0-51 22.95-51 51s22.95 51 51 51 51-22.95 51-51-22.95-51-51-51z" />
+            </svg>
+          </div>
+          <div class="location">
+            <svg width="13px" height="13px" fill="#fff" viewBox="0 0 1000 1000">
+              <path
+                d="M500 10c-202.7 0-367.5 164.8-367.5 367.5 0 77.2 24 151.3 69.4 214.3l9.6 13.5 264 372.5c5.8 7.7 14.9 12.3 24.5 12.3s18.7-4.5 24.5-12.3l260.7-368 12.9-17.8c45.4-63.1 69.4-137.2 69.4-214.4C867.5 174.8 702.7 10 500 10zm0 490c-67.6 0-122.5-54.9-122.5-122.5S432.4 255 500 255s122.5 54.9 122.5 122.5S567.6 500 500 500z" />
+            </svg>
+          </div>
+        </div>
+        <div class="directions-searchbox">
+          <div>
+            <input class="input-srart" id="start-point" type="text" [placeholder]="
+                this.publicVar.isPersian
+                  ? 'مبدا را انتخاب یا روی نقشه کلیک کنید...'
+                  : 'Choose starting point or click on the map...'
+              " (keyup.enter)="nextInput(endPoint)" [(ngModel)]="this.publicVar.DirectionStartPointValue" #startPoint
+              [autofocus]="this.publicVar.DirectionFocusInput == 'start-point'"
+              (focusin)="this.publicVar.DirectionFocusInput = 'start-point'"
+              (focusout)="this.publicVar.DirectionFocusInput = ''" />
+            <!-- (click)="goToLocation(this.publicVar.startPointLocation)" -->
+            <svg id="searchIcon" class="searchIcon" height="13pt" viewBox="0 0 1000 1000" [ngStyle]="{
+                opacity:
+                  this.publicVar.DirectionFocusInput == 'start-point'
+                    ? '1'
+                    : '0'
+              }">
+              <path
+                d="M890.5 109.6c-132.7-132.9-347.8-132.9-480.6 0C286.3 233.4 278 428.7 384.6 562.3L10 937.5l52.5 52.6 374.4-374.9c133.5 108 329.5 99.9 453.5-24.3 132.8-132.9 132.8-348.4.1-481.3zm-47.6 433.6c-106.5 106.6-279.1 106.6-385.6 0s-106.5-279.5 0-386.1c106.5-106.6 279.1-106.6 385.6 0s106.5 279.5 0 386.1z" />
+            </svg>
+          </div>
+          <span class="input-underline"></span>
+          <br />
+          <div>
+            <input class="input-srart tooltip" id="end-point" type="text" [placeholder]="
+                this.publicVar.isPersian
+                  ? 'مقصد را انتخاب کنید...'
+                  : 'Choose destination...'
+              " (keyup.enter)="searchRout()" [(ngModel)]="this.publicVar.DirectionEndPointValue" #endPoint
+              [autofocus]="this.publicVar.DirectionFocusInput == 'end-point'"
+              (focusin)="this.publicVar.DirectionFocusInput = 'end-point'"
+              (focusout)="this.publicVar.DirectionFocusInput = ''" />
+            <!-- (click)="goToLocation(this.publicVar.endPointLocation)" -->
+            <svg id="searchIcon2" class="searchIcon" height="13pt" viewBox="0 0 1000 1000" [ngStyle]="{
+                opacity:
+                  this.publicVar.DirectionFocusInput == 'end-point' ? '1' : '0'
+              }">
+              <path
+                d="M890.5 109.6c-132.7-132.9-347.8-132.9-480.6 0C286.3 233.4 278 428.7 384.6 562.3L10 937.5l52.5 52.6 374.4-374.9c133.5 108 329.5 99.9 453.5-24.3 132.8-132.9 132.8-348.4.1-481.3zm-47.6 433.6c-106.5 106.6-279.1 106.6-385.6 0s-106.5-279.5 0-386.1c106.5-106.6 279.1-106.6 385.6 0s106.5 279.5 0 386.1z" />
+            </svg>
+          </div>
+          <span class="input-underline"></span>
+        </div>
+        <div class="change" (click)="changeRout()">
+          <svg viewBox="0 0 50 50" width="25px" height="25px" [appTooltips]="
+              this.publicVar.isPersian
+                ? 'جابه جایی مبدا و مقصد'
+                : 'Reverse starting point and destination'
+            " [placement]="this.publicVar.isPersian ? 'right' : 'left'" delay="500">
+            <path
+              d="M 37 3 L 27 13 L 33 13 L 33 26 L 19 26 L 19 34 L 35 34 C 38.314 34 41 31.314 41 28 L 41 13 L 47 13 L 37 3 z M 15 16 C 11.686 16 9 18.686 9 22 L 9 37 L 3 37 L 13 47 L 23 37 L 17 37 L 17 24 L 31 24 L 31 16 L 15 16 z" />
+          </svg>
+        </div>
+      </div>
+      <div class="go-box">
+        <button class="go" (click)="searchRout()">
+          <span *ngIf="this.publicVar.isPersian">مسیریابی</span>
+          <span *ngIf="!this.publicVar.isPersian">Direction</span>
+        </button>
+      </div>
+    </div>
+    <div class="result">
+      <div class="error" *ngIf="
+        this.publicVar.isDirectionInIran == false
+        ">
+        <svg height="20px" viewBox="0 0 32 32" width="20px">
+          <g fill="none" fill-rule="evenodd" id="Icons new Arranged Names Color" stroke="none" stroke-width="1">
+            <g fill="#DD0101">
+              <path
+                d="M14.4242327,6.14839275 C15.2942987,4.74072976 16.707028,4.74408442 17.5750205,6.14839275 L28.3601099,23.59738 C29.5216388,25.4765951 28.6755462,27 26.4714068,27 L5.5278464,27 C3.32321557,27 2.47386317,25.4826642 3.63914331,23.59738 Z M16,20 C16.5522847,20 17,19.5469637 17,19.0029699 L17,12.9970301 C17,12.4463856 16.5561352,12 16,12 C15.4477153,12 15,12.4530363 15,12.9970301 L15,19.0029699 C15,19.5536144 15.4438648,20 16,20 Z M16,24 C16.5522848,24 17,23.5522848 17,23 C17,22.4477152 16.5522848,22 16,22 C15.4477152,22 15,22.4477152 15,23 C15,23.5522848 15.4477152,24 16,24 Z M16,24" />
+            </g>
+          </g>
+        </svg>
+        <span>
+          مکان مورد نظر خارج از محدوده ایران است.
+        </span>
+        <!-- <span *ngIf="
+            this.publicVar.isDirectionInIran == true &&
+            isClickHasNetwork == false
+          ">
+          عارضه ای جهت مسیریابی پیدا نشد لطفا مجددا تلاش نمایید.
+        </span> -->
+      </div>
+    </div>
+  </div>
+</div>

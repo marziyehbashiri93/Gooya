@@ -1,0 +1,92 @@
+<div
+  class="intersect"
+  id="intersect"
+  *ngIf="this.publicVar.isOpenIntersect"
+  [@slide]="{
+    value: undefined,
+    params: { moveX: this.publicVar.isPersian ? '380px' : '-380px' }
+  }"
+>
+  <div class="section-intersect">
+    <div class="iconInter">
+      <div>
+        <div class="menu" (click)="this.menu.openNavigation()">
+          <app-menu-icon></app-menu-icon>
+        </div>
+      </div>
+      <div>
+        <div class="intersect-closer" (click)="closeIntersection()">
+          <app-close></app-close>
+        </div>
+      </div>
+    </div>
+    <div class="intersect-base">
+      <div
+      [ngStyle]="{
+        transform: !this.publicVar.isPersian ? 'rotateY(180deg)' : ''
+      }">
+        <div class="point">
+          <svg width="15px" height="15px" viewBox="0 0 140 236.1">
+            <path
+              d="M296,178.5H202V83.4H156V319.5h46v-95h94Z"
+              transform="translate(-156 -83.4)"
+              style="fill:#ffffff"
+            />
+          </svg>
+        </div>
+        <div class="more">
+          <svg width="14px" height="14px" fill="#fff" viewBox="0 0 408 408">
+            <path
+              d="M204 102c28.05 0 51-22.95 51-51S232.05 0 204 0s-51 22.95-51 51 22.95 51 51 51zm0 51c-28.05 0-51 22.95-51 51s22.95 51 51 51 51-22.95 51-51-22.95-51-51-51zm0 153c-28.05 0-51 22.95-51 51s22.95 51 51 51 51-22.95 51-51-22.95-51-51-51z"
+            />
+          </svg>
+        </div>
+        <div class="location">
+          <svg width="15px" height="15px" viewBox="0 0 140 236.1">
+            <path
+              d="M296,178.5H202V83.4H156V319.5h46v-95h94Z"
+              transform="translate(-156 -83.4)"
+              style="fill:#ffffff"
+            />
+          </svg>
+        </div>
+      </div>
+      <div class="intersect-searchbox ">
+        <input
+          class="input-srart"
+          type="text"
+          [placeholder]="
+            this.publicVar.isPersian
+              ? 'نام خیابان اول را وارد کنید...'
+              : 'Enter the name of the first street...'
+          "
+          (keyup.enter)="nextInput(intersect2)"
+          #intersect1
+          [autofocus]
+        />
+        <span class="input-underline"></span>
+        <br />
+        <div>
+          <input
+            class="input-srart tooltip"
+            type="text"
+            [placeholder]="
+              this.publicVar.isPersian
+                ? 'نام خیابان  دوم را وارد کنید...'
+                : 'Enter the name of the second street...'
+            "
+            (keyup.enter)="searchIntersect()"
+            #intersect2
+          />
+        </div>
+        <span class="input-underline"></span>
+      </div>
+    </div>
+    <div class="go-box">
+      <button class="go" (click)="searchIntersect()">
+        <span *ngIf="this.publicVar.isPersian">جستجو</span>
+        <span *ngIf="!this.publicVar.isPersian">Search</span>
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,32 @@
+<div
+  class="places"
+  id="places"
+  *ngIf="this.publicVar.isOpenPlaces"
+  [@slide]="{
+    value: undefined,
+    params: { moveX: this.publicVar.isPersian ? '380px' : '-380px' }
+  }"
+  [ngStyle]="{
+    left: this.publicVar.isPersian ? '' : '0',
+    right: this.publicVar.isPersian ? '0' : ''
+  }"
+>
+  <div class="section-places">
+    <div class="iconPlaces">
+      <div>
+        <div (click)="this.publicVar.isOpenNavigation = true">
+          <app-menu-icon></app-menu-icon>
+        </div>
+      </div>
+      <div id="places-closer" (click)="closePlaces()">
+        <app-close class="places-closer"></app-close>
+      </div>
+    </div>
+
+    <ul class="place-items" id="place-items">
+      <li class="place-item">
+        <app-favorit-home></app-favorit-home>
+      </li>
+    </ul>
+  </div>
+</div>

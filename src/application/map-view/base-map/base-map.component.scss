@@ -1,0 +1,109 @@
+@import "../../../assets/scss/utility/utility.scss";
+$padding: 12px;
+.container {
+ position: relative;
+ box-sizing: content-box;
+ // ---- Map Layer----
+ .base-map {
+  height: 100vh;
+  width: 100%;
+  > div:first-child {
+   height: 100vh;
+   width: 100%;
+  }
+ }
+ .canvas_en {
+  canvas {
+   float: right;
+   position: fixed !important;
+  }
+ }
+ // ---- Map Layer ----
+ .mini-map-box {
+  position: absolute;
+  bottom: 20px;
+ }
+ .some-control {
+  position: absolute;
+  bottom: 0px;
+  height: 19px;
+  display: flex;
+  justify-content: flex-start;
+ }
+ // ---- login ----
+ .login {
+  position: absolute;
+  top: 0;
+  z-index: 3;
+ }
+ // ---- login ----
+ // ---- Utility ----
+ .utiliy {
+  position: absolute;
+  top: 0px;
+  padding: 10px 8px;
+  max-width: 370px;
+  box-sizing: border-box;
+ }
+ app-utility {
+  position: absolute;
+  z-index: 2;
+ }
+ // ---- Utility ----
+ // ---- Navigation ----
+ .navigation {
+  position: absolute;
+  top: 0;
+  margin: 0;
+  z-index: 4;
+ }
+ .about-us-box {
+  @extend %disableBox;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+ }
+ // ---- Navigation ----
+ // ---- context-menu ----
+ .context-menu {
+  position: absolute;
+  z-index: 5;
+  top: 0;
+  left: 0;
+ }
+ // ---- context-menu ----
+}
+
+.left-control {
+ position: absolute;
+ bottom: 15px;
+ width: fit-content;
+ height: 136px;
+ display: flex;
+ flex-direction: column;
+ justify-content: space-between;
+}
+.left_control_fa {
+ left: 0;
+ margin-left: 12px;
+}
+.left_control_en {
+ right: 0;
+ margin-right: 12px;
+}
+// ---- measure----
+.must-login {
+ @extend %disableBox;
+ width: 100%;
+ height: 100vh;
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ position: absolute;
+ z-index: 5;
+}

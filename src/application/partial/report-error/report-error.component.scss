@@ -1,0 +1,242 @@
+@import "../../../assets/scss/utility/utility.scss";
+@import "../../../assets/scss/utility/dimen";
+@import "../../../assets/scss/utility/publicClass";
+
+$border: 1px solid rgba($color-gray-svg, 0.6);
+$margin: 9px;
+$back-color: $color-light;
+$padding: 3px;
+.report-error {
+ width: 100%;
+ height: 100vh;
+ @extend %disableBox;
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ position: absolute;
+ z-index: 3;
+ .error-box {
+  @extend %shadow;
+  border-radius: 4px;
+  width: 560px;
+  height: 335px;
+  padding: 14px;
+  box-sizing: border-box;
+  background: linear-gradient(
+   90deg,
+   $color-light 0%,
+   #ecf4ff 50%,
+   $color-light 100%
+  );
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  .title-box {
+   height: 7%;
+   margin-bottom: 12px;
+   h3 {
+    width: 97.5%;
+    margin: 0;
+   }
+   .close {
+    width: 2%;
+    padding: 0 2px;
+    box-sizing: border-box;
+    svg {
+     height: 13px;
+     width: 11px;
+     fill: rgba($color: $color-dark, $alpha: 0.8);
+    }
+   }
+  }
+  .container.row {
+   height: 89%;
+   justify-content: space-between;
+   .map-container,
+   .form-container {
+    height: 100%;
+   }
+   .map-container {
+    width: 48%;
+    position: relative;
+    .error {
+     color: $color-red-required;
+     display: flex;
+     align-items: flex-end;
+     justify-content: center;
+     background: $color-light;
+     position: absolute;
+     top: 0;
+     width: 100%;
+     border-radius: $radius $radius 0 0;
+     border: $border;
+     box-sizing: border-box;
+     border-bottom: none;
+     padding-bottom: 6px;
+     z-index: 10;
+     span {
+      font-size: 0.8em;
+     }
+     svg {
+      width: 8%;
+      padding-top: 2px;
+      box-sizing: border-box;
+     }
+    }
+    .error-map {
+     @extend %radius;
+     width: 100%;
+     height: 100%;
+     border: $border;
+     background: #f3f3f3;
+     box-sizing: border-box;
+    }
+    .icon {
+     img {
+      width: 10%;
+      position: absolute;
+      z-index: 2;
+      left: 0;
+      margin: auto;
+      right: 0;
+      top: -37px;
+      bottom: 0;
+     }
+    }
+    .coordinate {
+     position: absolute;
+     bottom: 0;
+     border: $border;
+     font-size: 0.8em;
+     background: lighten($color: $color-dark, $amount: 60);
+     width: 100%;
+     text-align: center;
+     box-sizing: border-box;
+     border-top: none;
+     border-radius: 0 0 3px 3px;
+     height: 17px;
+     vertical-align: middle;
+     letter-spacing: 0.7px;
+     padding-top: 3px;
+     margin: 0;
+    }
+   }
+   .form-container {
+    width: 50%;
+    form {
+     @include square(inherit);
+     display: flex;
+     flex-direction: column;
+     justify-content: flex-start;
+     width: 100%;
+     position: relative;
+     label {
+      margin: $margin 2px;
+      display: block;
+      color: $color-gray-svg;
+     }
+     div {
+      label:first-child {
+       margin-top: 0;
+      }
+     }
+
+     input,
+     .description {
+      background-color: $back-color;
+      padding: 0 5px;
+     }
+     .error-type-box input,
+     .description {
+      @extend %radius;
+      font-size: 0.9em;
+      box-sizing: border-box;
+      border: $border;
+      color: $color-gray-svg;
+      width: 100%;
+      height: 27px;
+     }
+     .error-type-box {
+      position: relative;
+      border: none;
+      height: auto;
+      font-size: 0.9em;
+      & select {
+       width: 100%;
+       background-color: $back-color;
+       border: $border;
+       @extend %radius;
+       height: 27px;
+       color: $color-gray-svg;
+       -webkit-appearance: none;
+       -moz-appearance: none;
+       padding: 0 $padding;
+      }
+      & select.ng-invalid.ng-touched {
+       border: 1px solid rgba($color-red-required, 0.6) !important;
+      }
+      svg {
+       width: 17px;
+       height: 20px;
+       position: absolute;
+       bottom: 3px;
+       fill: $color-gray-svg;
+      }
+     }
+     .description {
+      text-align: right;
+      vertical-align: text-top;
+      height: 33%;
+      resize: none;
+     }
+     .counter {
+      position: absolute;
+      bottom: 45px;
+      right: 5px;
+      font-size: 0.7em;
+      color: $color-gray-svg;
+      sub {
+       font-size: 0.9em;
+       bottom: -0.2em;
+      }
+     }
+     .submit-box {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: $margin;
+      .require_field {
+       width: 80%;
+       color: $color-gray-svg;
+       span {
+        font-size: 0.8em;
+       }
+       sub {
+        bottom: -0.35em;
+       }
+      }
+      .submit {
+       margin-right: 9px;
+       width: 30%;
+      }
+     }
+    }
+   }
+  }
+ }
+}
+
+.report-map {
+ height: 50%;
+ border: 1px solid;
+}
+
+app-popup-success {
+ animation: fade-in 1s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+}
+
+p{
+  margin: 0;
+}

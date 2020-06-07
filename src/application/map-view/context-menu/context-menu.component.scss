@@ -1,0 +1,19 @@
+@import '../../../assets/scss/utility/utility.scss';
+#menu {
+  @extend %shadow;
+  width: 155px;
+  position: absolute;
+  background-color: $color-light;
+  color: $color-gray-svg;
+  .menu-options {
+    list-style: none;
+    width: 100%;
+    .menu-option {
+      padding: 10px;
+      cursor: pointer;
+      &:hover {
+        background: rgba($color-theme-primary, 0.5);
+      }
+    }
+  }
+}

@@ -1,0 +1,16 @@
+@import "../../../../assets/scss/utility/utility.scss";
+$widthHeight: 30px;
+.user-location-point {
+  @include square($widthHeight);
+  @extend %radius;
+  background-color: $color-light;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: $boxShadow;
+  border: none;
+  svg {
+    width: 18px;
+    opacity: 0.8;
+  }
+}

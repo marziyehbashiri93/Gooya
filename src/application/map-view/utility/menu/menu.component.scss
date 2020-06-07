@@ -1,0 +1,16 @@
+.menu {
+ button {
+  border: none;
+  background-color: transparent;
+  height: 32px;
+  width: 9px;
+  margin: 5px 14px 0px 14px;
+  cursor: pointer;
+  align-items: center;
+  app-menu-icon {
+   height: 20px;
+   width: 19px;
+   stroke: #000;
+  }
+ }
+}

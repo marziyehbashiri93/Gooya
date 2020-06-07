@@ -1,0 +1,67 @@
+<div
+  class="street"
+  id="street"
+  *ngIf="this.publicVar.isOpenStreet"
+  [@slide]="{
+    value: undefined,
+    params: { moveX: this.publicVar.isPersian ? '380px' : '-380px' }
+  }"
+>
+  <div class="section-street">
+    <div class="iconStreet">
+      <div>
+        <div class="menu" (click)="this.menu.openNavigation()">
+          <app-menu-icon></app-menu-icon>
+        </div>
+      </div>
+      <div>
+        <div id="street-closer" class="street-closer" (click)="closeStreet()">
+          <app-close></app-close>
+        </div>
+      </div>
+    </div>
+    <div class="street-base">
+      <div>
+        <div
+          class="point"
+          [ngStyle]="{
+            transform: !this.publicVar.isPersian ? 'rotateY(180deg)' : ''
+          }"
+        >
+          <svg
+            class="icon"
+            width="20px"
+            heigth="20px"
+            fill="#ffffff"
+            viewBox="0 0 1152 1024"
+          >
+            <path
+              d="M820.944895 447.058953C897.635839 134.385049 452.546929 0 452.546929 0l-95.406349 0c0 0 325.197746 111.448124 214.312491 394.149237C461.834272 673.332417 0 1024 0 1024l404.703037 0C404.703037 1024 743.550364 762.969356 820.944895 447.058953L820.944895 447.058953zM600.300124 0l-95.406349 0c0 0 436.364436 133.822179 362.628556 472.669507-68.951491 316.895424-348.69754 551.330493-348.69754 551.330493l417.789749 0c0 0 215.297513-185.043287 215.297513-525.71994C1151.912052 157.462691 600.300124 0 600.300124 0L600.300124 0z"
+            />
+          </svg>
+        </div>
+      </div>
+      <div class="street-searchbox ">
+        <input
+          class="input-srart"
+          id="street-input"
+          type="text"
+          [placeholder]="
+            this.publicVar.isPersian
+              ? 'نام خیابان را وارد کنید...'
+              : 'Enter street name...'
+          "
+          #streetInput
+          [autofocus]
+        />
+        <span class="input-underline"></span>
+      </div>
+    </div>
+    <div class="go-box">
+      <button class="go">
+        <span *ngIf="this.publicVar.isPersian">جستجو</span>
+        <span *ngIf="!this.publicVar.isPersian">Search</span>
+      </button>
+    </div>
+  </div>
+</div>

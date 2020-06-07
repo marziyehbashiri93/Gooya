@@ -1,0 +1,119 @@
+@import "../../../../assets/scss/utility/utility.scss";
+$popup-color: #454548eb;
+$triangle-color: $color-light-blue;
+.ol-popup {
+ @extend %center;
+ z-index: 5;
+ position: absolute;
+ max-width: 173px;
+ width: fit-content;
+ -webkit-animation: scale-out-bottom 100ms cubic-bezier(0.55, 0.085, 0.68, 0.53) reverse both;
+ font-size: 0.87em;
+ justify-content: space-between;
+ display: flex;
+ flex-direction: row-reverse;
+ height: 55px;
+ .attribute-container {
+  width: 100%;
+  background: $popup-color;
+  color: $color-light;
+  padding: 7px 8px 6px 5px;
+  border-radius: 3px;
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  .close {
+   display: flex;
+   justify-content: flex-end;
+   margin: -4px 3px 0 0;
+   app-close {
+    width: 9px;
+    fill: $color-light;
+   }
+  }
+  .feature-att {
+   display: flex;
+   flex-direction: column;
+   justify-content: space-between;
+   align-items: flex-start;
+   div:first-child{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 148px;
+    height: 1.2em;
+    white-space: nowrap;
+    margin-top: 3px;
+   }
+   p {
+    margin: 0px;
+   }
+  }
+ }
+ //----arrow----
+ #arrow-bottom,
+ #arrow-top,
+ #arrow-right,
+ #arrow-left {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  position: absolute;
+ }
+ .circle1 {
+  width: 12px;
+  height: 12px;
+  background: rgba($triangle-color, 0.4);
+  border-radius: 100%;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+ }
+ .circle2 {
+  width: 6px;
+  height: 6px;
+  background: darken($triangle-color, 5);
+  border-radius: 100%;
+ }
+ #arrow-bottom {
+  border-width: 7px 6px 0 6px;
+  border-color: $popup-color transparent transparent transparent;
+  left: 49%;
+  bottom: -7px;
+  .circle1 {
+   right: -6px;
+   top: 2px;
+  }
+ }
+ #arrow-top {
+  border-width: 0 6px 7px 6px;
+  border-color: transparent transparent $popup-color;
+  left: 49%;
+  top: -7px;
+  .circle1 {
+   right: -6px;
+   bottom: 2px;
+  }
+ }
+ #arrow-right {
+  border-width: 6px 0 6px 7px;
+  border-color: transparent transparent transparent $popup-color;
+  right: -7px;
+  bottom: 38%;
+  .circle1 {
+    left: 2px;
+    top: -6px;
+  }
+ }
+ #arrow-left {
+  border-width: 6px 7px 6px 0;
+  border-color: transparent $popup-color transparent transparent;
+  left: -7px;
+  bottom: 38%;
+  .circle1 {
+    right: 2px;
+    top: -6px;
+  }
+ }
+}
+//----arrow----

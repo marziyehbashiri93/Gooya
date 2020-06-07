@@ -1,0 +1,226 @@
+@import "color";
+@import "tools";
+// ---- Login , location btn ----
+.buttonBlue {
+  @extend %radius;
+  font-size: 0.9em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background:#7ebbf0;
+  border: 1px solid rgba($color-gray-svg, 0.66);
+  height: 25px;
+
+  &:hover {
+    background: lighten($color-blue-hover, 20);
+    cursor: pointer;
+  }
+}
+// ---- Login , location btn ----
+
+// ---- im not robat ----
+.no-robat {
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  .label-cbx {
+    display: flex;
+    user-select: none;
+    font-size: 0.9em;
+    align-items: center;
+    input:checked {
+      & + .checkbox {
+        border-color: #20c2e0;
+        svg {
+          path {
+            fill: #20c2e0;
+          }
+          polyline {
+            stroke-dashoffset: 0;
+          }
+        }
+      }
+    }
+    &:hover {
+      .checkbox {
+        svg {
+          path {
+            stroke-dashoffset: 0;
+          }
+        }
+      }
+    }
+
+    .checkbox {
+      @include square(13px);
+      border: 2px solid $color-gray-svg;
+      border-radius: 3px;
+      &:hover {
+        svg {
+          path {
+            stroke-dashoffset: 0;
+          }
+        }
+      }
+      svg {
+        @include square(17px);
+        margin: -2px;
+        path {
+          fill: none;
+          stroke: #20c2e0;
+          stroke-width: 2;
+          stroke-linecap: round;
+          stroke-linejoin: round;
+          stroke-dasharray: 71px;
+          stroke-dashoffset: 71px;
+          transition: all 0.6s ease;
+        }
+        polyline {
+          fill: none;
+          stroke: $color-light;
+          stroke-width: 2;
+          stroke-linecap: round;
+          stroke-linejoin: round;
+          stroke-dasharray: 18px;
+          stroke-dashoffset: 18px;
+          transition: all 0.3s ease;
+        }
+      }
+    }
+    & > span {
+      pointer-events: none;
+      vertical-align: middle;
+      margin: 0 17px;
+      color: $color-gray-svg;
+    }
+  }
+  .invisible {
+    position: absolute;
+    // z-index: -1;
+    width: 25px;
+    height: 25px;
+    opacity: 0;
+    cursor: pointer;
+  }
+}
+// ---- im not robat ----
+
+// --- required value error in form---
+input.ng-touched.ng-invalid,
+textarea.ng-touched.ng-invalid {
+  border: 1px solid rgba($color-red-required, 0.6) !important ;
+}
+// --- required value error in form---
+
+// ---- for tooltip ----
+>button [appTooltips] {
+  display: inline-block;
+  margin: 50px 20px;
+  width: 180px;
+  height: 50px;
+  border: 1px solid gray;
+  border-radius: 5px;
+  line-height: 50px;
+  text-align: center;
+}
+.ng-tooltip {
+  position: absolute;
+  max-width: 250px;
+  font-size: 0.9em;
+  text-align: center;
+  color: #f8f8f2;
+  padding: 3px 8px;
+  background: $color-tooltip;
+  border-radius: 4px;
+  z-index: 1000;
+  opacity: 0;
+}
+.ng-tooltip:after {
+  content: "";
+  position: absolute;
+  border-style: solid;
+}
+.ng-tooltip-top:after {
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-color: $color-tooltip transparent transparent transparent;
+}
+.ng-tooltip-bottom:after {
+  bottom: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-color: transparent transparent $color-tooltip transparent;
+}
+.ng-tooltip-left:after {
+  top: 50%;
+  left: 100%;
+  margin-top: -5px;
+  border-width: 5px;
+  border-color: transparent transparent transparent $color-tooltip;
+}
+.ng-tooltip-right:after {
+  top: 50%;
+  right: 100%;
+  margin-top: -5px;
+  border-width: 5px;
+  border-color: transparent $color-tooltip transparent transparent;
+}
+.ng-tooltip-show {
+  opacity: 1;
+}
+// ---- for tooltip ----
+
+
+///--- toggle ----
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 29px;
+  height: 12px;
+  // margin-left: 10px;
+
+}
+.switch input {
+  display: none;
+}
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #bec3c7;;
+  border: 1px solid #d0d8e0;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+  border-radius: 10px;
+}
+.slider:before {
+  position: absolute;
+  content: "";
+  // @include square(9.5px);
+  height: 9px;
+  width: 9px;
+  left: 1.7px;
+  bottom: 0px;
+  background-color: $color-light;
+  transition: 0.4s;
+  border-radius: 50%;
+  margin-bottom: 0.6px;
+}
+
+input:checked + .slider {
+  background-color: #18beca;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(12px);
+  -ms-transform: translateX(12px);
+  transform: translateX(15px);
+}
+///--- toggle ----

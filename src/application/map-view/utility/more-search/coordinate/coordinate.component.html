@@ -1,0 +1,118 @@
+<div
+  class="coordinate"
+  *ngIf="this.publicVar.isOpenCoordinate"
+  [@slide]="{
+    value: undefined,
+    params: { moveX: this.publicVar.isPersian ? '380px' : '-380px' }
+  }"
+>
+  <div class="section-intersect">
+    <div class="iconCoord">
+      <div>
+        <div class="menu" (click)="this.menu.openNavigation()">
+          <app-menu-icon></app-menu-icon>
+        </div>
+      </div>
+      <div>
+        <div
+          id="coordinate-closer"
+          class="coordinate-closer"
+          (click)="closeCoordinate()"
+        >
+          <app-close></app-close>
+        </div>
+      </div>
+    </div>
+    <form
+      class="epsg"
+      [formGroup]="coordinateForm"
+      (change)="ChangeInputFormat()"
+    >
+      <div class="radio">
+        <input
+          type="radio"
+          id="radio-0"
+          value="0"
+          formControlName="RadioBtn"
+          [checked]="true"
+        />
+        <label for="radio-0">
+          <span class="circle"></span>
+          <span *ngIf="this.publicVar.isPersian">متریک</span>
+          <span *ngIf="!this.publicVar.isPersian">Metric</span>
+        </label>
+      </div>
+      <div class="radio">
+        <input type="radio" id="radio-1" value="1" formControlName="RadioBtn" />
+        <label for="radio-1">
+          <span class="circle"></span>
+          <span *ngIf="this.publicVar.isPersian">درجه،دقیقه،ثانیه</span>
+          <span *ngIf="!this.publicVar.isPersian">DMS</span>
+        </label>
+      </div>
+      <div class="radio">
+        <input type="radio" id="radio-2" value="2" formControlName="RadioBtn" />
+        <label for="radio-2">
+          <span class="circle"></span>
+          <span *ngIf="this.publicVar.isPersian">درجه</span>
+          <span *ngIf="!this.publicVar.isPersian">Decimal Degree</span>
+        </label>
+      </div>
+    </form>
+
+    <div class="coordinate-base">
+      <div>
+        <div>Y</div>
+        <div>X</div>
+      </div>
+      <div class="coordinate-searchbox ">
+        <input
+          class="input-srart"
+          type="text"
+          [placeholder]="latPlaceholder"
+          [(ngModel)]="latValue"
+          (keyup.enter)="nextInput(long)"
+          (keypress)="matcher($event)"
+          #lat
+          [autofocus]
+          [ngStyle]="{textAlign:this.publicVar.isPersian ? 'end' : 'start'}"
+        />
+        <span class="input-underline"></span>
+        <br />
+        <div>
+          <input
+            class="input-srart tooltip"
+            type="text"
+            [placeholder]="longPlaceholder"
+            [(ngModel)]="longValue"
+            (keyup.enter)="searchCoord()"
+            (keypress)="matcher($event)"
+            #long
+            [ngStyle]="{textAlign:this.publicVar.isPersian ? 'end' : 'start'}"
+          />
+        </div>
+        <span class="input-underline"></span>
+      </div>
+    </div>
+    <div class="go-box">
+      <button class="go" (click)="searchCoord()">
+        <span *ngIf="this.publicVar.isPersian">جستجو</span>
+        <span *ngIf="!this.publicVar.isPersian">Search</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="error" *ngIf="hasError">
+    <svg height="20px" viewBox="0 0 32 32" width="20px">
+      <path
+        fill="#DD0101"
+        fill-rule="evenodd"
+        d="M14.4 6.1c.9-1.4 2.3-1.4 3.2 0l10.8 17.5c1.1 1.9.3 3.4-2 3.4H5.6c-2.2 0-3-1.5-1.9-3.4zM16 20c.6 0 1-.5 1-1v-6c0-.6-.4-1-1-1a1 1 0 0 0-1 1v6c0 .6.4 1 1 1zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 0"
+      />
+    </svg>
+    <span *ngIf="this.publicVar.isPersian">فرمت وارد شده صحیح نمی باشد.</span>
+    <span *ngIf="!this.publicVar.isPersian"
+      >can't find,Make sure your search is spelled correctly</span
+    >
+  </div>
+</div>

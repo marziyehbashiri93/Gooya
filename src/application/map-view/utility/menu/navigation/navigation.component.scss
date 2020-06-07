@@ -1,0 +1,141 @@
+@import '../../../../../assets/scss/utility/utility.scss';
+.navigation {
+ z-index: 1;
+ box-shadow: inset 1px 0px 0px 0px #4ea3ff;
+ position: absolute;
+ right: 0;
+ left: 0;
+ width: 270px;
+ background-color: $color-light;
+ height: 100vh;
+ overflow-x: hidden;
+ .logo {
+  height: 44px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba($color-dark, 0.2);
+  padding: 13px 19px 0 13px;
+  .logo-gooya {
+   width: 173px;
+   height: inherit;
+  }
+  button {
+   border: none;
+   background-color: transparent;
+   width: 29px;
+   height: 48px;
+   align-items: center;
+   cursor: pointer;
+   padding-bottom: 13px;
+   svg {
+    align-items: center;
+    @include square(9px);
+   }
+  }
+ }
+ nav {
+  .items-1 {
+   border-bottom: 1px solid rgba($color-dark, 0.2);
+   padding-top: 5px;
+   padding-bottom: 7px;
+   .item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 13px;
+    &:hover {
+     path,
+     polygon,
+     circle {
+      fill: rgba($color-light-blue, 0.7) !important;
+     }
+    }
+    .link {
+     &:hover {
+      color: $color-light-blue;
+     }
+    }
+   }
+  }
+  :last-child {
+   border: none;
+  }
+ }
+}
+
+.link {
+ text-decoration: none;
+ text-align: right;
+ cursor: pointer;
+ line-height: 25px;
+ color: $color-gray-svg;
+ font-size: 0.9em;
+ display: flex;
+ align-items: center;
+ svg {
+  margin-right: 5px;
+  align-items: center;
+  @include square(20px);
+  // margin-left: 27px;
+  display: inline-block;
+  opacity: 0.9;
+ }
+ span {
+  margin: 0 27px;
+ }
+}
+
+.disableItem {
+ cursor: default !important;
+ padding: 5px 13px;
+ .link {
+  span {
+   color: $color-disabled;
+  }
+  svg {
+   path {
+    fill: $color-gray-svg !important;
+   }
+  }
+ }
+}
+
+#Layer_lable {
+ @include square(25px);
+ margin-right: -2px;
+}
+.change-width {
+ width: 19px !important;
+}
+//---- switch ----
+.switch {
+ padding-right: 70px;
+ display: flex;
+}
+//---- switch ----
+//---- dis ----
+.dis {
+ @extend %disableBox;
+ animation: fade-out 0.3s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+ position: absolute;
+ top: 0;
+ margin: 0;
+ height: 100vh;
+ left: 0;
+ width: 100%;
+}
+
+.style{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+  svg{
+    height: 17px;
+  }
+}
+
+
+

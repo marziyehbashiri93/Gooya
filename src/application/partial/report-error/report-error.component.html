@@ -1,0 +1,160 @@
+<div
+  class="report-error"
+  id="report-error"
+  *ngIf="this.publicVar.isOpenReportError"
+  @fadeAnimation
+>
+  <div
+    class="error-box"
+    id="error-box"
+    *ngIf="
+      !this.publicVar.isOpenPopupSuccess && !this.publicVar.isOpenPopupError
+    "
+  >
+    <div class="title-box row">
+      <h3 *ngIf="this.publicVar.isPersian">گزارش خطا</h3>
+      <h3 *ngIf="!this.publicVar.isPersian">Report Error</h3>
+      <div id="close" class="close" (click)="closeReportError()">
+        <svg appHoverButton width="512px" height="512px" viewBox="0 0 512 512">
+          <path
+            d="M437.5,386.6L306.9,256l130.6-130.6c14.1-14.1,14.1-36.8,0-50.9c-14.1-14.1-36.8-14.1-50.9,0L256,205.1L125.4,74.5  c-14.1-14.1-36.8-14.1-50.9,0c-14.1,14.1-14.1,36.8,0,50.9L205.1,256L74.5,386.6c-14.1,14.1-14.1,36.8,0,50.9  c14.1,14.1,36.8,14.1,50.9,0L256,306.9l130.6,130.6c14.1,14.1,36.8,14.1,50.9,0C451.5,423.4,451.5,400.6,437.5,386.6z"
+          />
+        </svg>
+      </div>
+    </div>
+    <div class="container row">
+      <div class="map-container" id="map-container">
+        <div class="error-map" id="error-map"></div>
+        <div class="error" *ngIf="!this.publicVar.isErrorMapInIran">
+          <svg height="20px" viewBox="0 0 32 32" width="20px">
+            <path
+              fill="#DD0101"
+              fill-rule="evenodd"
+              d="M14.4 6.1c.9-1.4 2.3-1.4 3.2 0l10.8 17.5c1.1 1.9.3 3.4-2 3.4H5.6c-2.2 0-3-1.5-1.9-3.4zM16 20c.6 0 1-.5 1-1v-6c0-.6-.4-1-1-1a1 1 0 0 0-1 1v6c0 .6.4 1 1 1zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 0"
+            />
+          </svg>
+          <span *ngIf="this.publicVar.isPersian">
+            مکان مورد نظر خارج از محدوده ایران است.
+          </span>
+          <span *ngIf="!this.publicVar.isPersian">
+            The location is outside Iran
+          </span>
+        </div>
+        <div class="icon" *ngIf="!this.publicVar.isErrorMapInIran">
+          <img src="assets/img/error-location-error.svg" />
+        </div>
+        <div class="icon" *ngIf="this.publicVar.isErrorMapInIran">
+          <img src="assets/img/error-location-true.svg" />
+        </div>
+        <div>
+          <p class="coordinate" id="coordinate-error-map">
+            {{ this.publicVar.errorMapCenter }}
+          </p>
+        </div>
+      </div>
+      <div class="form-container">
+        <form [formGroup]="reportErrorForm" (ngSubmit)="submit()">
+          <div class="error-type-box ">
+            <label for="phone">
+              <p *ngIf="this.publicVar.isPersian">آدرس</p>
+              <p *ngIf="!this.publicVar.isPersian">Address</p>
+            </label>
+            <input id="address" name="address" formControlName="address"/>
+            <label for="error-type">
+              <p *ngIf="this.publicVar.isPersian">نوع اشکال در نقشه : *</p>
+              <p *ngIf="!this.publicVar.isPersian">Error type : *</p>
+            </label>
+            <select
+              id="error-type"
+              class="error-type"
+              name="errorType"
+              formControlName="errorType"
+              (blur)="this.isopenSelect = false"
+              (click)="this.isopenSelect = !this.isopenSelect"
+              [(ngModel)]="defualtSelect"
+            >
+              <option *ngFor="let error of errorTypes" [value]="error.value">
+                <div *ngIf="this.publicVar.isPersian">
+                  {{ error.typeFa }}
+                </div>
+                <div *ngIf="!this.publicVar.isPersian">
+                  {{ error.typeEn}}
+                </div>
+              </option>
+            </select>
+            <svg
+              [style.transform]="
+                this.isopenSelect ? 'rotateX(180deg)' : 'rotateX(0deg)'
+              "
+              [ngStyle]="{
+                right: !this.publicVar.isPersian ? '5px' : '',
+                left: !this.publicVar.isPersian ? '' : '5px'
+              }"
+              id="select-svg-error-report"
+              viewBox="0 0 960 560"
+            >
+              <path
+                d="M480 344L269 132a40 40 0 0 0-57 0 41 41 0 0 0 0 57l237 239c9 9 20 13 31 12 11 1 22-3 31-12l237-239c16-16 16-41 0-57s-41-16-57 0L480 344z"
+              />
+            </svg>
+          </div>
+          <label for="description">
+            <p *ngIf="this.publicVar.isPersian">توضیح : *</p>
+            <p *ngIf="!this.publicVar.isPersian">Description : *</p>
+          </label>
+          <textarea
+            type="text"
+            id="description"
+            class="description"
+            name="description"
+            formControlName="description"
+            #description
+            (keyup)="changeCountDesc(description, $event)"
+            [(ngModel)]="valueDescription"
+          >
+          </textarea>
+          <div class="counter">
+            <p *ngIf="this.publicVar.isPersian">
+              تعداد حروف مجاز : <sub>{{ countDesc }}</sub>
+            </p>
+            <p *ngIf="!this.publicVar.isPersian">
+              characters Remaining: {{ countDesc }}
+            </p>
+          </div>
+          <div class="submit-box">
+            <div class="require_field">
+              <span *ngIf="this.publicVar.isPersian"
+                ><sub style="font-size: 1.2em">*</sub> فیلدهای ضروری</span
+              >
+              <span *ngIf="!this.publicVar.isPersian"
+                ><sub style="font-size: 1.2em">*</sub> Required field</span
+              >
+            </div>
+            <!-- age button bashe page refresh mish -->
+            <div class="buttonBlue submit" (click)="closeReportError()">
+              <span *ngIf="this.publicVar.isPersian">انصراف</span>
+              <span *ngIf="!this.publicVar.isPersian">Cancle</span>
+            </div>
+            <button
+              class="buttonBlue submit"
+              type="submit"
+              [disabled]="this.reportErrorForm.invalid"
+            >
+              <span *ngIf="this.publicVar.isPersian">ارسال</span>
+              <span *ngIf="!this.publicVar.isPersian">Send</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <app-popup-success
+    id="app-popup-success"
+    *ngIf="this.publicVar.isOpenPopupSuccess"
+  ></app-popup-success>
+
+  <app-popup-error *ngIf="this.publicVar.isOpenPopupError"></app-popup-error>
+</div>
+
+
+

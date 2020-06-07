@@ -1,0 +1,170 @@
+<div
+  class="missing-place"
+  *ngIf="this.publicVar.isOpenMissingPlace"
+  @fadeAnimation
+>
+  <div
+    class="missing-box"
+    id="missing-box"
+    *ngIf="!this.publicVar.isOpenPopupSuccess"
+  >
+    <div class="title-box row">
+      <h3 *ngIf="this.publicVar.isPersian">افزودن مکان ثبت نشده</h3>
+      <h3 *ngIf="!this.publicVar.isPersian">َAdd Mising Place</h3>
+      <div class="close" (click)="closeMissingPlace()">
+        <app-close appHoverButton></app-close>
+      </div>
+    </div>
+    <div class="container row">
+      <div class="map-container-missing">
+        <div class="error" *ngIf="!this.publicVar.isMissingMapInIran">
+          <svg height="20px" viewBox="0 0 32 32" width="20px">
+            <path
+              fill="#DD0101"
+              fill-rule="evenodd"
+              d="M14.4 6.1c.9-1.4 2.3-1.4 3.2 0l10.8 17.5c1.1 1.9.3 3.4-2 3.4H5.6c-2.2 0-3-1.5-1.9-3.4zM16 20c.6 0 1-.5 1-1v-6c0-.6-.4-1-1-1a1 1 0 0 0-1 1v6c0 .6.4 1 1 1zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 0"
+            />
+          </svg>
+          <span *ngIf="this.publicVar.isPersian">
+            مکان مورد نظر خارج از محدوده ایران است.
+          </span>
+          <span *ngIf="!this.publicVar.isPersian">
+            The location is outside Iran
+          </span>
+        </div>
+        <div class="missing-map" id="missing-map"></div>
+        <div class="icon" *ngIf="!this.publicVar.isMissingMapInIran">
+          <img src="assets/img/error-location-error.svg" />
+        </div>
+        <div class="icon" *ngIf="this.publicVar.isMissingMapInIran">
+          <img src="assets/img/error-location-true.svg" />
+        </div>
+        <div>
+          <p class="coordinate">
+            {{ this.publicVar.missingMapCenter }}
+          </p>
+        </div>
+      </div>
+      <div class="form-container-missing">
+        <form [formGroup]="missingPlaceForm" (ngSubmit)="submit()">
+          <label for="name-missing">
+            <p *ngIf="this.publicVar.isPersian">نام عارضه *</p>
+            <p *ngIf="!this.publicVar.isPersian">Feature name *</p>
+          </label>
+          <input
+            name="nameMissing"
+            formControlName="nameMissing"
+            [(ngModel)]="valueNameMissing"
+            (keyup.enter)="phone.focus()"
+            [autofocus]
+          />
+          <div class="error-type-box ">
+            <label for="category">
+              <p *ngIf="this.publicVar.isPersian">دسته بندی *</p>
+              <p *ngIf="!this.publicVar.isPersian">Type *</p>
+            </label>
+            <select
+              id="category"
+              class="category"
+              name="category"
+              formControlName="category"
+              (blur)="this.isopenSelect = false"
+              (click)="this.isopenSelect = !this.isopenSelect"
+              [(ngModel)]="defualtSelect"
+              #category
+            >
+              <option *ngFor="let type of categoryType" [ngValue]="type.value">
+                <div *ngIf="this.publicVar.isPersian">
+                  {{ type.typeFa }}
+                </div>
+                <div *ngIf="!this.publicVar.isPersian">
+                  {{ type.typeEn }}
+                </div>
+              </option>
+            </select>
+            <svg
+              [style.transform]="
+                this.isopenSelect ? 'rotateX(180deg)' : 'rotateX(0deg)'
+              "
+              [ngStyle]="{
+                right: !this.publicVar.isPersian ? '5px' : '',
+                left: !this.publicVar.isPersian ? '' : '5px'
+              }"
+              viewBox="0 0 960 560"
+            >
+              <path
+                d="M480 344L269 132a40 40 0 0 0-57 0 41 41 0 0 0 0 57l237 239c9 9 20 13 31 12 11 1 22-3 31-12l237-239c16-16 16-41 0-57s-41-16-57 0L480 344z"
+              />
+            </svg>
+          </div>
+          <div class="input-box">
+            <div>
+              <label for="phone">
+                <p *ngIf="this.publicVar.isPersian">تلفن عارضه</p>
+                <p *ngIf="!this.publicVar.isPersian">Phone</p>
+              </label>
+              <input
+                name="phone"
+                type="phone"
+                formControlName="phone"
+                (keypress)="preventChar($event)"
+                #phone
+                (keyup.enter)="postalCode.focus()"
+              />
+            </div>
+            <div>
+              <label for="postal-code">
+                <p *ngIf="this.publicVar.isPersian">کدپستی عارضه</p>
+                <p *ngIf="!this.publicVar.isPersian">Postal code</p>
+              </label>
+              <input
+                name="postalCode"
+                formControlName="postalCode"
+                (keypress)="preventChar($event)"
+                #postalCode
+                (keyup.enter)="addressWrong.focus()"
+              />
+            </div>
+          </div>
+          <label for="address-wrong">
+            <p *ngIf="this.publicVar.isPersian">آدرس عارضه *</p>
+            <p *ngIf="!this.publicVar.isPersian">Address</p>
+          </label>
+          <textarea
+            id="address-wrong"
+            name="addressWrong"
+            formControlName="addressWrong"
+            [(ngModel)]="valueAddressWrong"
+            #addressWrong
+          ></textarea>
+          <div class="submit-box">
+            <div class="require_field">
+              <span *ngIf="this.publicVar.isPersian"
+                ><sub style="font-size: 1.2em">*</sub> فیلدهای ضروری</span
+              >
+              <span *ngIf="!this.publicVar.isPersian"
+                ><sub style="font-size: 1.2em">*</sub> Required field</span
+              >
+            </div>
+            <div class="buttonBlue submit" (click)="closeMissingPlace()">
+              <span *ngIf="this.publicVar.isPersian">انصراف</span>
+              <span *ngIf="!this.publicVar.isPersian">Cancle</span>
+            </div>
+            <button
+              class="buttonBlue submit"
+              type="submit"
+              [disabled]="this.missingPlaceForm.invalid"
+            >
+              <span *ngIf="this.publicVar.isPersian">ارسال</span>
+              <span *ngIf="!this.publicVar.isPersian">Send</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <app-popup-success
+    id="popup-missing-success"
+    *ngIf="this.publicVar.isOpenPopupSuccess"
+  ></app-popup-success>
+</div>

@@ -1,0 +1,58 @@
+<div
+  class="poi"
+  *ngIf="this.publicVar.isOpenPoi"
+  [@slide]="{
+    value: undefined,
+    params: { moveX: this.publicVar.isPersian ? '380px' : '-380px' }
+  }"
+>
+  <div class="section-poi">
+    <div class="iconPoi">
+      <div>
+        <div class="menu" (click)="this.menu.openNavigation()">
+          <app-menu-icon></app-menu-icon>
+        </div>
+      </div>
+      <div>
+        <div class="poi-closer" (click)="closePoi()">
+          <app-close></app-close>
+        </div>
+      </div>
+    </div>
+    <div class="poi-base">
+      <div>
+        <div class="point">
+          <svg width="15px" heigth="15px" fill="#fff" viewBox="0 0 1000 1000">
+            <path
+              d="M500 108c216.1 0 392 175.8 392 392S716.1 892 500 892c-216.2 0-392-175.8-392-392s175.8-392 392-392m0-98C229.4 10 10 229.4 10 500s219.4 490 490 490 490-219.4 490-490S770.6 10 500 10z"
+            />
+            <path
+              d="M704.2 500c0 112.8-91.4 204.2-204.2 204.2-112.8 0-204.2-91.4-204.2-204.2 0-112.8 91.4-204.2 204.2-204.2 112.8 0 204.2 91.4 204.2 204.2z"
+            />
+          </svg>
+        </div>
+      </div>
+      <div class="poi-searchbox ">
+        <input
+          class="input-srart"
+          #point
+          type="text"
+          placeholder=""
+          [placeholder]="
+            this.publicVar.isPersian
+              ? 'نام مکان موردنظر را وارد کنید...'
+              : 'Enter the name of the point ...'
+          "
+          [autofocus]
+        />
+        <span class="input-underline"></span>
+      </div>
+    </div>
+    <div class="go-box">
+      <button class="go" (click)="searchPoi()">
+        <span *ngIf="this.publicVar.isPersian">جستجو</span>
+        <span *ngIf="!this.publicVar.isPersian">Search</span>
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,100 @@
+@import "../../../../assets/scss/utility/utility.scss";
+
+.forget-pass {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  & > span:first-child {
+    font-weight: bold;
+    font-size: 1.2em;
+    margin-bottom: 20px;
+    margin-top: 55px;
+  }
+  form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    & > input {
+      background: $color-theme-secondary;
+      background: linear-gradient(
+        90deg,
+        rgba($color-theme-secondary, 0.8) 0%,
+        rgba($color-theme-primary, 0.6) 50%,
+        rgba($color-theme-secondary, 0.8) 100%
+      );
+      font-size: 0.9em;
+      border: none;
+      width: 85%;
+      height: 30px;
+      @extend %radius;
+      padding: 0 10px;
+      box-sizing: border-box;
+      border: 1px solid rgba($color-gray-svg, 0.6);
+      margin: 10px 0;
+    }
+
+    .email-phone-input:focus-within {
+      background: transparent;
+    }
+  }
+  .enter {
+    margin-top: 15px;
+    margin-bottom: 19px;
+    width: 30%;
+  }
+  & > div:last-child {
+    align-self: flex-start;
+    margin: 6px 11px;
+    align-items: center;
+    div {
+      margin: 0 3px;
+    }
+    a {
+      font-size: 0.85em;
+      margin: 2px 4px;
+      align-self: start;
+      &:hover {
+        cursor: pointer;
+        color: $color-blue-hover;
+      }
+    }
+    .line {
+      height: 13px;
+      width: 1px;
+      background: $color-gray-svg;
+      align-self: center;
+    }
+  }
+}
+
+// ---- im not robat ----
+.robot {
+  align-self: flex-start;
+  margin: 0 18px;
+}
+// ---- im not robat ----
+// --- error---
+.error-box {
+  width: 100%;
+  height: 21px;
+  margin:5px 0 11px;
+}
+.error {
+  display: flex;
+  align-items: flex-end;
+  padding: 0 13px;
+  box-sizing: border-box;
+  svg {
+    width: 8.5%;
+  }
+  span {
+    color: $color-red-required;
+    font-size: 0.85em;
+    margin-right: 8px;
+    width: 80%;
+  }
+}
+// --- error---

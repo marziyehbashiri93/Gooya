@@ -1,0 +1,92 @@
+@import '../../../../assets/scss/utility/utility.scss';
+.more-search {
+ margin-top: 1px;
+ @extend %radius-more;
+ box-shadow: rgba($color-dark, 0.5) 0 2px 5px;
+ height: 38px;
+ background-color: $color-theme-secondary;
+ border: 1px solid $color-light-gray;
+ transition: all 0.5s linear;
+ display: flex;
+ align-items: center;
+ box-sizing: border-box;
+ min-width: 354px;
+ padding-bottom: 3px;
+ cursor: pointer;
+ max-width: 354px;
+
+
+ @media only screen and (max-width:$mobile){
+ min-width: 290px;
+
+  max-width: 305px;
+   }
+ .ul-more {
+  width: 100%;
+  align-items: center;
+  box-sizing: border-box;
+  // min-width: 290px;
+  -webkit-transition: opacity .4s ease-in-out;
+  -moz-transition: opacity .4s ease-in-out;
+  -ms-transition: opacity .4s ease-in-out;
+  -o-transition: opacity .4s ease-in-out;
+  ul {
+   margin-top: 11px;
+   display: flex;
+   flex-direction: row;
+   justify-content: space-around;
+   align-items: center;
+   cursor: pointer;
+   li {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+   }
+   span {
+    font-size: 0.9em;
+    margin-top: 8px;
+   }
+   img {
+    opacity: 0.9;
+   }
+  }
+ }
+ .link-more {
+  display: flex;
+  box-sizing: border-box;
+  align-self: flex-end;
+  width: 100%;
+  button {
+   border: none;
+   background-color: transparent;
+   @include square(12px);
+   margin-right: 12px;
+   opacity: 0.72;
+   cursor: pointer;
+   svg {
+    margin-right: 5px;
+    align-items: center;
+    @include square(12px);
+    display: inline-block;
+    opacity: 0.9;
+    margin-top: 4px;
+   }
+  }
+  .more-txt {
+   border: none;
+   opacity: 0.5;
+   color: inherit;
+   font-size: 0.95em;
+   box-sizing: border-box;
+   padding-top: 2px;
+    margin: 0 27px 0 8px;
+   &:focus {
+    outline: 0;
+   }
+  }
+ }
+}
+app-street {
+ width: inherit;
+ height: inherit;
+}

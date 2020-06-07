@@ -1,0 +1,83 @@
+<div
+  id="more"
+  class="more-search row"
+  [@changeWidth]="
+    this.publicVar.isOpenMoreSearch ? 'openMoreSearch' : 'closeMoreSearch'
+  "
+  [@openSearchResult]="
+    this.publicVar.isOpenSearchResult ? 'openSearchResult' : 'closeSearchResult'
+  "
+>
+  <div
+    id="ul-more"
+    class="ul-more"
+    [@showIcon]="this.publicVar.isOpenMoreSearch ? 'showIcon' : 'DontshowIcon'"
+  >
+    <ul class="items" *ngIf="this.publicVar.isOpenMoreSearch">
+      <li class="street" (click)="this.StreetComponent.openStreet()">
+        <img width="30px" height="30px" src="assets/img/street.svg" />
+        <span *ngIf="this.publicVar.isPersian">خیابان</span>
+        <span *ngIf="!this.publicVar.isPersian">Street</span>
+      </li>
+      <li
+        class="crossing"
+        (click)="this.IntersectionComponent.openIntersction()"
+      >
+        <img width="30px" height="30px" src="assets/img/intersection.svg" />
+        <span *ngIf="this.publicVar.isPersian">تقاطع</span>
+        <span *ngIf="!this.publicVar.isPersian">Intersection</span>
+      </li>
+      <li class="poi" (click)="this.PoiComponent.openPoi()">
+        <img width="30px" height="30px" src="assets/img/poi.svg" />
+        <span *ngIf="this.publicVar.isPersian">نقاط مهم</span>
+        <span *ngIf="!this.publicVar.isPersian">Point</span>
+      </li>
+      <li class="xy" (click)="this.CoordinateComponent.openCoordinate()">
+        <img width="30px" height="30px" src="assets/img/XY.svg" />
+        <span *ngIf="this.publicVar.isPersian">مختصات</span>
+        <span *ngIf="!this.publicVar.isPersian">Coordinate</span>
+      </li>
+    </ul>
+  </div>
+  <div
+    class="link-more"
+    id="link-more"
+    (click)="
+      this.publicVar.isOpenMoreSearch = !this.publicVar.isOpenMoreSearch;
+      this.publicVar.isOpenPopupAttribute = false
+    "
+    (click)="closeOtherComponent()"
+    [@linkMoreStyle]="
+      this.publicVar.isOpenMoreSearch ? 'openMoreSearch' : 'closeMoreSearch'
+    "
+    [ngStyle]="{paddingLeft: this.publicVar.isPersian ? '':'17px'}"
+  >
+    <button>
+      <svg
+        [style.transform]="
+          this.publicVar.isOpenMoreSearch ? 'rotateX(180deg)' : 'rotateX(0deg)'
+        "
+        width="451.847"
+        height="451.847"
+        viewBox="0 0 451.847 451.847"
+      >
+        <path
+          d="M225.923 354.706c-8.098 0-16.195-3.092-22.369-9.263L9.27 151.157c-12.359-12.359-12.359-32.397 0-44.751 12.354-12.354 32.388-12.354 44.748 0l171.905 171.915 171.906-171.909c12.359-12.354 32.391-12.354 44.744 0 12.365 12.354 12.365 32.392 0 44.751L248.292 345.449c-6.177 6.172-14.274 9.257-22.369 9.257z"
+        />
+      </svg>
+    </button>
+    <div class="more-txt" *ngIf="!this.publicVar.isOpenMoreSearch">
+      <span *ngIf="this.publicVar.isPersian"> جستجوی پیشرفته</span>
+      <span *ngIf="!this.publicVar.isPersian">More Search</span>
+    </div>
+
+    <div class="more-txt" *ngIf="this.publicVar.isOpenMoreSearch">
+      <span *ngIf="this.publicVar.isPersian">پنهان کردن</span>
+      <span *ngIf="!this.publicVar.isPersian">Hide</span>
+    </div>
+  </div>
+</div>
+<app-street></app-street>
+<app-intersection></app-intersection>
+<app-poi></app-poi>
+<app-coordinate></app-coordinate>

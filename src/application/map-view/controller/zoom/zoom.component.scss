@@ -1,0 +1,59 @@
+@import "../../../../assets/scss/utility/utility.scss";
+$bottomDistance: 8px;
+$LRDistance: 12px;
+.ol-zoom {
+ bottom: $bottomDistance !important;
+ top: auto !important;
+}
+.ol-control {
+ padding: 0px !important;
+ background-color: transparent !important;
+ position: static !important;
+}
+.ol-control button {
+ @include square(30px !important);
+ background-color: $color-light !important;
+ color: rgba($color: $color-dark, $alpha: 0.8) !important;
+ padding: 0 0 4px !important;
+ margin: 0px 0px !important;
+ box-shadow: $boxShadow !important;
+ font-size: 1.8em !important;
+ cursor: pointer;
+ div {
+  width: inherit;
+ }
+ &:hover {
+  color: rgba($color: $color-dark, $alpha: 1) !important;
+ }
+}
+.ol-zoom .ol-zoom-in,
+.ol-zoom .ol-zoom-out {
+ transition: 0.5s;
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ &:hover {
+  fill: $color-blue-hover;
+ }
+}
+.ol-zoom .ol-zoom-in {
+ border-radius: $radius $radius 0 0 !important;
+}
+.ol-zoom .ol-zoom-out {
+ border-radius: 0 0 $radius $radius !important;
+}
+.ol-zoom .ol-zoom-in svg,
+.ol-zoom .ol-zoom-out svg {
+ opacity: 0.8;
+ margin-top: 1px;
+}
+.ol-zoom .ol-zoom-in svg {
+ width: 47%;
+}
+.ol-zoom .ol-zoom-out svg {
+ width: 48%;
+}
+.zoom-controller {
+ width: 30px;
+ height: 59px;
+}

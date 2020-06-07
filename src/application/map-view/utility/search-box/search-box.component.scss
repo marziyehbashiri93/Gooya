@@ -1,0 +1,137 @@
+@import '../../../../assets/scss/utility/utility.scss';
+.search-box {
+ display: grid;
+ padding-right: 2px;
+ max-width: 290px;
+ z-index: 2;
+ grid-template-columns: 90% 10%;
+ align-items: center;
+ .search-txt {
+  border: none;
+  margin: 0 9px;
+  &:focus {
+   outline: 0;
+  }
+  &::placeholder {
+   color: $color-search-text;
+   opacity: 1; /* Firefox */
+  }
+  &:-ms-input-placeholder {
+   /* Internet Explorer 10-11 */
+   color: $color-search-text;
+  }
+  &::-ms-input-placeholder {
+   /* Microsoft Edge */
+   color: $color-search-text;
+  }
+ }
+ .search-icon {
+  button {
+    width:100%;
+   border: none;
+   background-color: transparent;
+   opacity: 0.42;
+   cursor: pointer;
+   display: flex;
+justify-content: center;
+align-items: center;
+  }
+ }
+}
+app-search-result {
+ position: absolute;
+ top: -11px;
+ right: -9px;
+ z-index: -3;
+}
+.search_result {
+ z-index: -3;
+ box-shadow: rgba($color-dark, 0.5) 0 2px 5px;
+ background-color: $color_light;
+ min-width: 380px;
+ height: 100vh;
+ position: absolute;
+ top: -11px;
+ right: -9px;
+ border-radius: 2px 2px 0 0;
+ // margin-right: -400px;
+ transition: linear 0.7s;
+ .base {
+  height: 70px;
+  width: 100%;
+  background-color: $color-light-blue;
+ }
+ .tab {
+  display: flex;
+  height: 35px;
+  background-color: $color-light-blue;
+  color: $color-light;
+  //margin-top: 90px;
+  align-items: center;
+  justify-content: space-between;
+  #streetTabRadio,
+  #pointTabRadio {
+   display: none;
+   & + label {
+    // background-color: white;
+    background-color: $color-light-blue;
+    color: $color-light;
+    cursor: pointer;
+   }
+   &:checked + label {
+    background-color: $color-light;
+    color: $color-light-blue;
+   }
+  }
+  .streetTab,
+  .pointTab {
+   width: 50%;
+   height: 100%;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+  }
+ }
+ .all-result {
+  height: 83%;
+  overflow: scroll;
+  overflow-x: hidden;
+  // scrooolll
+  /* width */
+  &::-webkit-scrollbar {
+   width: 5px;
+  }
+  /* Track */
+  &::-webkit-scrollbar-track {
+   background: $color-light;
+  }
+  /* Handle */
+  &::-webkit-scrollbar-thumb {
+   background: lighten($color: $color-gray-svg, $amount: 30);
+   border-radius: 1px 0 0 1px;
+  }
+  /* Handle on hover */
+  &::-webkit-scrollbar-thumb:hover {
+   background: #555;
+  }
+  // scrooolll
+  .result {
+   padding: 4px 20px;
+   border-bottom: 1px solid rgba($color-gray-svg, 0.2);
+   cursor: pointer;
+   &:hover {
+    background: rgba(211, 228, 239, 0.27);
+   }
+   li {
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    :last-child {
+     opacity: 0.6;
+     font-size: 0.9em;
+     padding-top: 5px;
+    }
+   }
+  }
+ }
+}

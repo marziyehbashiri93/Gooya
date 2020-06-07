@@ -1,0 +1,27 @@
+<div class="style-mode">
+  <div class="selected" (click)="isShowOptionStyle = !isShowOptionStyle ">
+    <span class="value" *ngIf="this.publicVar.isPersian">{{
+      styleValue.styleFa
+    }}</span>
+    <span class="value" *ngIf="!this.publicVar.isPersian">{{
+      styleValue.styleEn
+    }}</span>
+  <div class='triangle'
+
+  [ngStyle]="{borderRadius: this.publicVar.isPersian ?'8px 0 0 8px' : '0 8px 8px 0'}"
+  >▼</div>
+  </div>
+  <ul
+    class="optList"
+    [ngStyle]="{ height: !isShowOptionStyle ? '0px' : '56px' }"
+  >
+    <li
+      class="option"
+      *ngFor="let style of styles"
+      (click)="switchStyle(style.styleEn)"
+    >
+      <div *ngIf="this.publicVar.isPersian">{{ style.styleFa }}</div>
+      <div *ngIf="!this.publicVar.isPersian">{{ style.styleEn }}</div>
+    </li>
+  </ul>
+</div>

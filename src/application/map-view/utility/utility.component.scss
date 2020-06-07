@@ -1,0 +1,48 @@
+@import '../../../assets/scss/utility/utility.scss';
+
+.utility {
+ @extend %radius;
+ @extend %shadow;
+ height: 48px;
+ background-color: $color-light;
+ border: 1px solid $color-light-gray;
+ box-sizing: border-box;
+ min-width: 354px;
+ display: grid;
+ grid-template-columns: 1fr 6.5fr 1px 1fr;
+ grid-template-areas: "menu search hr direction";
+ justify-content: center;
+ align-items: center;
+
+ @media only screen and (max-width: $mobile) {
+  min-width: 290px;
+  max-width: 305px;
+ }
+ app-menu {
+  grid-area: menu;
+ }
+ .search-box-container {
+  grid-area: search;
+ }
+ .direction-container {
+  grid-area: direction;
+ }
+ hr {
+  grid-area: hr;
+  border: none;
+  width: 2px;
+  height: 23px;
+  background-color: rgba(55, 58, 60, 0.3);
+  margin: 0;
+ }
+
+ .search-closer {
+  cursor: pointer;
+  app-close {
+   @include square(15px);
+   fill: $color-dark;
+   margin: -6px 12px 0;
+   position: absolute;
+  }
+ }
+}

@@ -1,0 +1,168 @@
+<div
+  class="favorit-home"
+  [@openCloseHome]="
+    this.publicVarYourPlace.isOpenHome
+      ? this.publicVarYourPlace.isExistHome
+        ? this.isOpenHomeEdit
+          ? 'openEditHome'
+          : 'openHaveHome'
+        : 'openDontHaveHome'
+      : 'close'
+  "
+>
+  <div (click)="openCloseHome()">
+    <svg viewBox="0 0 49.5 39.4">
+      <g data-name="g3015">
+        <path
+          d="M42.4 22.7v14.7a1.9 1.9 0 0 1-.6 1.4 1.9 1.9 0 0 1-1.4.6H28.7V27.6h-7.9v11.8H9a1.9 1.9 0 0 1-1.4-.6 1.9 1.9 0 0 1-.5-1.4V22.7a.5.5 0 0 1 0-.1.3.3 0 0 0 0-.1L24.7 7.9l17.7 14.6a.4.4 0 0 1 0 .2zm6.8-2.1l-1.9 2.2a1 1 0 0 1-.6.4h-.1a1 1 0 0 1-.6-.2L24.7 5.3 3.5 22.9a1.1 1.1 0 0 1-.7.3 1 1 0 0 1-.7-.4L.2 20.5a1 1 0 0 1-.2-.7 1 1 0 0 1 .3-.6L22.4.8a3.8 3.8 0 0 1 4.7 0l7.4 6.3V1a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v12.5l6.7 5.6a1 1 0 0 1 .3.6 1 1 0 0 1-.3.8z"
+          data-name="path3017"
+        />
+      </g>
+    </svg>
+    <span *ngIf="this.publicVar.isPersian">خانه</span>
+    <span *ngIf="!this.publicVar.isPersian">Home</span>
+  </div>
+
+  <div class="container-home">
+    <!-- home-addBox -->
+    <div
+      *ngIf="
+        this.publicVarYourPlace.isOpenHome && this.existHome == 'DontHaveHome'
+      "
+      class="home-addbox"
+    >
+      <input
+        [appTooltips]="
+          this.publicVar.isPersian
+            ? 'آدرس را طریق مکان نما مشخص کنید'
+            : 'Select address with pointer'
+        "
+        placement="top"
+        delay="500"
+        fontSize="0.85"
+        [value]="coordPoint"
+      />
+      <button (click)="addNewHome()">
+        <span *ngIf="this.publicVar.isPersian">افزودن</span>
+        <span *ngIf="!this.publicVar.isPersian">Add</span>
+      </button>
+    </div>
+    <!-- home-showExistLocation -->
+    <div
+      *ngIf="
+        this.publicVarYourPlace.isOpenHome &&
+        !this.isOpenHomeEdit &&
+        !this.isOpenHomeDelete &&
+        this.existHome == 'HaveHome'
+      "
+      class="home-showExistLocation"
+    >
+      <span>{{ homeAddres }}</span>
+      <div class="exist-home-button">
+        <button
+          class="direction-home"
+          [appTooltips]="this.publicVar.isPersian ? 'مسیریابی' : 'Direction'"
+          placement="top"
+          fontSize="0.85"
+          delay="500"
+          (click)="opendirectionHome()"
+        >
+          <div>
+            <svg width="20px" height="20px" viewBox="0 0 287.6 300">
+              <path
+                d="M281.9 174.4l-101.2-56.3c-7.5-3.8-13.1 0-13.1 7.5v30c-30 0-52.5 11.3-75 28.1v-71.3h28.1c7.5 0 9.4-5.6 5.6-11.3L70.1 5.6c-3.8-7.5-9.4-7.5-13.1 0L.7 101.3c-1.9 5.6 0 11.3 7.5 11.3h28.1V300h56.3v-1.9c0-46.9 30-84.4 76.9-86.3v26.3c-1.9 5.6 3.7 9.4 11.2 5.6L282 189.3c7.4-5.5 7.4-11.2-.1-14.9z"
+              />
+            </svg>
+          </div>
+        </button>
+        <button
+          class="edit-home"
+          [appTooltips]="this.publicVar.isPersian ? 'ویرایش' : 'Edit'"
+          placement="top"
+          fontSize="0.85"
+          delay="500"
+          (click)="openHomeEdit()"
+        >
+          <div>
+            <svg x="0px" y="0px" viewBox="0 0 528.899 528.899">
+              <g>
+                <path
+                  d="M328.883,89.125l107.59,107.589l-272.34,272.34L56.604,361.465L328.883,89.125z M518.113,63.177l-47.981-47.981
+                      c-18.543-18.543-48.653-18.543-67.259,0l-45.961,45.961l107.59,107.59l53.611-53.611
+                      C532.495,100.753,532.495,77.559,518.113,63.177z M0.3,512.69c-1.958,8.812,5.998,16.708,14.811,14.565l119.891-29.069
+                      L27.473,390.597L0.3,512.69z"
+                />
+              </g>
+            </svg>
+          </div>
+        </button>
+        <button
+          class="remove-home"
+          [appTooltips]="this.publicVar.isPersian ? 'حذف' : 'Delete'"
+          placement="top"
+          fontSize="0.85"
+          delay="500"
+          (click)="this.isOpenHomeDelete = true"
+        >
+          <div class="remove-home-closer">
+            <svg x="0px" y="0px" viewBox="0 0 512 512">
+              <path
+                d="M437.5,386.6L306.9,256l130.6-130.6c14.1-14.1,14.1-36.8,0-50.9c-14.1-14.1-36.8-14.1-50.9,0L256,205.1L125.4,74.5  c-14.1-14.1-36.8-14.1-50.9,0c-14.1,14.1-14.1,36.8,0,50.9L205.1,256L74.5,386.6c-14.1,14.1-14.1,36.8,0,50.9  c14.1,14.1,36.8,14.1,50.9,0L256,306.9l130.6,130.6c14.1,14.1,36.8,14.1,50.9,0C451.5,423.4,451.5,400.6,437.5,386.6z"
+              />
+            </svg>
+          </div>
+        </button>
+      </div>
+    </div>
+    <!-- editHomeBox -->
+    <div
+      class="home-showExistLocation-editHomeBox"
+      *ngIf="this.publicVarYourPlace.isOpenHome && this.isOpenHomeEdit"
+    >
+      <input
+        [appTooltips]="
+          this.publicVar.isPersian
+            ? 'آدرس را طریق مکان نما مشخص کنید'
+            : 'Select address with pointer'
+        "
+        placement="top"
+        delay="500"
+        fontSize="0.85"
+        [value]="homelocationVal"
+      />
+      <div class="editHomeBox-btn">
+        <button (click)="saveEditHome()">
+          <span *ngIf="this.publicVar.isPersian">ویرایش</span>
+          <span *ngIf="!this.publicVar.isPersian">Edite</span>
+        </button>
+
+        <button (click)="cancelEditHome()">
+          <span *ngIf="this.publicVar.isPersian">انصراف</span>
+          <span *ngIf="!this.publicVar.isPersian">Cancle</span>
+        </button>
+      </div>
+    </div>
+    <!-- DeleteHomeBox -->
+    <div
+      class="home-showExistLocation-deleteHome"
+      *ngIf="
+        this.publicVarYourPlace.isOpenHome &&
+        this.isOpenHomeDelete &&
+        this.existHome == 'HaveHome'
+      "
+    >
+      <span *ngIf="this.publicVar.isPersian">آیا از حذف اطمینان دارید ؟</span>
+      <span *ngIf="!this.publicVar.isPersian">Are youe Sure</span>
+      <div>
+        <button (click)="YesDeleteHome()">
+          <span *ngIf="this.publicVar.isPersian">بله</span>
+          <span *ngIf="!this.publicVar.isPersian">Yes</span>
+        </button>
+        <button (click)="NoDeleteHome()">
+          <span *ngIf="this.publicVar.isPersian">خیر</span>
+          <span *ngIf="!this.publicVar.isPersian">No</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

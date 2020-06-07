@@ -1,0 +1,253 @@
+@import '../../../../assets/scss/utility/utility.scss';
+$input-width: 80%;
+$focus: white;
+$inputBack: rgba($color-theme-secondary, 0.5);
+.signin-page {
+ img {
+  position: absolute;
+  z-index: 0;
+ }
+ @extend %radius;
+ width: 100%;
+ height: 100%;
+ display: flex;
+ flex-direction: column;
+ background: $color-theme-secondary;
+ form {
+  z-index: 0;
+  padding: 10px 13px;
+  .title {
+   font-weight: bold;
+   font-size: 1.3em;
+   margin-bottom: 20px;
+   display: block;
+   margin: 11px 6px;
+  }
+  > div {
+    display: flex;
+    width: 100%;
+   .right,
+   .left {
+    width: 50%;
+    box-sizing: border-box;
+    .input-box {
+     margin-bottom: 5px;
+     display: flex;
+     align-items: center;
+     .icon {
+      width: 8%;
+      fill: $color-gray-svg;
+      height: 25px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      svg {
+       width: fit-content;
+      }
+     }
+     input {
+      background: $inputBack;
+      font-size: 0.9em;
+      border: none;
+      width: $input-width;
+      height: 27px;
+      @extend %radius;
+      padding: 0 10px;
+      box-sizing: border-box;
+      border: 1px solid rgba($color-gray-svg, 0.6);
+      margin: 5px 8px;
+     }
+     &:focus-within {
+      input {
+       background: $focus;
+      }
+      .icon {
+       fill: $color-theme-primary;
+      }
+     }
+    }
+   }
+  }
+ }
+ & > div:last-child {
+  align-self: flex-start;
+  margin: -7px 11px;
+  align-items: center;
+  z-index: 0;
+  div {
+   margin: 0 3px;
+  }
+  a {
+   font-size: 0.85em;
+   margin: 2px 4px;
+   align-self: start;
+   &:hover {
+    cursor: pointer;
+    color: $color-blue-hover;
+   }
+  }
+  .line {
+   height: 13px;
+   width: 1px;
+   background: $color-gray-svg;
+  }
+ }
+}
+// --- First Name and Last Name ----
+.name {
+ margin-bottom: 5px;
+ display: flex;
+ align-items: center;
+ .icon {
+  width: 9%;
+  fill: $color-gray-svg;
+  height: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  svg {
+   width: fit-content;
+  }
+ }
+ &:focus-within {
+  .icon {
+   fill: $color-theme-primary;
+  }
+ }
+ div:nth-child(2) {
+  width: $input-width;
+  padding: 0 5px;
+  display: flex;
+  justify-content: space-between;
+  .first-name,
+  .last-name {
+   background: $inputBack;
+   font-size: 0.9em;
+   border: none;
+   width: 49%;
+   height: 27px;
+   @extend %radius;
+   box-sizing: border-box;
+   border: 1px solid rgba($color-gray-svg, 0.6);
+   margin: 5px 0px;
+   padding: 0 10px;
+   &:focus-within {
+    background: $focus;
+   }
+  }
+ }
+}
+// --- First Name and Last Name ----
+// --- User Avatar ----
+.image-box {
+ position: relative;
+ color: $color-gray-svg;
+ display: flex;
+ align-items: center;
+ .icon {
+  width: 8%;
+  fill: $color-gray-svg;
+  height: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  svg {
+   width: fit-content;
+  }
+ }
+ div:last-child {
+  width: 100%;
+  .image {
+   height: 0.1px;
+   opacity: 0;
+   overflow: hidden;
+   position: absolute;
+   height: 27px;
+   top: 11px;
+   margin: 0 10px;
+   right: 18px;
+   width: 79%;
+   cursor: not-allowed;
+  }
+  label {
+   @extend %radius;
+   text-overflow: ellipsis;
+   white-space: nowrap;
+   display: inline-block;
+   overflow: hidden;
+   background: $inputBack;
+   width: 181px;
+   height: 27px;
+   padding: 0 10px;
+   box-sizing: border-box;
+   border: 1px solid rgba(119, 119, 119, 0.6);
+   margin: 10px 9px;
+   font-size: 0.9em;
+   padding-top: 5px;
+  }
+ }
+}
+// --- User Avatar ----
+// --- password ---
+.password-box {
+ position: relative;
+ width: 80%;
+ box-sizing: border-box;
+ #password-field {
+  width: 100%;
+ }
+ .toggle-password {
+  position: absolute;
+  top: 9px;
+  padding: 2px;
+  svg {
+   fill: $color-gray-svg;
+  }
+ }
+}
+// --- chenge repeate password icon size ---
+.chenge-size {
+ width: 10% !important;
+ margin: -2px;
+}
+// --- chenge repeate password icon size ---
+// --- password ---
+.left {
+ .signin-robat {
+  display: flex;
+  align-items: center;
+  margin: 10px auto 16px;
+  // --- sinup btn ----
+  .signin-btn-box {
+   width: 40%;
+   display: flex;
+   box-sizing: border-box;
+   justify-content: flex-end;
+   .signin-btn {
+    margin: 0 16px;
+    width: 100%;
+   }
+  }
+  // --- sinup btn ----
+ }
+}
+// --- required value---
+label.ng-invalid {
+ border: 1px solid rgba($color-red-required, 0.6) !important;
+}
+// --- required value---
+// --- error---
+.error {
+ display: flex;
+ align-items: flex-end;
+ svg {
+  width: 8.2%;
+ }
+ span {
+  color: $color-red-required;
+  font-size: 0.8em;
+
+
+ }
+}
+// --- error---

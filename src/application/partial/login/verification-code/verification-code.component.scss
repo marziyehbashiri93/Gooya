@@ -1,0 +1,76 @@
+@import "../../../../assets/scss/utility/utility.scss";
+.verification-code {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  & > span:first-child {
+    font-weight: bold;
+    font-size: 1.2em;
+    margin-bottom: 20px;
+  }
+  form {
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    input {
+        @extend %radius;
+        background: linear-gradient(
+          90deg,
+          rgba($color-theme-secondary, 0.8) 0%,
+          rgba($color-theme-primary, 0.6) 50%,
+          rgba($color-theme-secondary, 0.8) 100%
+        );
+        font-size: 0.9em;
+        width: 85%;
+        height: 30px;
+        padding: 0 10px;
+        box-sizing: border-box;
+        border: 1px solid rgba($color-gray-svg, 0.6);
+      }
+  }
+
+  &:focus-within {
+    input {
+      background: transparent;
+    }
+  }
+}
+
+.send {
+  @extend %radius;
+  margin-top: 15px;
+  width: 30%;
+  height: 25px;
+  font-size: 0.9em;
+  padding-top: 2px;
+  display: flex;
+  justify-content: center;
+  background: lighten($color-blue-hover, 30);
+  border: 1px solid rgba($color-gray-svg, 0.6);
+  margin-bottom: 11px;
+
+  &:hover {
+    background: lighten($color-blue-hover, 20);
+    cursor: pointer;
+  }
+}
+
+
+.error {
+  display: flex;
+  align-items: flex-end;
+  padding-right: 18px;
+  svg {
+    width: 7%;
+  }
+  span {
+    color: $color-red-required;
+    font-size: 0.8em;
+    margin: 0 5px;
+    width: 80%;
+  }
+}
