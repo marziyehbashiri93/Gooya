@@ -27,14 +27,14 @@
  }
  .search-icon {
   button {
-    width:100%;
+   width: 100%;
    border: none;
    background-color: transparent;
    opacity: 0.42;
    cursor: pointer;
    display: flex;
-justify-content: center;
-align-items: center;
+   justify-content: center;
+   align-items: center;
   }
  }
 }
@@ -70,7 +70,9 @@ app-search-result {
   align-items: center;
   justify-content: space-between;
   #streetTabRadio,
-  #pointTabRadio {
+  #pointTabRadio,
+  #IntersectionTabRadio,
+  #allTabRadio {
    display: none;
    & + label {
     // background-color: white;
@@ -84,7 +86,9 @@ app-search-result {
    }
   }
   .streetTab,
-  .pointTab {
+  .pointTab,
+  .IntersectionTab,
+  .allTab {
    width: 50%;
    height: 100%;
    display: flex;

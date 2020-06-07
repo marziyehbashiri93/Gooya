@@ -16,6 +16,7 @@ import { CtientInfo } from '../interface/ctient-info';
 import { DeviceInfos } from '../interface/device-info';
 import { Status } from './../interface/status';
 import { MapService } from './map.service';
+import { SearchResult } from '../interface/search-result';
 
 declare const prayTimes: any;
 @Injectable({
@@ -76,6 +77,7 @@ export class PublicVarService {
  // ---- contextmenu ----
  // ---- Utility ----
  isOpenSearchResult = false;
+ SearchResults:Array<SearchResult>;
  // ---- Utility ----
  // ---- Direction ----
  DirectionEndPointValue;

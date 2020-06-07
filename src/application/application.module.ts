@@ -111,6 +111,7 @@ import { NoCommaPipe } from './shared/pipe/no-comma.pipe';
    exclude: [
     'http://45.82.138.85:4001/api/user/CheckEmailUnique',
     // 'http://45.82.138.85:3000/api/map/identify',
+    // 'http://apimap.ir/api/map/search',
     'https://freegeoip.app/json/',
     'https://api.ipify.org?format=json',
    ],

@@ -1,4 +1,6 @@
-import { Component, ElementRef, OnInit, Inject, PLATFORM_ID, ViewChild } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
+import { Component, ElementRef, Inject, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
 import Feature from 'ol/Feature';
 import Point from 'ol/geom/Point';
 import VectorLayer from 'ol/layer/Vector';
@@ -9,20 +11,25 @@ import { slide } from 'src/application/shared/animation/slide';
 import { SearchResult } from 'src/application/shared/interface/search-result';
 import { MapService } from 'src/application/shared/services/map.service';
 import { PublicVarService } from 'src/application/shared/services/public-var.service';
-import { isPlatformBrowser } from '@angular/common';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 @Component({
  selector: 'app-search-box',
  templateUrl: './search-box.component.html',
- styleUrls: [ './search-box.component.scss' ],
- animations: [ slide ],
+ styleUrls: [
+  './search-box.component.scss',
+ ],
+ animations: [
+  slide,
+ ],
 })
 export class SearchBoxComponent implements OnInit {
  @ViewChild('sreachTxt', { static: true })
  sreachTxt: ElementRef;
+ @ViewChild('allTabRadio', { static: true })
+ allTabRadio: ElementRef;
+
  searchUrl;
  SearchResults: Array<SearchResult>;
- resultTotal ;
+ resultTotal;
  // ---- create style for search point ----
  markerSource = new VectorSource();
  svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18.21 24.5"  width="35px"   height="35px">' +
@@ -35,7 +42,6 @@ export class SearchBoxComponent implements OnInit {
   @Inject(PLATFORM_ID) private platformId: Object,
   private mapservice: MapService,
   public publicVar: PublicVarService,
-  // private elRef: ElementRef,
   private httpClient: HttpClient,
  ) {}
 
@@ -43,6 +49,7 @@ export class SearchBoxComponent implements OnInit {
 
  Search(sreachTxt: HTMLInputElement) {
   this.publicVar.isOpenPopupAttribute = false;
+
   if (sreachTxt.value.length > 0) {
    const mapCenter = this.mapservice.map.getView().getCenter();
    const mapCenterTransform: Array<number> = transform(mapCenter, this.mapservice.project, 'EPSG:4326');
@@ -63,28 +70,30 @@ export class SearchBoxComponent implements OnInit {
     'language=' +
     lan;
 
-   this.httpClient.get(url).toPromise().then((result: Array<SearchResult>) => {
-    console.log(result);
-    this.SearchResults = result;
+   this.httpClient.get(url).toPromise().then((results: any) => {
+    console.log(results);
+    this.SearchResults = results.result;
+    this.resultTotal = results.result;
+    this.publicVar.isOpenSearchResult = true;
+
     // this.resultTotal =    this.SearchResults;
    });
    console.log(url);
    // bayad cros origin baz shavad
-   this.publicVar.isOpenSearchResult = true;
    // barye inke aval k baz mishavad street ha chek hastand va
    //  chon az ng if estefade shode nemitavan ba document element gereft
   }
  }
 
  showResult(event) {
-  const Results = this.SearchResults;
-
   if (event.target.id === 'streetTabRadio') {
-   console.log('checked');
-   this.resultTotal = Results.filter(arr => arr['type'] === 'street');
+   this.SearchResults = this.resultTotal.filter(arr => arr['type'] === 'street');
+  } else if (event.target.id === 'pointTabRadio') {
+   this.SearchResults = this.resultTotal.filter(arr => arr['type'] === 'poi');
+  } else if (event.target.id === 'IntersectionTabRadio') {
+   this.SearchResults = this.resultTotal.filter(arr => arr['type'] === 'crossing');
   } else {
-   console.log('unchecked');
-   this.resultTotal = Results.filter(arr => arr['type'] === 'poi');
+   this.SearchResults = this.resultTotal;
   }
  }
 
@@ -131,5 +140,7 @@ export class SearchBoxComponent implements OnInit {
   this.publicVar.isOpenSearchResult = false;
   this.markerSource.clear();
   this.sreachTxt.nativeElement.value = null;
+  this.SearchResults = null;
+  this.resultTotal = null;
  }
 }
