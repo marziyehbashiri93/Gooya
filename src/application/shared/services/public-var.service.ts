@@ -609,7 +609,6 @@ export class PublicVarService {
  removeLayerByName(name: string) {
   const layerArray = this.mapservice.map.getLayers().getArray();
   const len = layerArray.length;
-  console.log(layerArray);
   for (let index = 0; index < len; index++) {
    if (layerArray[index].get('name') === name) {
     this.mapservice.map.removeLayer(layerArray[index]);

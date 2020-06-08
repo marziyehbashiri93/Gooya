@@ -25,13 +25,10 @@ import Point from 'ol/geom/Point';
  ],
 })
 export class SearchBoxComponent implements OnInit {
-  resultForm: FormGroup;
-
+ resultForm: FormGroup;
 
  @ViewChild('sreachTxt', { static: true })
  sreachTxt: ElementRef;
- @ViewChild('allTabRadio', { static: true })
- allTabRadio: ElementRef;
 
  searchUrl;
  SearchResults: Array<SearchResult>;
@@ -52,10 +49,7 @@ export class SearchBoxComponent implements OnInit {
 
  ngOnInit() {
   this.resultForm = new FormGroup({
-    'all-result' : new FormControl(null),
-    'street-result' : new FormControl(null),
-    'point-result' : new FormControl(null),
-    'intersec-result' : new FormControl(null),
+   TabRadio: new FormControl('allTabRadio'),
   });
  }
 
@@ -101,8 +95,8 @@ export class SearchBoxComponent implements OnInit {
      console.log(results);
      if (results.status === 200 && results.result) {
       this.resultTotal = results.result;
-      //  this.SearchResults = results.result;
-      this.showResult('allTabRadio');
+      // bar asase an radio k checke filter mikonim result ra
+      this.showResult(this.resultForm.value.TabRadio);
       this.publicVar.isOpenSearchResult = true;
       this.mapservice.map.getView().fit(this.findExtent(results.result));
       this.addMarkerToAllResults(this.createPointcoord(this.resultTotal));
@@ -186,18 +180,26 @@ export class SearchBoxComponent implements OnInit {
   const iconFeature = new Feature({
    geometry: new Point(location),
   });
-  const iconStyle = new Style({
-   image: new CircleStyle({
-    radius: 14,
-    fill: new Fill({
-     color: '#f1c40f',
+  // const iconStyle = new Style({
+  //  image: new CircleStyle({
+  //   radius: 14,
+  //   fill: new Fill({
+  //    color: '#f1c40f',
+  //   }),
+  //   stroke: new Stroke({
+  //    color: '#fff',
+  //    width: 1,
+  //   }),
+  //  }),
+  // });
+  const iconStyle=new Style({
+    image: new Icon({
+     anchor: [0.36,1],
+     scale: 0.2,
+     imgSize: [ 161,161 ],
+     src: '../../../../assets/img/icon-search.svg',
     }),
-    stroke: new Stroke({
-     color: '#fff',
-     width: 1,
-    }),
-   }),
-  });
+   });
   iconFeature.setStyle(iconStyle);
   const vectorSource = new VectorSource({
    features: [
@@ -210,13 +212,6 @@ export class SearchBoxComponent implements OnInit {
    name: 'iconSearch',
    zIndex: 1009,
   });
-
-  // const vectorLayer = new VectorLayer({
-  //  source: vectorSource,
-  //  style: markerStyle,
-  //  name: 'icon',
-  //  zIndex: 1008,
-  // });
   this.mapservice.map.addLayer(vectorLayer);
  }
  removeMarkerToResult(i) {
