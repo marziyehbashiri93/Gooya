@@ -78,14 +78,14 @@ export class DirectionComponent implements OnInit {
     const geoLocations = (evt as any).coordinate;
 
     if (this.publicVar.DirectionFocusInput === 'start-point') {
-     this.removeLayerByName('start-point');
+     this.publicVar.removeLayerByName('start-point');
      this.setpoint(geoLocations, 'start-point');
-     this.removeLayerByName('routing');
+     this.publicVar.removeLayerByName('routing');
     } else if (this.publicVar.DirectionFocusInput === 'end-point') {
-     this.removeLayerByName('end-point');
+     this.publicVar.removeLayerByName('end-point');
      this.setpoint(geoLocations, 'end-point');
 
-     this.removeLayerByName('routing');
+     this.publicVar.removeLayerByName('routing');
     }
 
     // ---- if client fouces on start and end  point ----
@@ -229,9 +229,9 @@ export class DirectionComponent implements OnInit {
   this.startpointCoord = this.endpointCoord;
   this.endpointCoord = temp;
 
-  this.removeLayerByName('start-point');
-  this.removeLayerByName('end-point');
-  this.removeLayerByName('routing');
+  this.publicVar.removeLayerByName('start-point');
+  this.publicVar.removeLayerByName('end-point');
+  this.publicVar.removeLayerByName('routing');
   this.setpoint(this.startpointCoord, 'start-point');
   this.setpoint(this.endpointCoord, 'end-point');
   this.searchRout();
@@ -334,17 +334,7 @@ export class DirectionComponent implements OnInit {
    });
   }
  }
- removeLayerByName(name: string) {
-  const layerArray = this.mapservice.map.getLayers().getArray();
-  const len = layerArray.length;
-  console.log(layerArray);
-  for (let index = 0; index < len; index++) {
-   if (layerArray[index].get('name') === name) {
-    this.mapservice.map.removeLayer(layerArray[index]);
-    break;
-   }
-  }
- }
+
  // goToLocation(location){
  //   // go to xy location
  // }

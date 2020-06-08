@@ -606,7 +606,17 @@ export class PublicVarService {
    len = len - 1;
   }
  }
-
+ removeLayerByName(name: string) {
+  const layerArray = this.mapservice.map.getLayers().getArray();
+  const len = layerArray.length;
+  console.log(layerArray);
+  for (let index = 0; index < len; index++) {
+   if (layerArray[index].get('name') === name) {
+    this.mapservice.map.removeLayer(layerArray[index]);
+    break;
+   }
+  }
+ }
  wichLayerAdd(
   map,
   styleStatus,
@@ -676,4 +686,5 @@ export class PublicVarService {
    this.mapservice.map.addLayer(this.WMTSLayerOddEvenArea);
   }
  }
+
 }
