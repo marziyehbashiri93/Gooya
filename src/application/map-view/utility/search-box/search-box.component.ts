@@ -11,6 +11,7 @@ import { slide } from 'src/application/shared/animation/slide';
 import { SearchResult } from 'src/application/shared/interface/search-result';
 import { MapService } from 'src/application/shared/services/map.service';
 import { PublicVarService } from 'src/application/shared/services/public-var.service';
+import { FormGroup, FormControl } from '@angular/forms';
 @Component({
  selector: 'app-search-box',
  templateUrl: './search-box.component.html',
@@ -22,6 +23,9 @@ import { PublicVarService } from 'src/application/shared/services/public-var.ser
  ],
 })
 export class SearchBoxComponent implements OnInit {
+  resultForm: FormGroup;
+
+
  @ViewChild('sreachTxt', { static: true })
  sreachTxt: ElementRef;
  @ViewChild('allTabRadio', { static: true })
@@ -45,7 +49,14 @@ export class SearchBoxComponent implements OnInit {
   private httpClient: HttpClient,
  ) {}
 
- ngOnInit() {}
+ ngOnInit() {
+  this.resultForm = new FormGroup({
+    'all-result' : new FormControl(null),
+    'street-result' : new FormControl(null),
+    'point-result' : new FormControl(null),
+    'intersec-result' : new FormControl(null),
+  });
+ }
 
  Search(sreachTxt: HTMLInputElement) {
   this.publicVar.isOpenPopupAttribute = false;
