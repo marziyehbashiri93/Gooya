@@ -49,39 +49,42 @@ export class SearchBoxComponent implements OnInit {
 
  Search(sreachTxt: HTMLInputElement) {
   this.publicVar.isOpenPopupAttribute = false;
-
   if (sreachTxt.value.length > 0) {
-   const mapCenter = this.mapservice.map.getView().getCenter();
-   const mapCenterTransform: Array<number> = transform(mapCenter, this.mapservice.project, 'EPSG:4326');
+   const mapCenterTransform: Array<number> = transform(
+    this.mapservice.map.getView().getCenter(),
+    this.mapservice.project,
+    'EPSG:4326',
+   );
    let lan;
    if (this.publicVar.isPersian) {
     lan = 'fa';
    } else {
     lan = 'en';
    }
-   const url =
-    'http://apimap.ir/api/map/search?q=' +
-    sreachTxt.value +
-    '&lat=' +
-    mapCenterTransform[1].toString() +
-    '&lon=' +
-    mapCenterTransform[0].toString() +
-    '&key=29e70c42798fb6381dbb2bd6f552b24ab22d48823ef903a3e82e1a01926144bc&' +
-    'language=' +
-    lan;
 
-   this.httpClient.get(url).toPromise().then((results: any) => {
-    console.log(results);
-    this.SearchResults = results.result;
-    this.resultTotal = results.result;
-    this.publicVar.isOpenSearchResult = true;
-
-    // this.resultTotal =    this.SearchResults;
-   });
-   console.log(url);
-   // bayad cros origin baz shavad
-   // barye inke aval k baz mishavad street ha chek hastand va
-   //  chon az ng if estefade shode nemitavan ba document element gereft
+   this.httpClient
+    .get(
+     'http://apimap.ir/api/map/search?q=' +
+      sreachTxt.value +
+      '&lat=' +
+      mapCenterTransform[1].toString() +
+      '&lon=' +
+      mapCenterTransform[0].toString() +
+      '&key=29e70c42798fb6381dbb2bd6f552b24ab22d48823ef903a3e82e1a01926144bc&' +
+      'language=' +
+      lan,
+    )
+    .toPromise()
+    .then((results: any) => {
+     if (results.status === 200) {
+      this.SearchResults = results.result;
+      this.resultTotal = results.result;
+      this.publicVar.isOpenSearchResult = true;
+      this.mapservice.map.getView().fit(this.findExtent(results.result));
+     } else {
+      console.log('error');
+     }
+    });
   }
  }
 
@@ -99,20 +102,23 @@ export class SearchBoxComponent implements OnInit {
 
  GoToLocation(i) {
   // this.markerSource.clear();
-  // const resultI: SearchResult = this.resultTotal[i];
-  // const Y = resultI.coordinateDocument.lat;
-  // const X = resultI.coordinateDocument.lon;
-  // const center = transform([ X, Y ], 'EPSG:4326', this.mapservice.project);
-  // // this.mapservice.map.getView().setCenter(center);
-  // // this.mapservice.map.getView().setZoom(17);
-  // this.addMarker(center);
-  // this.mapservice.map.getView().animate({
-  //  center,
-  //  zoom: 17,
-  //  duration: 2000,
-  // });
+  const Y = this.SearchResults[i].location[0];
+  const X = this.SearchResults[i].location[1];
+  const center = transform(
+   [
+    X,
+    Y,
+   ],
+   'EPSG:4326',
+   this.mapservice.project,
+  );
+  // // this.addMarker(center);
+  this.mapservice.map.getView().animate({
+   center,
+   zoom: 17,
+   duration: 2000,
+  });
  }
-
  // ---- for add point when search ----
  addMarker(postion) {
   // for ssr
@@ -135,6 +141,38 @@ export class SearchBoxComponent implements OnInit {
     }),
    );
   }
+ }
+
+ // find extent and fit map to extent
+ findExtent(obj: Array<SearchResult>) {
+  const locationX = [];
+  const locationY = [];
+  obj.forEach((el: SearchResult) => {
+   locationX.push(el.location[1]);
+   locationY.push(el.location[0]);
+  });
+  const minXY = transform(
+   [
+    Math.min.apply(Math.min, locationX),
+    Math.min.apply(Math.min, locationY),
+   ],
+   'EPSG:4326',
+   this.mapservice.project,
+  );
+  const maxXY = transform(
+   [
+    Math.max.apply(Math.max, locationX),
+    Math.max.apply(Math.max, locationY),
+   ],
+   'EPSG:4326',
+   this.mapservice.project,
+  );
+  return [
+   minXY[0],
+   minXY[1],
+   maxXY[0],
+   maxXY[1],
+  ];
  }
  closeSearch() {
   this.publicVar.isOpenSearchResult = false;
