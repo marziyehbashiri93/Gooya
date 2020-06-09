@@ -94,6 +94,7 @@ export class SearchBoxComponent implements OnInit {
     .then((results: any) => {
      console.log(results);
      if (results.status === 200 && results.result) {
+      this.modifyResult(results.result);
       this.resultTotal = results.result;
       // bar asase an radio k checke filter mikonim result ra
       this.showResult(this.resultForm.value.TabRadio);
@@ -106,7 +107,26 @@ export class SearchBoxComponent implements OnInit {
     });
   }
  }
-
+ modifyResult(obj: Array<SearchResult>) {
+  obj.forEach(el => {
+   if (el.l_city && el.h_city && el.l_city === el.h_city.replace(/^(شهر)/, '').trim()) {
+    el.l_city = '';
+   }
+   if (el.l_city !== undefined) {
+    el.l_city = el.l_city.replace(/^(شمال غرب)/, '');
+    el.l_city = el.l_city.replace(/^(شمال شرق)/, '');
+    el.l_city = el.l_city.replace(/^(شمال)/, '');
+    el.l_city = el.l_city.replace(/^(جنوب شرق)/, '');
+    el.l_city = el.l_city.replace(/^(جنوب غرب)/, '');
+    el.l_city = el.l_city.replace(/^(جنوب)/, '');
+    el.l_city = el.l_city.replace(/^(شرق)/, '');
+    el.l_city = el.l_city.replace(/^(غرب)/, '');
+   }
+   if (el.h_city !== undefined && el.h_city !== '' && el.l_city !== undefined && el.l_city !== '') {
+    el.h_city = ',' + el.h_city;
+   }
+  });
+ }
  showResult(id) {
   if (id === 'streetTabRadio') {
    this.SearchResults = this.resultTotal.filter(arr => arr.type === 'street');
@@ -121,6 +141,7 @@ export class SearchBoxComponent implements OnInit {
 
  GoToLocation(i) {
   // this.markerSource.clear();
+  this.publicVar.removeLayerByName('iconClickSearch');
   const Y = this.SearchResults[i].location[1];
   const X = this.SearchResults[i].location[0];
   const center = transform(
@@ -138,6 +159,8 @@ export class SearchBoxComponent implements OnInit {
    zoom: 17,
    duration: 2000,
   });
+
+  this.addMarkerToResult(i, 'iconClickSearch');
  }
  // ---- for add point when search ----
  addMarkerToAllResults(geoJsonObj: object) {
@@ -175,31 +198,32 @@ export class SearchBoxComponent implements OnInit {
    this.mapservice.map.addLayer(vectorLayer);
   }
  }
- addMarkerToResult(i) {
+ addMarkerToResult(i, nameLayer = 'iconSearch') {
   const location = transform(this.SearchResults[i].location, 'EPSG:4326', this.mapservice.project);
+
   const iconFeature = new Feature({
    geometry: new Point(location),
   });
-  // const iconStyle = new Style({
-  //  image: new CircleStyle({
-  //   radius: 14,
-  //   fill: new Fill({
-  //    color: '#f1c40f',
-  //   }),
-  //   stroke: new Stroke({
-  //    color: '#fff',
-  //    width: 1,
-  //   }),
-  //  }),
-  // });
-  const iconStyle=new Style({
-    image: new Icon({
-     anchor: [0.36,1],
-     scale: 0.2,
-     imgSize: [ 161,161 ],
-     src: '../../../../assets/img/icon-search.svg',
-    }),
-   });
+  let srcImage;
+  if (nameLayer === 'iconSearch') {
+   srcImage = '../../../../assets/img/icon-search.svg';
+  } else {
+   srcImage = '../../../../assets/img/icon-search-click.svg';
+  }
+  const iconStyle = new Style({
+   image: new Icon({
+    anchor: [
+     0.36,
+     1,
+    ],
+    scale: 0.2,
+    imgSize: [
+     161,
+     161,
+    ],
+    src: srcImage,
+   }),
+  });
   iconFeature.setStyle(iconStyle);
   const vectorSource = new VectorSource({
    features: [
@@ -209,7 +233,7 @@ export class SearchBoxComponent implements OnInit {
 
   const vectorLayer = new VectorLayer({
    source: vectorSource,
-   name: 'iconSearch',
+   name: nameLayer,
    zIndex: 1009,
   });
   this.mapservice.map.addLayer(vectorLayer);
@@ -284,5 +308,6 @@ export class SearchBoxComponent implements OnInit {
   this.SearchResults = null;
   this.resultTotal = null;
   this.publicVar.removeLayerByName('search');
+  this.publicVar.removeLayerByName('iconClickSearch');
  }
 }
