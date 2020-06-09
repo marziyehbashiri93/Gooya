@@ -68,7 +68,7 @@ export class SearchBoxComponent implements OnInit {
     searchLang = 'fa';
    }
   }
-  if (sreachTxt.value.length >= 3) {
+  if (sreachTxt.value.length >=3) {
    const mapCenterTransform: Array<number> = transform(
     this.mapservice.map.getView().getCenter(),
     this.mapservice.project,

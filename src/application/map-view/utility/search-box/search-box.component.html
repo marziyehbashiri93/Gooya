@@ -1,4 +1,4 @@
-<form [formGroup]="searchForm" id="search-box" class="search-box">
+<form [formGroup]="searchForm" id="search-box" class="search-box" (ngSubmit)="Search(sreachTxt)">
   <input
     name="TabSearch"
     formControlName="TabSearch"
@@ -8,7 +8,7 @@
     "
     [ngStyle]="{ fontSize: this.publicVar.isPersian ? '1.1em' : '1.2em' }"
     #sreachTxt
-    (keyup.enter)="Search(sreachTxt)"
+ 
     (focus)="this.publicVar.isOpenPopupAttribute = false"
   />
   <div
@@ -21,7 +21,6 @@
       [appTooltips]="this.publicVar.isPersian ? 'جستجو' : 'Search'"
       placement="bottom"
       delay="300"
-      (click)="Search(sreachTxt)"
       [disabled]="!searchForm.valid"
     >
       <svg
@@ -81,7 +80,6 @@ l-1964 1965 24 30 c54 69 189 279 257 400 427 762 564 1652 388 2517 -115 570
       <span *ngIf="this.publicVar.isPersian">همه</span>
       <span *ngIf="!this.publicVar.isPersian">All</span>
     </label>
-    <!-- #allTabRadio -->
     <input
       type="radio"
       name="TabRadio"
@@ -94,7 +92,6 @@ l-1964 1965 24 30 c54 69 189 279 257 400 427 762 564 1652 388 2517 -115 570
       <span *ngIf="this.publicVar.isPersian"> خیابان</span>
       <span *ngIf="!this.publicVar.isPersian">Street</span>
     </label>
-    <!-- #streetTabRadio -->
     <input
       type="radio"
       name="TabRadio"
