@@ -1,18 +1,18 @@
-import Feature from 'ol/Feature';
 import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, ElementRef, Inject, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import Feature from 'ol/Feature';
 import GeoJSON from 'ol/format/GeoJSON.js';
+import Point from 'ol/geom/Point';
 import { Vector as VectorLayer } from 'ol/layer.js';
 import { transform } from 'ol/proj';
 import { Vector as VectorSource } from 'ol/source.js';
-import { Circle as CircleStyle, Fill, Stroke, Style, Icon } from 'ol/style';
+import { Circle as CircleStyle, Fill, Icon, Stroke, Style } from 'ol/style';
 import { slide } from 'src/application/shared/animation/slide';
 import { SearchResult } from 'src/application/shared/interface/search-result';
 import { MapService } from 'src/application/shared/services/map.service';
 import { PublicVarService } from 'src/application/shared/services/public-var.service';
-import { FormGroup, FormControl } from '@angular/forms';
-import Point from 'ol/geom/Point';
 
 @Component({
  selector: 'app-search-box',
@@ -25,6 +25,7 @@ import Point from 'ol/geom/Point';
  ],
 })
 export class SearchBoxComponent implements OnInit {
+ searchForm: FormGroup;
  resultForm: FormGroup;
  @ViewChild('sreachTxt', { static: true })
  sreachTxt: ElementRef;
@@ -39,6 +40,9 @@ export class SearchBoxComponent implements OnInit {
  ) {}
 
  ngOnInit() {
+  this.searchForm = new FormGroup({
+    TabSearch : new FormControl('', Validators.minLength(3))
+   })
   this.resultForm = new FormGroup({
    TabRadio: new FormControl('allTabRadio'),
   });
@@ -64,7 +68,7 @@ export class SearchBoxComponent implements OnInit {
     searchLang = 'fa';
    }
   }
-  if (sreachTxt.value.length > 0) {
+  if (sreachTxt.value.length >= 3) {
    const mapCenterTransform: Array<number> = transform(
     this.mapservice.map.getView().getCenter(),
     this.mapservice.project,
