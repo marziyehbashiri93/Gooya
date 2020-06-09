@@ -27,7 +27,7 @@
  }
  	// --- required for validForm---
    .search-txt.ng-invalid {
-		color: red !important;
+		color: $color-red-required !important;
 		border: white !important;
 	}
  .search-icon {
@@ -175,6 +175,10 @@ app-search-result {
 }
 
 
+.error-search{
+  margin: 10px;
+  color: $color-red-required;
+}
 
 
 
@@ -187,4 +191,4 @@ app-search-result {
 
 
 
-   
+

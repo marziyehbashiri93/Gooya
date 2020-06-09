@@ -13,6 +13,7 @@ import { slide } from 'src/application/shared/animation/slide';
 import { SearchResult } from 'src/application/shared/interface/search-result';
 import { MapService } from 'src/application/shared/services/map.service';
 import { PublicVarService } from 'src/application/shared/services/public-var.service';
+import { DirectionComponent } from '../direction/direction.component';
 
 @Component({
  selector: 'app-search-box',
@@ -27,8 +28,6 @@ import { PublicVarService } from 'src/application/shared/services/public-var.ser
 export class SearchBoxComponent implements OnInit {
  searchForm: FormGroup;
  resultForm: FormGroup;
- @ViewChild('sreachTxt', { static: true })
- sreachTxt: ElementRef;
  SearchResults: Array<SearchResult>;
  resultTotal;
  constructor(
@@ -37,24 +36,26 @@ export class SearchBoxComponent implements OnInit {
   private mapservice: MapService,
   public publicVar: PublicVarService,
   private httpClient: HttpClient,
+  public direction: DirectionComponent,
  ) {}
 
  ngOnInit() {
   this.searchForm = new FormGroup({
-    TabSearch : new FormControl('', Validators.minLength(3))
-   })
+   TabSearch: new FormControl('', Validators.minLength(3)),
+  });
   this.resultForm = new FormGroup({
    TabRadio: new FormControl('allTabRadio'),
   });
-
  }
 
- Search(sreachTxt: HTMLInputElement) {
+ Search() {
   let searchLang;
+  let searchTxt = this.searchForm.value.TabSearch;
+  console.log(searchTxt);
   this.publicVar.isOpenPopupAttribute = false;
   this.cleanSearch();
   // ba kodam zaban search konim agar adad bod bar asase zaban site search shavad,dar qeyre in sorat tashkhis dadeh shavad zaban chist
-  if (/[0-9]/.test(sreachTxt.value)) {
+  if (/[0-9]/.test(searchTxt)) {
    console.log('num');
    if (this.publicVar.isPersian) {
     searchLang = 'fa';
@@ -62,13 +63,13 @@ export class SearchBoxComponent implements OnInit {
     searchLang = 'en';
    }
   } else {
-   if (/^[a-zA-Z]+$/.test(sreachTxt.value)) {
+   if (/^[a-zA-Z]+$/.test(searchTxt)) {
     searchLang = 'en';
    } else {
     searchLang = 'fa';
    }
   }
-  if (sreachTxt.value.length >=3) {
+  if (searchTxt.length >= 3) {
    const mapCenterTransform: Array<number> = transform(
     this.mapservice.map.getView().getCenter(),
     this.mapservice.project,
@@ -77,7 +78,7 @@ export class SearchBoxComponent implements OnInit {
    this.httpClient
     .get(
      'http://apimap.ir/api/map/search?q=' +
-      sreachTxt.value +
+      searchTxt +
       '&lat=' +
       mapCenterTransform[1].toString() +
       '&lon=' +
@@ -99,6 +100,7 @@ export class SearchBoxComponent implements OnInit {
       this.addMarkerToAllResults(this.createPointcoord(this.resultTotal));
      } else {
       console.log('error');
+      this.publicVar.isOpenSearchResult = true;
      }
     });
   }
@@ -296,12 +298,22 @@ export class SearchBoxComponent implements OnInit {
   // return coord;
   return geojsonObject;
  }
- gotoDirection(){
-this.cleanSearch()
-}
+ gotoDirection(location) {
+  this.closeSearch();
+  this.publicVar.removeLayerByName('iconSearch');
+
+  const coord=transform(location, 'EPSG:4326', this.mapservice.project)
+  setTimeout(e => {
+   this.direction.openDirection('start-point');
+   this.direction.getClickLoctionAddress();
+   this.direction.LocationToAddress(coord);
+   this.direction.setpoint(coord,'start-point')
+  }, 300);
+  this.mapservice.map.getView().setCenter(coord);
+ }
  closeSearch() {
   this.publicVar.isOpenSearchResult = false;
-  this.sreachTxt.nativeElement.value = null;
+  this.searchForm.reset();
   this.cleanSearch();
  }
  cleanSearch() {
@@ -310,5 +322,4 @@ this.cleanSearch()
   this.publicVar.removeLayerByName('search');
   this.publicVar.removeLayerByName('iconClickSearch');
  }
-
 }
