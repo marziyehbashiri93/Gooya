@@ -130,10 +130,39 @@ app-search-result {
     list-style: none;
     display: flex;
     justify-content: space-between;
-    :last-child {
-     opacity: 0.6;
-     font-size: 0.9em;
-     padding-top: 5px;
+    align-items: center;
+    > div:first-child {
+     :first-child {
+      margin: 5px 0px;
+      font-size: 0.95em;
+     }
+     :last-child {
+      opacity: 0.6;
+      font-size: 0.8em;
+      padding-top: 5px;
+      margin: 1px 0px 5px;
+     }
+    }
+    > div:last-child {
+     button {
+      background: none;
+      opacity: 0.3;
+      cursor: pointer;
+      border: 1px solid;
+      border-radius: 23%;
+      width: 23px;
+      height: 23px;
+      padding: 0 0px 1px 1px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      &:hover {
+        fill: #5591F5;
+        opacity: 1;
+        background: #fff;
+        border-color: #5591F5;
+      }
+     }
     }
    }
   }
