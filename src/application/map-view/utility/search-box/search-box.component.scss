@@ -139,3 +139,8 @@ app-search-result {
   }
  }
 }
+
+// --- required for valid---
+.search-txt.ng-invalid {
+    color: red !important;
+   }
