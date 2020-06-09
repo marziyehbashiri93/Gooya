@@ -1,15 +1,15 @@
-
 <form [formGroup]="searchForm" id="search-box" class="search-box">
   <input
     name="TabSearch"
     formControlName="TabSearch"
     class="search-txt"
-    [placeholder]="this.publicVar.isPersian ? 'جستجوی Gooya Map' : 'Search Gooya Map'"
+    [placeholder]="
+      this.publicVar.isPersian ? 'جستجوی Gooya Map' : 'Search Gooya Map'
+    "
     [ngStyle]="{ fontSize: this.publicVar.isPersian ? '1.1em' : '1.2em' }"
     #sreachTxt
-    (keyup.enter)="Search(sreachTxt)" 
+    (keyup.enter)="Search(sreachTxt)"
     (focus)="this.publicVar.isOpenPopupAttribute = false"
-    
   />
   <div
     class="search-icon"
@@ -64,7 +64,8 @@ l-1964 1965 24 30 c54 69 189 279 257 400 427 762 564 1652 388 2517 -115 570
   [@slide]="{
     value: undefined,
     params: { moveX: this.publicVar.isPersian ? '380px' : '-380px' }
-  }">
+  }"
+>
   <div class="base"></div>
   <form [formGroup]="resultForm" class="tab">
     <input
