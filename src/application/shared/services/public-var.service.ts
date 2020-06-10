@@ -84,6 +84,8 @@ export class PublicVarService {
  DirectionStartPointValue;
  isDirectionInIran: boolean;
  DirectionFocusInput: string;
+ startpointCoord: Array<number>;
+ endpointCoord: Array<number>;
  // ---- Direction ----
  // ---- for get client information ----
  deviceInfo: DeviceInfos;

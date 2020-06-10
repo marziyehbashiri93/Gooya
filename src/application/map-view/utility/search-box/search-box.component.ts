@@ -29,9 +29,10 @@ export class SearchBoxComponent implements OnInit {
  searchForm: FormGroup;
  resultForm: FormGroup;
  SearchResults: Array<SearchResult>;
+ showError;
  resultTotal;
  constructor(
-  // for ssr
+  // ---- for ssr  ----
   @Inject(PLATFORM_ID) private platformId: Object,
   private mapservice: MapService,
   public publicVar: PublicVarService,
@@ -50,8 +51,7 @@ export class SearchBoxComponent implements OnInit {
 
  Search() {
   let searchLang;
-  let searchTxt = this.searchForm.value.TabSearch;
-  console.log(searchTxt);
+  const searchTxt = this.searchForm.value.TabSearch;
   this.publicVar.isOpenPopupAttribute = false;
   this.cleanSearch();
   // ba kodam zaban search konim agar adad bod bar asase zaban site search shavad,dar qeyre in sorat tashkhis dadeh shavad zaban chist
@@ -100,11 +100,13 @@ export class SearchBoxComponent implements OnInit {
       this.addMarkerToAllResults(this.createPointcoord(this.resultTotal));
      } else {
       console.log('error');
+      this.showError = true;
       this.publicVar.isOpenSearchResult = true;
      }
     });
   }
  }
+ // ---- hazf shomal jonob va ,... va hamcnin h-city haye h ba l-city yeksanan  ----
  modifyResult(obj: Array<SearchResult>) {
   obj.forEach(el => {
    if (el.l_city && el.h_city && el.l_city === el.h_city.replace(/^(شهر)/, '').trim()) {
@@ -125,6 +127,7 @@ export class SearchBoxComponent implements OnInit {
    }
   });
  }
+ // ----filter result bar asaseh tab ha  ----
  showResult(id) {
   if (id === 'streetTabRadio') {
    this.SearchResults = this.resultTotal.filter(arr => arr.type === 'street');
@@ -136,7 +139,7 @@ export class SearchBoxComponent implements OnInit {
    this.SearchResults = this.resultTotal;
   }
  }
-
+ // ---- baclick roye natayej search b location on miravad  ----
  GoToLocation(i) {
   // this.markerSource.clear();
   this.publicVar.removeLayerByName('iconClickSearch');
@@ -196,9 +199,10 @@ export class SearchBoxComponent implements OnInit {
    this.mapservice.map.addLayer(vectorLayer);
   }
  }
+ // ---- for add or remve  point when click/hover to result----
  addMarkerToResult(i, nameLayer = 'iconSearch') {
   const location = transform(this.SearchResults[i].location, 'EPSG:4326', this.mapservice.project);
-
+  if (isPlatformBrowser(this.platformId)) {
   const iconFeature = new Feature({
    geometry: new Point(location),
   });
@@ -236,10 +240,11 @@ export class SearchBoxComponent implements OnInit {
   });
   this.mapservice.map.addLayer(vectorLayer);
  }
+}
  removeMarkerToResult(i) {
   this.publicVar.removeLayerByName('iconSearch');
  }
- // find extent and fit map to extent
+ // ---- find extent and fit map to extent  ----
  findExtent(obj: Array<SearchResult>) {
   const locationX = [];
   const locationY = [];
@@ -270,12 +275,10 @@ export class SearchBoxComponent implements OnInit {
    maxXY[1],
   ];
  }
- // create array from point coordinate to use for layer
+ // ---- create array from point coordinate to use for layer  ----
  createPointcoord(obj: Array<SearchResult>) {
   const featureArray = [];
-
   obj.forEach((el: SearchResult) => {
-   //  coord.push( el.location.reverse());
    featureArray.push({
     type: 'Feature',
     geometry: {
@@ -294,20 +297,17 @@ export class SearchBoxComponent implements OnInit {
    },
    features: featureArray,
   };
-  console.log(geojsonObject);
-  // return coord;
   return geojsonObject;
  }
  gotoDirection(location) {
   this.closeSearch();
   this.publicVar.removeLayerByName('iconSearch');
-
-  const coord=transform(location, 'EPSG:4326', this.mapservice.project)
+  const coord = transform(location, 'EPSG:4326', this.mapservice.project);
   setTimeout(e => {
    this.direction.openDirection('start-point');
    this.direction.getClickLoctionAddress();
    this.direction.LocationToAddress(coord);
-   this.direction.setpoint(coord,'start-point')
+   this.direction.setpoint(coord, 'start-point');
   }, 300);
   this.mapservice.map.getView().setCenter(coord);
  }
@@ -319,6 +319,8 @@ export class SearchBoxComponent implements OnInit {
  cleanSearch() {
   this.SearchResults = null;
   this.resultTotal = null;
+  this.showError = null;
+
   this.publicVar.removeLayerByName('search');
   this.publicVar.removeLayerByName('iconClickSearch');
  }

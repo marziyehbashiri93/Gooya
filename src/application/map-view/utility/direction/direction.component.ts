@@ -23,8 +23,7 @@ export class DirectionComponent implements OnInit {
  StringXY: string = null;
  isClickHasNetwork: boolean;
  // baraye negahdari mokhtasat noqteh click shode
- startpointCoord: Array<number>;
- endpointCoord: Array<number>;
+
 
  constructor(
   public publicVar: PublicVarService,
@@ -58,8 +57,8 @@ export class DirectionComponent implements OnInit {
   // bayad baraye search badi in maqadir khali bashad
   this.publicVar.DirectionEndPointValue = null;
   this.publicVar.DirectionStartPointValue = null;
-  this.startpointCoord = null;
-  this.endpointCoord = null;
+  this.publicVar.startpointCoord = null;
+  this.publicVar.endpointCoord = null;
   this.isClickHasNetwork = null;
  }
 
@@ -84,7 +83,6 @@ export class DirectionComponent implements OnInit {
     } else if (this.publicVar.DirectionFocusInput === 'end-point') {
      this.publicVar.removeLayerByName('end-point');
      this.setpoint(geoLocations, 'end-point');
-
      this.publicVar.removeLayerByName('routing');
     }
 
@@ -161,10 +159,11 @@ export class DirectionComponent implements OnInit {
    this.StringXY = toStringXY(geoLocation, 0);
    if (this.publicVar.DirectionFocusInput === 'start-point') {
     this.publicVar.DirectionStartPointValue = this.StringXY;
-    this.startpointCoord = geoLocation;
+    this.publicVar.startpointCoord = geoLocation;
+    console.log(this.publicVar.startpointCoord )
    } else if (this.publicVar.DirectionFocusInput === 'end-point') {
     this.publicVar.DirectionEndPointValue = this.StringXY;
-    this.endpointCoord = geoLocation;
+    this.publicVar.endpointCoord = geoLocation;
    }
 
    const XYDecimal = transform(geoLocation, this.mapservice.project, 'EPSG:4326');
@@ -179,7 +178,7 @@ export class DirectionComponent implements OnInit {
     XYDecimal[1].toString() +
     '&ZoomLevel=' +
     zoom.toFixed(0).toString();
-   // console.log(URL);
+   console.log(URL);
    this.httpClient.get(URL).toPromise().then(response => {
     // agar line baraye maasir yabi yaft
     if (response[0]) {
@@ -210,10 +209,10 @@ export class DirectionComponent implements OnInit {
    this.publicVar.isDirectionInIran = false;
    if (this.publicVar.DirectionFocusInput === 'start-point') {
     this.publicVar.DirectionStartPointValue = null;
-    this.startpointCoord = null;
+    this.publicVar.startpointCoord = null;
    } else if (this.publicVar.DirectionFocusInput === 'end-point') {
     this.publicVar.DirectionEndPointValue = null;
-    this.endpointCoord = null;
+    this.publicVar.endpointCoord = null;
    }
    this.isClickHasNetwork = null;
   }
@@ -225,25 +224,27 @@ export class DirectionComponent implements OnInit {
   this.publicVar.DirectionStartPointValue = this.publicVar.DirectionEndPointValue;
   this.publicVar.DirectionEndPointValue = empty;
 
-  const temp = this.startpointCoord;
-  this.startpointCoord = this.endpointCoord;
-  this.endpointCoord = temp;
+  const temp = this.publicVar.startpointCoord;
+  this.publicVar.startpointCoord = this.publicVar.endpointCoord;
+  this.publicVar.endpointCoord = temp;
 
   this.publicVar.removeLayerByName('start-point');
   this.publicVar.removeLayerByName('end-point');
   this.publicVar.removeLayerByName('routing');
-  this.setpoint(this.startpointCoord, 'start-point');
-  this.setpoint(this.endpointCoord, 'end-point');
+  this.setpoint(this.publicVar.startpointCoord, 'start-point');
+  this.setpoint(this.publicVar.endpointCoord, 'end-point');
   this.searchRout();
  }
  searchRout() {
   if (this.publicVar.DirectionStartPointValue != null && this.publicVar.DirectionEndPointValue != null) {
-   // chon aval bayad baraye orgin va destination y ro bedim reverse va join mikonim
+   // chon aval bayad baraye orgin va destination y ro bedim reverse va join mikonim\
+   console.log('this.publicVar.startpointCoord',this.publicVar.startpointCoord);
+
    const url =
     'http://apimap.ir/api/map/route?origin=' +
-    transform(this.startpointCoord, this.mapservice.project, 'EPSG:4326').reverse().join() +
+    transform(this.publicVar.startpointCoord, this.mapservice.project, 'EPSG:4326').reverse().join() +
     '&destination=' +
-    transform(this.endpointCoord, this.mapservice.project, 'EPSG:4326').reverse().join() +
+    transform(this.publicVar.endpointCoord, this.mapservice.project, 'EPSG:4326').reverse().join() +
     '&key=29e70c42798fb6381dbb2bd6f552b24ab22d48823ef903a3e82e1a01926144bc';
    console.log(url);
    this.httpClient.get(url).toPromise().then((dirResult: RoutResult) => {
@@ -271,18 +272,6 @@ export class DirectionComponent implements OnInit {
      const styleFunction = feature => {
       return [ stylesLine2[feature.getGeometry().getType()], stylesLine1[feature.getGeometry().getType()] ];
      };
-
-     //  const styles = {
-     //   LineString: new Style({
-     //    stroke: new Stroke({
-     //     color: 'green',
-     //     width: 5,
-     //    }),
-     //   }),
-     //  };
-     //  const styleFunction = feature => {
-     //   return styles[feature.getGeometry().getType()];
-     //  };
      const transformCoords = [];
      dirResult.result.paths[0].points.coordinates.forEach(e => {
       transformCoords.push(transform(e, 'EPSG:4326', this.mapservice.project));
@@ -330,6 +319,7 @@ export class DirectionComponent implements OnInit {
      this.mapservice.map.getView().fit(bbox);
      this.mapservice.map.addLayer(vectorLayer);
     } else {
+
     }
    });
   }

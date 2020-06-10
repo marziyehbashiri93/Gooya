@@ -66,111 +66,116 @@ app-search-result {
   width: 100%;
   background-color: $color-light-blue;
  }
- .tab {
-  display: flex;
-  height: 35px;
-  background-color: $color-light-blue;
-  color: $color-light;
-  //margin-top: 90px;
-  align-items: center;
-  justify-content: space-between;
-  #streetTabRadio,
-  #pointTabRadio,
-  #IntersectionTabRadio,
-  #allTabRadio {
-   display: none;
-   & + label {
-    // background-color: white;
+ .result-container{
+  height: calc(100% - 70px);
+   .tab {
+    display: flex;
+    height: 35px;
     background-color: $color-light-blue;
     color: $color-light;
-    cursor: pointer;
-   }
-   &:checked + label {
-    background-color: $color-light;
-    color: $color-light-blue;
-   }
-  }
-  .streetTab,
-  .pointTab,
-  .IntersectionTab,
-  .allTab {
-   width: 50%;
-   height: 100%;
-   display: flex;
-   justify-content: center;
-   align-items: center;
-  }
- }
- .all-result {
-  height: 83%;
-  overflow: scroll;
-  overflow-x: hidden;
-  // scrooolll
-  /* width */
-  &::-webkit-scrollbar {
-   width: 5px;
-  }
-  /* Track */
-  &::-webkit-scrollbar-track {
-   background: $color-light;
-  }
-  /* Handle */
-  &::-webkit-scrollbar-thumb {
-   background: lighten($color: $color-gray-svg, $amount: 30);
-   border-radius: 1px 0 0 1px;
-  }
-  /* Handle on hover */
-  &::-webkit-scrollbar-thumb:hover {
-   background: #555;
-  }
-  // scrooolll
-  .result {
-   padding: 4px 20px;
-   border-bottom: 1px solid rgba($color-gray-svg, 0.2);
-   cursor: pointer;
-   &:hover {
-    background: rgba(211, 228, 239, 0.27);
-   }
-   li {
-    list-style: none;
-    display: flex;
-    justify-content: space-between;
+    //margin-top: 90px;
     align-items: center;
-    > div:first-child {
-     :first-child {
-      margin: 5px 0px;
-      font-size: 0.95em;
+    justify-content: space-between;
+    #streetTabRadio,
+    #pointTabRadio,
+    #IntersectionTabRadio,
+    #allTabRadio {
+     display: none;
+     & + label {
+      // background-color: white;
+      background-color: $color-light-blue;
+      color: $color-light;
+      cursor: pointer;
      }
-     :last-child {
-      opacity: 0.6;
-      font-size: 0.8em;
-      padding-top: 5px;
-      margin: 1px 0px 5px;
+     &:checked + label {
+      background-color: $color-light;
+      color: $color-light-blue;
      }
     }
-    > div:last-child {
-     button {
-      background: none;
-      opacity: 0.3;
-      cursor: pointer;
-      border: 1px solid;
-      border-radius: 23%;
-      width: 23px;
-      height: 23px;
-      padding: 0 0px 1px 1px;
+    .streetTab,
+    .pointTab,
+    .IntersectionTab,
+    .allTab {
+     width: 50%;
+     height: 100%;
+     display: flex;
+     justify-content: center;
+     align-items: center;
+    }
+   }
+   .all-result {
+    height: calc(100% - 35px);
+    overflow: scroll;
+    overflow-x: hidden;
+    &::-webkit-scrollbar {
+     width: 5px;
+    }
+    /* Track */
+    &::-webkit-scrollbar-track {
+     background: $color-light;
+    }
+    /* Handle */
+    &::-webkit-scrollbar-thumb {
+     background: lighten($color: $color-gray-svg, $amount: 30);
+     border-radius: 1px 0 0 1px;
+    }
+    /* Handle on hover */
+    &::-webkit-scrollbar-thumb:hover {
+     background: #555;
+    }
+    scrollbar-color: lighten($color: $color-gray-svg, $amount: 30) $color-light;
+    scrollbar-width: thin;
+    // scrooolll
+    /* width */
+    // scrooolll
+    .result {
+     padding: 4px 20px;
+     border-bottom: 1px solid rgba($color-gray-svg, 0.2);
+     cursor: pointer;
+     &:hover {
+      background: rgba(211, 228, 239, 0.27);
+     }
+     li {
+      list-style: none;
       display: flex;
-      justify-content: center;
+      justify-content: space-between;
       align-items: center;
-      &:hover {
-        fill: #5591F5;
-        opacity: 1;
-        background: #fff;
-        border-color: #5591F5;
+      > div:first-child {
+       :first-child {
+        margin: 5px 0px;
+        font-size: 0.95em;
+       }
+       :last-child {
+        opacity: 0.6;
+        font-size: 0.8em;
+        padding-top: 5px;
+        margin: 1px 0px 5px;
+       }
+      }
+      > div:last-child {
+       button {
+        background: none;
+        opacity: 0.3;
+        cursor: pointer;
+        border: 1px solid;
+        border-radius: 23%;
+        width: 23px;
+        height: 23px;
+        padding: 0 0px 1px 1px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        &:hover {
+          fill: #5591F5;
+          opacity: 1;
+          background: #fff;
+          border-color: #5591F5;
+        }
+       }
       }
      }
     }
    }
-  }
  }
 }
 
