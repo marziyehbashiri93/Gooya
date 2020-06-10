@@ -36,11 +36,9 @@ export class TrafficComponent implements OnInit {
   this.mapservice.map.getView().on('change:resolution', (evt: Event) => {
    if (this.publicVar.isTrafficON) {
     const source = this.publicVar.WMTSLayerTraffic.getSource();
-
     const params = source.getParams();
     params.t = Math.random();
     source.updateParams(params);
-    console.log('params update');
    }
   });
  }

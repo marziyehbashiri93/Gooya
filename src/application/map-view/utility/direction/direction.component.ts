@@ -2,9 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { toStringXY } from 'ol/coordinate';
 import GeoJSON from 'ol/format/GeoJSON.js';
-import { Vector as VectorLayer } from 'ol/layer.js';
 import { transform } from 'ol/proj';
-import { Vector as VectorSource } from 'ol/source.js';
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
 import { Icon, Stroke, Style } from 'ol/style';
 import { slide } from 'src/application/shared/animation/slide';
 import { IranBoundryService } from 'src/application/shared/services/iran-boundry.service';
@@ -16,14 +16,17 @@ import { RoutResult } from './../../../shared/interface/rout-result';
 @Component({
  selector: 'app-direction',
  templateUrl: './direction.component.html',
- styleUrls: [ './direction.component.scss' ],
- animations: [ slide ],
+ styleUrls: [
+  './direction.component.scss',
+ ],
+ animations: [
+  slide,
+ ],
 })
 export class DirectionComponent implements OnInit {
  StringXY: string = null;
  isClickHasNetwork: boolean;
  // baraye negahdari mokhtasat noqteh click shode
-
 
  constructor(
   public publicVar: PublicVarService,
@@ -60,6 +63,13 @@ export class DirectionComponent implements OnInit {
   this.publicVar.startpointCoord = null;
   this.publicVar.endpointCoord = null;
   this.isClickHasNetwork = null;
+
+  this.cleanDirection();
+ }
+ cleanDirection() {
+  this.publicVar.removeLayerByName('start-point');
+  this.publicVar.removeLayerByName('end-point');
+  this.publicVar.removeLayerByName('routing');
  }
 
  // ---- for go next input by keypress enter ----
@@ -116,18 +126,30 @@ export class DirectionComponent implements OnInit {
   if (typePoint === 'start-point') {
    styles = new Style({
     image: new Icon({
-     anchor: [ 0.5, 0.5 ],
+     anchor: [
+      0.5,
+      0.5,
+     ],
      scale: 0.08,
-     imgSize: [ 300, 300 ],
+     imgSize: [
+      300,
+      300,
+     ],
      src: '../../../../assets/img/direction-start.svg',
     }),
    });
   } else if (typePoint === 'end-point') {
    styles = new Style({
     image: new Icon({
-     anchor: [ 0.5, 0.5 ],
+     anchor: [
+      0.5,
+      0.5,
+     ],
      scale: 0.08,
-     imgSize: [ 300, 300 ],
+     imgSize: [
+      300,
+      300,
+     ],
      src: '../../../../assets/img/direction-end.svg',
     }),
    });
@@ -160,7 +182,7 @@ export class DirectionComponent implements OnInit {
    if (this.publicVar.DirectionFocusInput === 'start-point') {
     this.publicVar.DirectionStartPointValue = this.StringXY;
     this.publicVar.startpointCoord = geoLocation;
-    console.log(this.publicVar.startpointCoord )
+    console.log(this.publicVar.startpointCoord);
    } else if (this.publicVar.DirectionFocusInput === 'end-point') {
     this.publicVar.DirectionEndPointValue = this.StringXY;
     this.publicVar.endpointCoord = geoLocation;
@@ -238,7 +260,7 @@ export class DirectionComponent implements OnInit {
  searchRout() {
   if (this.publicVar.DirectionStartPointValue != null && this.publicVar.DirectionEndPointValue != null) {
    // chon aval bayad baraye orgin va destination y ro bedim reverse va join mikonim\
-   console.log('this.publicVar.startpointCoord',this.publicVar.startpointCoord);
+   console.log('this.publicVar.startpointCoord', this.publicVar.startpointCoord);
 
    const url =
     'http://apimap.ir/api/map/route?origin=' +
@@ -270,7 +292,10 @@ export class DirectionComponent implements OnInit {
       }),
      };
      const styleFunction = feature => {
-      return [ stylesLine2[feature.getGeometry().getType()], stylesLine1[feature.getGeometry().getType()] ];
+      return [
+       stylesLine2[feature.getGeometry().getType()],
+       stylesLine1[feature.getGeometry().getType()],
+      ];
      };
      const transformCoords = [];
      dirResult.result.paths[0].points.coordinates.forEach(e => {
@@ -306,20 +331,30 @@ export class DirectionComponent implements OnInit {
       zIndex: 1004,
      });
      const minxy = transform(
-      [ dirResult.result.paths[0].bbox[0], dirResult.result.paths[0].bbox[1] ],
+      [
+       dirResult.result.paths[0].bbox[0],
+       dirResult.result.paths[0].bbox[1],
+      ],
       'EPSG:4326',
       this.mapservice.project,
      );
      const maxxy = transform(
-      [ dirResult.result.paths[0].bbox[2], dirResult.result.paths[0].bbox[3] ],
+      [
+       dirResult.result.paths[0].bbox[2],
+       dirResult.result.paths[0].bbox[3],
+      ],
       'EPSG:4326',
       this.mapservice.project,
      );
-     const bbox = [ minxy[0], minxy[1], maxxy[0], maxxy[1] ];
-     this.mapservice.map.getView().fit(bbox);
+     const bbox = [
+      minxy[0],
+      minxy[1],
+      maxxy[0],
+      maxxy[1],
+     ];
+     this.mapservice.map.getView().fit(bbox , {padding: [30, 30, 30, 30]});
      this.mapservice.map.addLayer(vectorLayer);
     } else {
-
     }
    });
   }

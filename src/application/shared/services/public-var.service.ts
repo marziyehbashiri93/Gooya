@@ -598,10 +598,13 @@ export class PublicVarService {
   while (len > 0) {
    layer = layerArray[len - 1];
    if (
-    layer.get('name') !== 'searchMarker' &&
     layer.get('name') !== 'start-point' &&
     layer.get('name') !== 'end-point' &&
-    layer.get('name') !== 'routing'
+    layer.get('name') !== 'routing' &&
+    layer.get('name') !== 'search' &&
+    layer.get('name') !== 'searchFilter' &&
+    layer.get('name') !== 'iconClickSearch'
+
    ) {
     map.removeLayer(layer);
    }

@@ -5,9 +5,9 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import Feature from 'ol/Feature';
 import GeoJSON from 'ol/format/GeoJSON.js';
 import Point from 'ol/geom/Point';
-import { Vector as VectorLayer } from 'ol/layer.js';
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
 import { transform } from 'ol/proj';
-import { Vector as VectorSource } from 'ol/source.js';
 import { Circle as CircleStyle, Fill, Icon, Stroke, Style } from 'ol/style';
 import { slide } from 'src/application/shared/animation/slide';
 import { SearchResult } from 'src/application/shared/interface/search-result';
@@ -31,6 +31,7 @@ export class SearchBoxComponent implements OnInit {
  SearchResults: Array<SearchResult>;
  showError;
  resultTotal;
+ //searchFilter
  constructor(
   // ---- for ssr  ----
   @Inject(PLATFORM_ID) private platformId: Object,
@@ -96,8 +97,11 @@ export class SearchBoxComponent implements OnInit {
       // bar asase an radio k checke filter mikonim result ra
       this.showResult(this.resultForm.value.TabRadio);
       this.publicVar.isOpenSearchResult = true;
-      this.mapservice.map.getView().fit(this.findExtent(results.result));
+      this.mapservice.map.getView().fit(this.findExtent(results.result),{padding: [30, 30, 30, 30]});
       this.addMarkerToAllResults(this.createPointcoord(this.resultTotal));
+      if (this.resultForm.value.TabRadio !== 'allTabRadio') {
+       //  this.addMarkerToAllResults(this.createPointcoord(this.SearchResults), 'searchFilter');
+      }
      } else {
       console.log('error');
       this.showError = true;
@@ -129,30 +133,27 @@ export class SearchBoxComponent implements OnInit {
  }
  // ----filter result bar asaseh tab ha  ----
  showResult(id) {
-  if (id === 'streetTabRadio') {
-   this.SearchResults = this.resultTotal.filter(arr => arr.type === 'street');
-  } else if (id === 'pointTabRadio') {
-   this.SearchResults = this.resultTotal.filter(arr => arr.type === 'poi');
-  } else if (id === 'IntersectionTabRadio') {
-   this.SearchResults = this.resultTotal.filter(arr => arr.type === 'crossing');
+  this.publicVar.removeLayerByName('searchFilter');
+  if (id !== 'allTabRadio') {
+   if (id === 'streetTabRadio') {
+    this.SearchResults = this.resultTotal.filter(arr => arr.type === 'street');
+   } else if (id === 'pointTabRadio') {
+    this.SearchResults = this.resultTotal.filter(arr => arr.type === 'poi');
+   } else if (id === 'IntersectionTabRadio') {
+    this.SearchResults = this.resultTotal.filter(arr => arr.type === 'crossing');
+   }
+
+   this.addMarkerToAllResults(this.createPointcoord(this.SearchResults), 'searchFilter');
   } else {
    this.SearchResults = this.resultTotal;
   }
+  console.log(this.mapservice.map.getLayers());
  }
  // ---- baclick roye natayej search b location on miravad  ----
  GoToLocation(i) {
   // this.markerSource.clear();
   this.publicVar.removeLayerByName('iconClickSearch');
-  const Y = this.SearchResults[i].location[1];
-  const X = this.SearchResults[i].location[0];
-  const center = transform(
-   [
-    X,
-    Y,
-   ],
-   'EPSG:4326',
-   this.mapservice.project,
-  );
+  const center = this.declareXYlocation(this.SearchResults[i].location);
   console.log(center);
   // // this.addMarker(center);
   this.mapservice.map.getView().animate({
@@ -164,23 +165,43 @@ export class SearchBoxComponent implements OnInit {
   this.addMarkerToResult(i, 'iconClickSearch');
  }
  // ---- for add point when search ----
- addMarkerToAllResults(geoJsonObj: object) {
+ addMarkerToAllResults(geoJsonObj: object, names = 'search') {
   // for ssr
   if (isPlatformBrowser(this.platformId)) {
-   const markerStyle = {
-    Point: new Style({
-     image: new CircleStyle({
-      radius: 4,
-      fill: new Fill({
-       color: '#FA5B59',
-      }),
-      stroke: new Stroke({
-       color: '#fff',
-       width: 1,
+   let markerStyle;
+   if (names === 'search') {
+    markerStyle = {
+     Point: new Style({
+      image: new CircleStyle({
+       radius: 4,
+       fill: new Fill({
+        color: '#FA5B59',
+       }),
+       stroke: new Stroke({
+        color: '#fff',
+        width: 1,
+       }),
       }),
      }),
-    }),
-   };
+    };
+   } else {
+    markerStyle = {
+     Point: new Style({
+      image: new Icon({
+       anchor: [
+        0.5,
+        0.5,
+       ],
+       scale: 0.2,
+       imgSize: [
+        96,
+        96,
+       ],
+       src: '../../../../assets/img/searchFilter.svg',
+      }),
+     }),
+    };
+   }
    const styleFunction = feature => {
     return [
      markerStyle[feature.getGeometry().getType()],
@@ -189,101 +210,89 @@ export class SearchBoxComponent implements OnInit {
    const vectorSource = new VectorSource({
     features: new GeoJSON().readFeatures(geoJsonObj),
    });
+   console.log('geoJsonObj');
+   console.log(geoJsonObj);
+
    //  console.log(vectorSource);
    const vectorLayer = new VectorLayer({
     source: vectorSource,
     style: styleFunction,
-    name: 'search',
-    zIndex: 1008,
+    name: names,
+    zIndex: names === 'search' ? 1008 : 1009,
    });
    this.mapservice.map.addLayer(vectorLayer);
   }
  }
  // ---- for add or remve  point when click/hover to result----
- addMarkerToResult(i, nameLayer = 'iconSearch') {
-  const location = transform(this.SearchResults[i].location, 'EPSG:4326', this.mapservice.project);
+ addMarkerToResult(i, nameLayer = 'iconHoverSearch') {
   if (isPlatformBrowser(this.platformId)) {
-  const iconFeature = new Feature({
-   geometry: new Point(location),
-  });
-  let srcImage;
-  if (nameLayer === 'iconSearch') {
-   srcImage = '../../../../assets/img/icon-search.svg';
-  } else {
-   srcImage = '../../../../assets/img/icon-search-click.svg';
-  }
-  const iconStyle = new Style({
-   image: new Icon({
-    anchor: [
-     0.36,
-     1,
+   const location = this.declareXYlocation(this.SearchResults[i].location);
+   const iconFeature = new Feature({
+    geometry: new Point(location),
+   });
+   let srcImage;
+   if (nameLayer === 'iconHoverSearch') {
+    srcImage = '../../../../assets/img/icon-search.svg';
+   } else {
+    srcImage = '../../../../assets/img/icon-search-click.svg';
+   }
+   const iconStyle = new Style({
+    image: new Icon({
+     anchor: [
+      0.36,
+      1,
+     ],
+     scale: 0.2,
+     imgSize: [
+      161,
+      161,
+     ],
+     src: srcImage,
+    }),
+   });
+   iconFeature.setStyle(iconStyle);
+   const vectorSource = new VectorSource({
+    features: [
+     iconFeature,
     ],
-    scale: 0.2,
-    imgSize: [
-     161,
-     161,
-    ],
-    src: srcImage,
-   }),
-  });
-  iconFeature.setStyle(iconStyle);
-  const vectorSource = new VectorSource({
-   features: [
-    iconFeature,
-   ],
-  });
+   });
 
-  const vectorLayer = new VectorLayer({
-   source: vectorSource,
-   name: nameLayer,
-   zIndex: 1009,
-  });
-  this.mapservice.map.addLayer(vectorLayer);
+   const vectorLayer = new VectorLayer({
+    source: vectorSource,
+    name: nameLayer,
+    zIndex: 1009,
+   });
+   this.mapservice.map.addLayer(vectorLayer);
+  }
  }
-}
  removeMarkerToResult(i) {
-  this.publicVar.removeLayerByName('iconSearch');
+  this.publicVar.removeLayerByName('iconHoverSearch');
  }
  // ---- find extent and fit map to extent  ----
  findExtent(obj: Array<SearchResult>) {
   const locationX = [];
   const locationY = [];
   obj.forEach((el: SearchResult) => {
-   locationX.push(el.location[1]);
-   locationY.push(el.location[0]);
+   locationX.push(this.declareXYlocation(el.location)[0]);
+   locationY.push(this.declareXYlocation(el.location)[1]);
   });
-  const minXY = transform(
-   [
-    Math.min.apply(Math.min, locationX),
-    Math.min.apply(Math.min, locationY),
-   ],
-   'EPSG:4326',
-   this.mapservice.project,
-  );
-  const maxXY = transform(
-   [
-    Math.max.apply(Math.max, locationX),
-    Math.max.apply(Math.max, locationY),
-   ],
-   'EPSG:4326',
-   this.mapservice.project,
-  );
   return [
-   minXY[0],
-   minXY[1],
-   maxXY[0],
-   maxXY[1],
+   Math.min.apply(Math.min, locationX) ,
+   Math.min.apply(Math.min, locationY) ,
+   Math.max.apply(Math.max, locationX) ,
+   Math.max.apply(Math.max, locationY),
   ];
  }
  // ---- create array from point coordinate to use for layer  ----
  createPointcoord(obj: Array<SearchResult>) {
   const featureArray = [];
   obj.forEach((el: SearchResult) => {
+   const coord = this.declareXYlocation(el.location);
    featureArray.push({
     type: 'Feature',
     geometry: {
      type: 'Point',
-     coordinates: transform(el.location.reverse(), 'EPSG:4326', this.mapservice.project),
+     coordinates: coord,
     },
    });
   });
@@ -301,8 +310,9 @@ export class SearchBoxComponent implements OnInit {
  }
  gotoDirection(location) {
   this.closeSearch();
-  this.publicVar.removeLayerByName('iconSearch');
-  const coord = transform(location, 'EPSG:4326', this.mapservice.project);
+  console.log(location)
+  this.publicVar.removeLayerByName('iconHoverSearch');
+  const coord = this.declareXYlocation(location)
   setTimeout(e => {
    this.direction.openDirection('start-point');
    this.direction.getClickLoctionAddress();
@@ -322,6 +332,27 @@ export class SearchBoxComponent implements OnInit {
   this.showError = null;
 
   this.publicVar.removeLayerByName('search');
+  this.publicVar.removeLayerByName('searchFilter');
   this.publicVar.removeLayerByName('iconClickSearch');
+ }
+ // location migirad tabdil mikonad ,chon dar bakhshe location x,y jabaja mishid intori neveshtim in func ro
+ declareXYlocation(location) {
+  let Y;
+  let X;
+  if (location[0] < location[1]) {
+   Y = location[0];
+   X = location[1];
+  } else {
+   Y = location[1];
+   X = location[0];
+  }
+  return transform(
+   [
+    X,
+    Y,
+   ],
+   'EPSG:4326',
+   this.mapservice.project,
+  );
  }
 }
