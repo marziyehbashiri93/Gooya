@@ -65,13 +65,13 @@ l-1964 1965 24 30 c54 69 189 279 257 400 427 762 564 1652 388 2517 -115 570
     </form>
     <div class="all-result" id="resultapi" *ngIf="this.resultTotal">
       <div class="result" *ngFor="let item of SearchResults; let i = index" (click)="GoToLocation(i)"
-        (mouseenter)="addMarkerToResult(i)" (mouseleave)="removeMarkerToResult(i)">
+        (mouseenter)="addMarkerToResult(i)" (mouseleave)="removeMarkerToResult('iconHoverSearch')">
         <li>
           <div>
             <p>{{ item.name }}</p>
             <p> {{ item.l_city }} {{ item.h_city }}</p>
           </div>
-          <div (click)=gotoDirection(item.location)>
+          <div (click)=gotoDirection(item.location,item.name)>
             <button class="direction">
               <svg _ngcontent-serverApp-c33="" class="ng-tns-c33-16" height="16px" viewBox="0 0 287.6 300" width="16px">
                 <path _ngcontent-serverApp-c33="" class="ng-tns-c33-16"
