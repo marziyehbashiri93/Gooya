@@ -39,13 +39,15 @@ export class DirectionComponent implements OnInit {
 
  ngOnInit() {}
 
- openDirection(focusElement: string) {
+ openDirection(focusElement: string, isFromRightClick = false) {
   this.publicVar.DirectionFocusInput = focusElement;
   this.publicVar.isOpenPopupAttribute = false;
   // close other element
   // chon function close direction ra nemitavanim dar barkhi az component ha call konim in 2 value ra inja null mikonim
-  this.publicVar.DirectionEndPointValue = null;
-  this.publicVar.DirectionStartPointValue = null;
+  if (!isFromRightClick) {
+   this.publicVar.DirectionEndPointValue = null;
+   this.publicVar.DirectionStartPointValue = null;
+  }
   if (this.publicVar.isOpenMeasure) {
    this.measure.openMeasure();
   }
@@ -87,10 +89,10 @@ export class DirectionComponent implements OnInit {
     // ---- get client clicked coordinate ----
     const geoLocations = (evt as any).coordinate;
     this.publicVar.removeLayerByName('routing');
-console.log('click')
-console.log('focus',this.publicVar.DirectionFocusInput)
-this.publicVar.removeLayerByName(this.publicVar.DirectionFocusInput);
-this.setpoint(geoLocations, this.publicVar.DirectionFocusInput);
+    console.log('click');
+    console.log('focus', this.publicVar.DirectionFocusInput);
+    this.publicVar.removeLayerByName(this.publicVar.DirectionFocusInput);
+    this.setpoint(geoLocations, this.publicVar.DirectionFocusInput);
     // if (this.publicVar.DirectionFocusInput === 'start-point') {
     // } else if (this.publicVar.DirectionFocusInput === 'end-point') {
     //  this.publicVar.removeLayerByName('end-point');
