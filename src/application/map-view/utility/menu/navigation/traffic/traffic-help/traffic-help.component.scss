@@ -2,12 +2,9 @@
 
 .traffic {
   display: grid;
-  position: absolute;
   width: 250px;
   height: 30px;
   background-color: #fff;
-  top: 90vh;
-  right: 40%;
   box-shadow: rgba(0, 0, 0, 0.3) 0 4px 7px;
   border-radius: 10px;
   .content {
