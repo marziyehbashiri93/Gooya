@@ -210,6 +210,7 @@ export class BaseMapComponent implements OnInit, AfterViewInit {
    this.publicVar.isTrafficON = (JSON.parse(localStorage.getItem('Status')) as Status).traffic;
    this.publicVar.isTrafficAreaON = (JSON.parse(localStorage.getItem('Status')) as Status).trafficArea;
    this.publicVar.isTerrainON = (JSON.parse(localStorage.getItem('Status')) as Status).terrain;
+   this.publicVar.isTrafficHelpON = this.publicVar.isTrafficON
   }
   this.publicVar.status = {
    poi: this.publicVar.isPoiON,
