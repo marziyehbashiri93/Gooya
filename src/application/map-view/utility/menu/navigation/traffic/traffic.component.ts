@@ -20,11 +20,10 @@ export class TrafficComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.updateTrafficdata();
   }
 
   switchTraffic(TrafficInput: HTMLInputElement) {
-    
+
     if (TrafficInput.checked) {
       this.publicVar.isTrafficON = true;
       this.mapservice.map.addLayer(this.publicVar.WMTSLayerTraffic);
@@ -40,22 +39,5 @@ export class TrafficComponent implements OnInit {
     this.publicVar.status.traffic = this.publicVar.isTrafficON;
     localStorage.setItem("Status", JSON.stringify(this.publicVar.status));
   }
-  // baraye anke dadeh traffic baraye har change zoom update shavad
-  updateTrafficdata() {
-    this.mapservice.map.getView().on("change:resolution", (evt: Event) => {
-      console.log('aaaaaaaaaaaaaa')
-      if (this.publicVar.isTrafficON) {
-        const source = this.publicVar.WMTSLayerTraffic.getSource();
-        const params = source.getParams();
-        params.t = Math.random();
-        source.updateParams(params);
-        
-      }
-    });
-  }
-}
 
-// setTimeout(() => {
-// }, 1000);
-// console.log("Not checked");
-// if (!TrafficInput.checked) {}
+}
