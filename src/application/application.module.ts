@@ -49,6 +49,7 @@ import { AutofocusDirective } from './shared/directive/autofocus.directive';
 import { HoverButtonDirective } from './shared/directive/hover-button.directive';
 import { TooltipsDirective } from './shared/directive/tooltips.directive';
 import { NoCommaPipe } from './shared/pipe/no-comma.pipe';
+import { TrafficHelpComponent } from './map-view/utility/menu/navigation/traffic/traffic-help/traffic-help.component';
 
 
 @NgModule({
@@ -96,6 +97,7 @@ import { NoCommaPipe } from './shared/pipe/no-comma.pipe';
   SigninComponent,
   VerificationCodeComponent,
   StyleModeComponent,
+  TrafficHelpComponent,
  ],
  imports: [
   CommonModule,

@@ -61,7 +61,7 @@ export class PublicVarService {
  isOddEvenON: boolean = false;
  isPoiON: boolean = true;
  isTerrainON: boolean = false;
- isTrafficON: boolean = false;
+ isTrafficON: boolean = true;
  isTrafficAreaON: boolean = false;
  isOpenPlaces = false;
 

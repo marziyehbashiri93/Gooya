@@ -1,0 +1,45 @@
+@import "../../../../../../../assets/scss/utility/utility.scss";
+
+.traffic {
+  display: grid;
+  position: absolute;
+  width: 250px;
+  height: 30px;
+  background-color: #fff;
+  top: 90vh;
+  right: 40%;
+  box-shadow: rgba(0, 0, 0, 0.3) 0 4px 7px;
+  border-radius: 10px;
+  .content {
+    display: grid;
+    grid-template-columns: auto auto auto auto auto;
+    margin-top: 9px;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-right: 14px;
+    .txt-status {
+      font-size: 8px;
+      color: #9a8f8c;
+    }
+    .grid-container {
+      display: grid;
+      grid-template-columns: auto auto auto auto auto;
+      padding: 5px 25px 4px 25px;
+      grid-gap: 3px;
+
+      .structure-colors {
+        width: 14px;
+        height: 6px;
+      }
+      .brown {
+        background-color: #9e1313;
+      }
+      .red {
+        background-color: #e60000;
+      }
+      .orange {
+        background-color: #f07d02;
+      }
+    }
+  }
+}
