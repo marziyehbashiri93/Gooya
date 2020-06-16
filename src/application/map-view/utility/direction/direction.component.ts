@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { toStringXY } from 'ol/coordinate';
 import GeoJSON from 'ol/format/GeoJSON.js';
 import { transform } from 'ol/proj';
@@ -26,6 +26,7 @@ import { RoutResult } from './../../../shared/interface/rout-result';
 export class DirectionComponent implements OnInit {
  StringXY: string = null;
  isClickHasNetwork: boolean;
+
  // baraye negahdari mokhtasat noqteh click shode
 
  constructor(
@@ -38,13 +39,15 @@ export class DirectionComponent implements OnInit {
 
  ngOnInit() {}
 
- openDirection(focusElement: string) {
+ openDirection(focusElement: string, isFromRightClick = false) {
   this.publicVar.DirectionFocusInput = focusElement;
   this.publicVar.isOpenPopupAttribute = false;
   // close other element
   // chon function close direction ra nemitavanim dar barkhi az component ha call konim in 2 value ra inja null mikonim
-  this.publicVar.DirectionEndPointValue = null;
-  this.publicVar.DirectionStartPointValue = null;
+  if (!isFromRightClick) {
+   this.publicVar.DirectionEndPointValue = null;
+   this.publicVar.DirectionStartPointValue = null;
+  }
   if (this.publicVar.isOpenMeasure) {
    this.measure.openMeasure();
   }
@@ -85,16 +88,16 @@ export class DirectionComponent implements OnInit {
    if (this.publicVar.isOpenDirection) {
     // ---- get client clicked coordinate ----
     const geoLocations = (evt as any).coordinate;
-
-    if (this.publicVar.DirectionFocusInput === 'start-point') {
-     this.publicVar.removeLayerByName('start-point');
-     this.setpoint(geoLocations, 'start-point');
-     this.publicVar.removeLayerByName('routing');
-    } else if (this.publicVar.DirectionFocusInput === 'end-point') {
-     this.publicVar.removeLayerByName('end-point');
-     this.setpoint(geoLocations, 'end-point');
-     this.publicVar.removeLayerByName('routing');
-    }
+    this.publicVar.removeLayerByName('routing');
+    console.log('click');
+    console.log('focus', this.publicVar.DirectionFocusInput);
+    this.publicVar.removeLayerByName(this.publicVar.DirectionFocusInput);
+    this.setpoint(geoLocations, this.publicVar.DirectionFocusInput);
+    // if (this.publicVar.DirectionFocusInput === 'start-point') {
+    // } else if (this.publicVar.DirectionFocusInput === 'end-point') {
+    //  this.publicVar.removeLayerByName('end-point');
+    //  this.setpoint(geoLocations, 'end-point');
+    // }
 
     // ---- if client fouces on start and end  point ----
     if (this.publicVar.DirectionFocusInput === 'start-point' || this.publicVar.DirectionFocusInput === 'end-point') {
@@ -161,7 +164,7 @@ export class DirectionComponent implements OnInit {
   const vectorLayer = new VectorLayer({
    source: vectorSource,
    style: styles,
-   name: this.publicVar.DirectionFocusInput,
+   name: typePoint,
    zIndex: 1006,
   });
   this.mapservice.map.addLayer(vectorLayer);
@@ -241,6 +244,9 @@ export class DirectionComponent implements OnInit {
  }
 
  changeRout() {
+  this.publicVar.removeLayerByName('start-point');
+  this.publicVar.removeLayerByName('end-point');
+  this.publicVar.removeLayerByName('routing');
   // becuase when open dirction by right click dont work , we have to use this.openDirection()
   const empty = this.publicVar.DirectionStartPointValue;
   this.publicVar.DirectionStartPointValue = this.publicVar.DirectionEndPointValue;
@@ -250,9 +256,6 @@ export class DirectionComponent implements OnInit {
   this.publicVar.startpointCoord = this.publicVar.endpointCoord;
   this.publicVar.endpointCoord = temp;
 
-  this.publicVar.removeLayerByName('start-point');
-  this.publicVar.removeLayerByName('end-point');
-  this.publicVar.removeLayerByName('routing');
   this.setpoint(this.publicVar.startpointCoord, 'start-point');
   this.setpoint(this.publicVar.endpointCoord, 'end-point');
   this.searchRout();
@@ -352,15 +355,18 @@ export class DirectionComponent implements OnInit {
       maxxy[0],
       maxxy[1],
      ];
-     this.mapservice.map.getView().fit(bbox , {padding: [30, 30, 30, 30]});
+     this.mapservice.map.getView().fit(bbox, {
+      padding: [
+       30,
+       30,
+       30,
+       30,
+      ],
+     });
      this.mapservice.map.addLayer(vectorLayer);
     } else {
     }
    });
   }
  }
-
- // goToLocation(location){
- //   // go to xy location
- // }
 }

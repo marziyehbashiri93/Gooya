@@ -107,13 +107,22 @@ export class ContextMenuComponent implements OnInit {
  DirectionFromToHere(elemntID: string) {
   // this.publicVar.isOpenDirection = true;
   // chon ng if darim a=bayad timeout bezarim vagar na focus nemikonad
-  if (!this.publicVar.isOpenDirection) {
-   this.publicVar.isOpenDirection = true;
-  }
-  this.publicVar.DirectionFocusInput = elemntID;
-  setTimeout(() => {
-   this.direction.LocationToAddress(this.clientClickCoord);
-  }, 0);
+  // if (!this.publicVar.isOpenDirection) {
+  //  this.publicVar.isOpenDirection = true;
+  // }
+  // this.publicVar.DirectionFocusInput = elemntID;
+  // setTimeout(() => {
+  //  this.direction.LocationToAddress(this.clientClickCoord);
+  // }, 0);
+
+  this.direction.openDirection(elemntID,true);
+  this.publicVar.endpointCoord = this.clientClickCoord;
+  // this.publicVar.DirectionEndPointValue = name;
+  this.publicVar.removeLayerByName(elemntID)
+  this.direction.LocationToAddress(this.clientClickCoord)
+  this.direction.setpoint(this.clientClickCoord, elemntID);
+
+
 
   /* aval noghteh i ra k click kardim az mercator b decimal tabdil mikonin
      bad yek darkhast az tariqi api GetMapLIDByPoint b samte server mifrestim ta nam va Lid noqteh click

@@ -31,7 +31,8 @@ export class SearchBoxComponent implements OnInit {
  SearchResults: Array<SearchResult>;
  showError;
  resultTotal;
- //searchFilter
+ searchExtent;
+
  constructor(
   // ---- for ssr  ----
   @Inject(PLATFORM_ID) private platformId: Object,
@@ -57,7 +58,6 @@ export class SearchBoxComponent implements OnInit {
   this.cleanSearch();
   // ba kodam zaban search konim agar adad bod bar asase zaban site search shavad,dar qeyre in sorat tashkhis dadeh shavad zaban chist
   if (/[0-9]/.test(searchTxt)) {
-   console.log('num');
    if (this.publicVar.isPersian) {
     searchLang = 'fa';
    } else {
@@ -90,18 +90,23 @@ export class SearchBoxComponent implements OnInit {
     )
     .toPromise()
     .then((results: any) => {
-     console.log(results);
      if (results.status === 200 && results.result) {
       this.modifyResult(results.result);
       this.resultTotal = results.result;
       // bar asase an radio k checke filter mikonim result ra
       this.showResult(this.resultForm.value.TabRadio);
       this.publicVar.isOpenSearchResult = true;
-      this.mapservice.map.getView().fit(this.findExtent(results.result),{padding: [30, 30, 30, 30]});
-      this.addMarkerToAllResults(this.createPointcoord(this.resultTotal));
-      if (this.resultForm.value.TabRadio !== 'allTabRadio') {
-       //  this.addMarkerToAllResults(this.createPointcoord(this.SearchResults), 'searchFilter');
-      }
+      this.mapservice.map.getView().fit(this.findExtent(results.result), {
+       padding: [
+        30,
+        30,
+        30,
+        30,
+       ],
+      });
+      this.searchExtent = this.mapservice.map.getView().calculateExtent(this.mapservice.map.getSize());
+
+      // this.addMarkerToAllResults(this.createPointcoord(this.resultTotal));
      } else {
       console.log('error');
       this.showError = true;
@@ -113,27 +118,31 @@ export class SearchBoxComponent implements OnInit {
  // ---- hazf shomal jonob va ,... va hamcnin h-city haye h ba l-city yeksanan  ----
  modifyResult(obj: Array<SearchResult>) {
   obj.forEach(el => {
-   if (el.l_city && el.h_city && el.l_city === el.h_city.replace(/^(شهر)/, '').trim()) {
-    el.l_city = '';
-   }
-   if (el.l_city !== undefined) {
-    el.l_city = el.l_city.replace(/^(شمال غرب)/, '');
-    el.l_city = el.l_city.replace(/^(شمال شرق)/, '');
-    el.l_city = el.l_city.replace(/^(شمال)/, '');
-    el.l_city = el.l_city.replace(/^(جنوب شرق)/, '');
-    el.l_city = el.l_city.replace(/^(جنوب غرب)/, '');
-    el.l_city = el.l_city.replace(/^(جنوب)/, '');
-    el.l_city = el.l_city.replace(/^(شرق)/, '');
-    el.l_city = el.l_city.replace(/^(غرب)/, '');
-   }
    if (el.h_city !== undefined && el.h_city !== '' && el.l_city !== undefined && el.l_city !== '') {
     el.h_city = ',' + el.h_city;
    }
+   // if (el.l_city && el.h_city && el.l_city === el.h_city.replace(/^(شهر)/, '').trim()) {
+   //  el.l_city = '';
+   // }
+   // if (el.l_city !== undefined) {
+   //  el.l_city = el.l_city.replace(/^(شمال غرب)/, '');
+   //  el.l_city = el.l_city.replace(/^(شمال شرق)/, '');
+   //  el.l_city = el.l_city.replace(/^(شمال)/, '');
+   //  el.l_city = el.l_city.replace(/^(جنوب شرق)/, '');
+   //  el.l_city = el.l_city.replace(/^(جنوب غرب)/, '');
+   //  el.l_city = el.l_city.replace(/^(جنوب)/, '');
+   //  el.l_city = el.l_city.replace(/^(شرق)/, '');
+   //  el.l_city = el.l_city.replace(/^(غرب)/, '');
+   // }
   });
  }
  // ----filter result bar asaseh tab ha  ----
  showResult(id) {
-  this.publicVar.removeLayerByName('searchFilter');
+  this.publicVar.removeLayerByName('search');
+  this.removeMarkerToResult('iconClickSearch');
+  this.SearchResults = null;
+  console.log(this.SearchResults);
+
   if (id !== 'allTabRadio') {
    if (id === 'streetTabRadio') {
     this.SearchResults = this.resultTotal.filter(arr => arr.type === 'street');
@@ -142,66 +151,111 @@ export class SearchBoxComponent implements OnInit {
    } else if (id === 'IntersectionTabRadio') {
     this.SearchResults = this.resultTotal.filter(arr => arr.type === 'crossing');
    }
-
-   this.addMarkerToAllResults(this.createPointcoord(this.SearchResults), 'searchFilter');
   } else {
    this.SearchResults = this.resultTotal;
   }
-  console.log(this.mapservice.map.getLayers());
+  console.log(this.SearchResults);
+  if (this.SearchResults[0]) {
+   this.addMarkerToAllResults(this.createPointcoord(this.SearchResults));
+   if (
+    JSON.stringify(this.mapservice.map.getView().calculateExtent(this.mapservice.map.getSize())) !=
+    JSON.stringify(this.searchExtent)
+   ) {
+    this.mapservice.map.getView().fit(this.findExtent(this.SearchResults), {
+     padding: [
+      30,
+      30,
+      30,
+      30,
+     ],
+    });
+   }
+  }
  }
  // ---- baclick roye natayej search b location on miravad  ----
  GoToLocation(i) {
-  // this.markerSource.clear();
   this.publicVar.removeLayerByName('iconClickSearch');
   const center = this.declareXYlocation(this.SearchResults[i].location);
   console.log(center);
-  // // this.addMarker(center);
-  this.mapservice.map.getView().animate({
-   center,
-   zoom: 17,
-   duration: 2000,
-  });
-
+  // this.mapservice.map.getView().animate({
+  //  center,
+  //  zoom: 17,
+  //  duration: 2000,
+  // });
+  this.flyTo(center, function(){});
   this.addMarkerToResult(i, 'iconClickSearch');
  }
+ // animation openlayer baraye gotolocation
+ flyTo(location, done) {
+  const duration = 2000;
+  const view = this.mapservice.map.getView();
+  const center = view.getCenter();
+  const zoom = view.getZoom();
+  const distance = Math.sqrt(Math.pow(center[0] - location[0], 2) + Math.pow(center[1] - location[1], 2)) / 1000;
+  let parts = 3;
+  let called = false;
+  function callback(complete){
+   --parts;
+   if (called) {
+    return;
+   }
+   if (parts === 0 || !complete) {
+    called = true;
+    done(complete);
+   }
+  }
+  // argar baray avalin bar click mikonad animate nadashteh bashad,baraye hamin extent map ro az kol search resual migirim va ba extent alan moqayeseh mikonim
+  const isFirstClick =
+   JSON.stringify(view.calculateExtent(this.mapservice.map.getSize())) == JSON.stringify(this.searchExtent)
+    ? true
+    : false;
+  // aya jaye k click mokonim ba mokhtasat felimon yaki hast ya na
+  if (JSON.stringify(center) != JSON.stringify(location)) {
+   view.animate(
+    {
+     center: location,
+     duration: duration,
+    },
+    callback,
+   );
+   view.animate(
+    {
+     zoom:
+      distance > 10
+       ? zoom > 12 && !isFirstClick ? (distance > 30 ? (distance > 60 ? zoom - 5 : zoom - 2) : zoom - 1) : zoom
+       : zoom,
+     duration: duration / 2,
+    },
+    {
+     zoom: 15,
+     duration: duration,
+    },
+    callback,
+   );
+  }
+ }
+
  // ---- for add point when search ----
- addMarkerToAllResults(geoJsonObj: object, names = 'search') {
+ addMarkerToAllResults(geoJsonObj: object) {
   // for ssr
   if (isPlatformBrowser(this.platformId)) {
-   let markerStyle;
-   if (names === 'search') {
-    markerStyle = {
-     Point: new Style({
-      image: new CircleStyle({
-       radius: 4,
-       fill: new Fill({
-        color: '#FA5B59',
-       }),
-       stroke: new Stroke({
-        color: '#fff',
-        width: 1,
-       }),
-      }),
+   const markerStyle = {
+    Point: new Style({
+     image: new Icon({
+      anchor: [
+       0.5,
+       0.5,
+      ],
+      scale: 0.25,
+      imgSize: [
+       28,
+       28,
+      ],
+      src: '../../../../assets/img/icon-search-result.svg',
      }),
-    };
-   } else {
-    markerStyle = {
-     Point: new Style({
-      image: new Icon({
-       anchor: [
-        0.5,
-        0.5,
-       ],
-       scale: 0.2,
-       imgSize: [
-        96,
-        96,
-       ],
-       src: '../../../../assets/img/searchFilter.svg',
-      }),
-     }),
-    };
-   }
+    }),
+   };
+
    const styleFunction = feature => {
     return [
      markerStyle[feature.getGeometry().getType()],
@@ -210,15 +264,11 @@ export class SearchBoxComponent implements OnInit {
    const vectorSource = new VectorSource({
     features: new GeoJSON().readFeatures(geoJsonObj),
    });
-   console.log('geoJsonObj');
-   console.log(geoJsonObj);
-
-   //  console.log(vectorSource);
    const vectorLayer = new VectorLayer({
     source: vectorSource,
     style: styleFunction,
-    name: names,
-    zIndex: names === 'search' ? 1008 : 1009,
+    name: 'search',
+    zIndex: 1008,
    });
    this.mapservice.map.addLayer(vectorLayer);
   }
@@ -232,24 +282,25 @@ export class SearchBoxComponent implements OnInit {
    });
    let srcImage;
    if (nameLayer === 'iconHoverSearch') {
-    srcImage = '../../../../assets/img/icon-search.svg';
+    srcImage = '../../../../assets/img/icon-search-hover.svg';
    } else {
     srcImage = '../../../../assets/img/icon-search-click.svg';
    }
    const iconStyle = new Style({
     image: new Icon({
      anchor: [
-      0.36,
-      1,
+      0.4,
+      0.8,
      ],
-     scale: 0.2,
+     scale: 1,
      imgSize: [
-      161,
-      161,
+      30,
+      36,
      ],
      src: srcImage,
     }),
    });
+
    iconFeature.setStyle(iconStyle);
    const vectorSource = new VectorSource({
     features: [
@@ -265,8 +316,8 @@ export class SearchBoxComponent implements OnInit {
    this.mapservice.map.addLayer(vectorLayer);
   }
  }
- removeMarkerToResult(i) {
-  this.publicVar.removeLayerByName('iconHoverSearch');
+ removeMarkerToResult(name = 'iconHoverSearch') {
+  this.publicVar.removeLayerByName(name);
  }
  // ---- find extent and fit map to extent  ----
  findExtent(obj: Array<SearchResult>) {
@@ -277,9 +328,9 @@ export class SearchBoxComponent implements OnInit {
    locationY.push(this.declareXYlocation(el.location)[1]);
   });
   return [
-   Math.min.apply(Math.min, locationX) ,
-   Math.min.apply(Math.min, locationY) ,
-   Math.max.apply(Math.max, locationX) ,
+   Math.min.apply(Math.min, locationX),
+   Math.min.apply(Math.min, locationY),
+   Math.max.apply(Math.max, locationX),
    Math.max.apply(Math.max, locationY),
   ];
  }
@@ -308,17 +359,19 @@ export class SearchBoxComponent implements OnInit {
   };
   return geojsonObject;
  }
- gotoDirection(location) {
+ gotoDirection(location, name) {
   this.closeSearch();
-  console.log(location)
+  console.log(location);
   this.publicVar.removeLayerByName('iconHoverSearch');
-  const coord = this.declareXYlocation(location)
-  setTimeout(e => {
-   this.direction.openDirection('start-point');
-   this.direction.getClickLoctionAddress();
-   this.direction.LocationToAddress(coord);
-   this.direction.setpoint(coord, 'start-point');
-  }, 300);
+  this.publicVar.removeLayerByName('iconClickSearch');
+
+  const coord = this.declareXYlocation(location);
+  console.log(coord);
+  this.publicVar.endpointCoord = coord;
+  this.direction.openDirection('end-point');
+  this.publicVar.DirectionEndPointValue = name;
+  this.direction.setpoint(coord, 'end-point');
+
   this.mapservice.map.getView().setCenter(coord);
  }
  closeSearch() {
