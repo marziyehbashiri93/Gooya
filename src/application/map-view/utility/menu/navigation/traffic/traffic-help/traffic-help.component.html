@@ -1,0 +1,21 @@
+<div class="traffic" id="traffic" *ngIf="this.publicVar.isTrafficON">
+  <div class="content">
+    <div style="font-size: 11px ;color: #212121;">ترافیک</div>
+    <div class="grid-container">
+      <div class="txt-status">آهسته</div>
+      <div class="brown structure-colors"></div>
+      <div class="red structure-colors"></div>
+      <div class="orange structure-colors"></div>
+      <div class="txt-status">سریع</div>
+    </div>
+    <label class="switch">
+      <input
+        type="checkbox"
+        #checkboxTraffic
+        (change)="this.traffic.switchTraffic(checkboxTraffic)"
+        [checked]="this.publicVar.isTrafficON"
+      />
+      <div class="slider"></div>
+    </label>
+  </div>
+</div>

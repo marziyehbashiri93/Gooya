@@ -1,3 +1,4 @@
+import { TrafficComponent } from './../utility/menu/navigation/traffic/traffic.component';
 import { Status } from './../../shared/interface/status';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { HttpClient } from '@angular/common/http';
@@ -33,6 +34,7 @@ declare const prayTimes: any;
   ]),
  ],
  encapsulation: ViewEncapsulation.None,
+ providers:[TrafficComponent]
 })
 export class BaseMapComponent implements OnInit, AfterViewInit {
  innertHeight = '100vh';
