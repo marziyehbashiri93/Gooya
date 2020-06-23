@@ -10,7 +10,6 @@ import { fadeAnimation } from 'src/application/shared/animation/fadeAnimation';
 import { CtientInfo } from 'src/application/shared/interface/ctient-info';
 import { MapService } from '../../shared/services/map.service';
 import { PublicVarService } from '../../shared/services/public-var.service';
-declare const prayTimes: any;
 @Component({
  selector: 'app-base-map',
  templateUrl: './base-map.component.html',

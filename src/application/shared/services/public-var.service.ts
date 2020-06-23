@@ -18,7 +18,7 @@ import { Status } from './../interface/status';
 import { MapService } from './map.service';
 import { SearchResult } from '../interface/search-result';
 
-declare const prayTimes: any;
+
 @Injectable({
  providedIn: 'root',
 })
@@ -67,8 +67,6 @@ export class PublicVarService {
  isOpenPlaces = false;
 
  isNight = false;
-//  hour;
-//  hourSunset;
  // kodom halat style check bashad
  styleMode = 'Day';
  isShowOptionStyle = false;
@@ -213,18 +211,6 @@ export class PublicVarService {
   trafficStatus,
  ) {
   let LayerName;
-  // if (styleStatus === 'Auto') {
-  //  const time = new Date();
-  //  const pray = prayTimes.getTimes(time, [ this.clientInfo.longitude, this.clientInfo.latitude ]);
-  //  console.log(pray);
-  //  this.hour = time.getHours();
-  //  this.hourSunset = pray.sunset.split(':')[0];
-  //  if (this.hourSunset <= this.hour) {
-  //   this.isNight = true;
-  //  } else {
-  //   this.isNight = false;
-  //  }
-  // }
   if (styleStatus === 'Day') {
    if (PersianStatus) {
     if (poiStatus) {

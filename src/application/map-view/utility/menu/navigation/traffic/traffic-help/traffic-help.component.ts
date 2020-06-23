@@ -19,7 +19,7 @@ export class TrafficHelpComponent implements OnInit {
  // bayad hatman tag component dakhel base map bashad bakhate hamin in function inja neveshtim
  updateTrafficdata() {
   setInterval(() => {
-   console.log('updatetraffic');
+  //  console.log('updatetraffic');
    if (this.publicVar.isTrafficON) {
     const source = this.publicVar.WMTSLayerTraffic.getSource();
     const params = source.getParams();
