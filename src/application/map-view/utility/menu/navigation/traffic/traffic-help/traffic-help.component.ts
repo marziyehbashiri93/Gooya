@@ -19,13 +19,14 @@ export class TrafficHelpComponent implements OnInit {
  // baraye anke dadeh traffic baraye har change zoom update shavad
  // bayad hatman tag component dakhel base map bashad bakhate hamin in function inja neveshtim
  updateTrafficdata() {
-  this.mapservice.map.on('moveend', (evt: Event) => {
-   if (this.publicVar.isTrafficON) {
-    const source = this.publicVar.WMTSLayerTraffic.getSource();
-    const params = source.getParams();
-    params.t = Math.random();
-    source.updateParams(params);
-   }
-  });
+  // this.mapservice.map.on('moveend', (evt: Event) => {
+  //  console.log('update');
+  //  if (this.publicVar.isTrafficON) {
+  //   const source = this.publicVar.WMTSLayerTraffic.getSource();
+  //   const params = source.getParams();
+  //   params.t = Math.random();
+  //   source.updateParams(params);
+  //  }
+  // });
  }
 }

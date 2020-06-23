@@ -21,10 +21,12 @@ export class TerrainComponent implements OnInit {
  switchTerrain(TerrainInput: HTMLInputElement) {
   if (TerrainInput.checked) {
    this.publicVar.isTerrainON = true;
-   this.mapservice.map.addLayer(this.publicVar.WMTSLayerTerrain);
+   this.mapservice.map.addLayer(
+    this.publicVar.createWMTSLayer(this.publicVar.WMTSTerrainLayerName, this.publicVar.WMTSTerrainLayerName, 3, 14, 0),
+   );
   } else {
    this.publicVar.isTerrainON = false;
-   this.mapservice.map.removeLayer(this.publicVar.WMTSLayerTerrain);
+   this.publicVar.removeLayerByName(this.publicVar.WMTSTerrainLayerName);
   }
   this.publicVar.status.terrain = this.publicVar.isTerrainON;
   localStorage.setItem('Status', JSON.stringify(this.publicVar.status));

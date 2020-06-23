@@ -45,8 +45,6 @@ export class MiniMapComponent implements OnInit {
 
   // ---- base map----
   this.publicVar.removeAllLayers(this.mapservice.map);
-
-  this.mapservice.map.addLayer(this.publicVar.OSMLayer);
   this.publicVar.wichLayerAdd(
    this.mapservice.map,
    this.publicVar.styleMode,
@@ -57,14 +55,9 @@ export class MiniMapComponent implements OnInit {
    this.publicVar.isTrafficAreaON,
    this.publicVar.isTrafficON,
   );
-  if (this.publicVar.isTrafficAreaON) {
-   this.mapservice.map.addLayer(this.publicVar.WMTSLayerRestrictedArea);
-  }
-  if (this.publicVar.isOddEvenON) {
-   this.mapservice.map.addLayer(this.publicVar.WMTSLayerOddEvenArea);
-  }
  }
  goMapToSatellite() {
+  console.log('maptostelite');
   this.publicVar.isMiniMapSatellite = false;
   this.publicVar.isMap = false;
   //  hamaye laya ha ra az map hazf mikonin
@@ -72,14 +65,31 @@ export class MiniMapComponent implements OnInit {
 
   this.mapservice.map.addLayer(this.publicVar.SatelliteLayer);
   if (this.publicVar.isPersian) {
-   this.mapservice.map.addLayer(this.publicVar.SatelliteOverlayFA);
+   this.mapservice.map.addLayer(
+    this.publicVar.createWMTSLayer(
+     this.publicVar.WMTSSatelliteOverlayLayerName,
+     this.publicVar.WMTSSatelliteOverlayLayerName,
+     3,
+     14,
+     0,
+     'Gooya2018Q3_V2_New:GOOGLE_LABEL_FA',
+    ),
+   );
   } else {
-   this.mapservice.map.addLayer(this.publicVar.SatelliteOverlayEN);
+   this.mapservice.map.addLayer(
+    this.publicVar.createWMTSLayer(
+     this.publicVar.WMTSSatelliteOverlayLayerName,
+     this.publicVar.WMTSSatelliteOverlayLayerName,
+     3,
+     14,
+     0,
+     'Gooya2018Q3_V2_New:GOOGLE_LABEL_EN',
+    ),
+   );
   }
 
   // ----mini map----
   this.publicVar.miniMap.removeLayer(this.publicVar.SatelliteLayer);
-  this.publicVar.miniMap.addLayer(this.publicVar.OSMLayer);
   this.publicVar.wichLayerAdd(
    this.publicVar.miniMap,
    this.publicVar.styleMode,

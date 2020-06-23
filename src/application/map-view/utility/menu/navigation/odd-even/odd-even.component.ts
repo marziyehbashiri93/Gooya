@@ -24,10 +24,12 @@ export class OddEvenComponent implements OnInit {
   if (OddEvenInput.checked) {
    this.publicVar.isOddEvenON = true;
    console.log('OddEvenInput.checked');
-   this.mapservice.map.addLayer(this.publicVar.WMTSLayerOddEvenArea);
+   this.mapservice.map.addLayer(
+    this.publicVar.createWMTSLayer(this.publicVar.WMTSOddEvenLayerName, this.publicVar.WMTSOddEvenLayerName),
+   );
   } else {
    this.publicVar.isOddEvenON = false;
-   this.mapservice.map.removeLayer(this.publicVar.WMTSLayerOddEvenArea);
+   this.publicVar.removeLayerByName(this.publicVar.WMTSOddEvenLayerName);
   }
   this.publicVar.status.oddEven = this.publicVar.isOddEvenON;
   localStorage.setItem('Status', JSON.stringify(this.publicVar.status));

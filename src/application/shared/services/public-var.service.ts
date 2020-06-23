@@ -42,9 +42,9 @@ export class PublicVarService {
  WMTSNightEnPoiLayerName = 'KCE_NIGHT_EN_POI';
  WMTSTerrainLayerName = 'IranDEM30m';
  WMTSOddEvenLayerName = 'ODDEVEN_AREAS';
- WMTSTrafficLayerName = 'traffic';
+ WMTSTrafficLayerName = 'TRAFFIC';
  WMTSRestrictedAreaLayerName = 'RESTRICTED_AREAS';
-
+ WMTSSatelliteOverlayLayerName = 'NETWORK_SP5';
  isPersian = null;
 
  mouseCursor = 'grab';
@@ -78,7 +78,7 @@ export class PublicVarService {
  // ---- contextmenu ----
  // ---- Utility ----
  isOpenSearchResult = false;
- SearchResults:Array<SearchResult>;
+ SearchResults: Array<SearchResult>;
  // ---- Utility ----
  // ---- Direction ----
  DirectionEndPointValue;
@@ -136,349 +136,15 @@ export class PublicVarService {
  helpTooltip: Overlay;
  sketch;
  // ---- Mesuare ----
+ mousePositionProject = 'EPSG:4326';
  // ---- for local storage ----
  status: Status;
 
- mousePositionProject = 'EPSG:4326';
- // ----for add wmts laye to map----
- projLike = this.mapservice.project;
- projections = getProjection(this.projLike);
- projectionExtent = this.projections.getExtent();
- size = (this.projectionExtent[2] - this.projectionExtent[0]) / 256;
- resolution: Array<number> = Array.from({ length: this.mapservice.maxZoom + 1 }, (x, z) => this.size / Math.pow(2, z));
- matrixId: Array<string> = Array.from({ length: this.mapservice.maxZoom + 1 }, (x, z) => this.projLike + ':' + z);
-
- // resolution: Array<number> = Array.from({ length: this.mapservice.maxZoom + 1 }, (x, z) => this.size / Math.pow(2, (z+1)));
- //  resolution = [
- //        0.703125, 0.3515625, 0.17578125, 0.087890625,
- //        0.0439453125, 0.02197265625, 0.010986328125,
- //        0.0054931640625, 0.00274658203125, 0.001373291015625,
- //        6.866455078125E-4, 3.4332275390625E-4, 1.71661376953125E-4,
- //        8.58306884765625E-5, 4.291534423828125E-5, 2.1457672119140625E-5,
- //          1.0728836059570312E-5, 5.364418029785156E-6, 2.682209014892578E-6,
- //        1.341104507446289E-6, 6.705522537231445E-7, 3.3527612686157227E-7
- //  ];
-
- // --------------- DAY  -------------
- WMTSLayerDAYFAPOI = new TileLayer({
-  opacity: 1,
-  source: new WMTS({
-   url: this.WMTSUrl,
-   layer: this.WMTSDayFaPoiLayerName,
-   matrixSet: this.projLike,
-   format: 'image/png8',
-   projection: this.projections,
-   tileGrid: new WMTSTileGrid({
-    origin: [
-     this.projectionExtent[0],
-     this.projectionExtent[3],
-    ],
-    resolutions: this.resolution,
-    matrixIds: this.matrixId,
-    // KCE_Layer bound in geoserver
-    extent: this.mapservice.extentMap,
-   }),
-   style: '',
-   wrapX: true,
-   tileLoadFunction: this.tileLoader,
-  }),
-  zIndex: 2,
- });
- WMTSLayerDAYFA = new TileLayer({
-  opacity: 1,
-  source: new WMTS({
-   attributions:
-    'Tiles © <a href="https://services.arcgisonline.com/arcgis/rest/' +
-    'services/Demographics/USA_Population_Density/MapServer/">ArcGIS</s>',
-   url: this.WMTSUrl,
-   layer: this.WMTSDayFaLayerName,
-   matrixSet: this.projLike,
-   format: 'image/png',
-   projection: this.projections,
-   tileGrid: new WMTSTileGrid({
-    origin: [
-     this.projectionExtent[0],
-     this.projectionExtent[3],
-    ],
-    resolutions: this.resolution,
-    matrixIds: this.matrixId,
-    // KCE_Layer bound in geoserver
-    extent: this.mapservice.extentMap,
-   }),
-   style: '',
-   wrapX: true,
-   tileLoadFunction: this.tileLoader,
-  }),
-  zIndex: 2,
- });
- WMTSLayerDAYENPOI = new TileLayer({
-  opacity: 1,
-  source: new WMTS({
-   url: this.WMTSUrl,
-   layer: this.WMTSDayEnPoiLayerName,
-   matrixSet: this.projLike,
-   format: 'image/png',
-   projection: this.projections,
-   tileGrid: new WMTSTileGrid({
-    origin: [
-     this.projectionExtent[0],
-     this.projectionExtent[3],
-    ],
-    resolutions: this.resolution,
-    matrixIds: this.matrixId,
-    // KCE_Layer bound in geoserver
-    extent: this.mapservice.extentMap,
-   }),
-   style: '',
-   wrapX: true,
-   tileLoadFunction: this.tileLoader,
-  }),
-  zIndex: 2,
- });
- WMTSLayerDAYEN = new TileLayer({
-  opacity: 1,
-  source: new WMTS({
-   attributions:
-    'Tiles © <a href="https://services.arcgisonline.com/arcgis/rest/' +
-    'services/Demographics/USA_Population_Density/MapServer/">ArcGIS</s>',
-   url: this.WMTSUrl,
-   layer: this.WMTSDayEnLayerName,
-   matrixSet: this.projLike,
-   format: 'image/png',
-   projection: this.projections,
-   tileGrid: new WMTSTileGrid({
-    origin: [
-     this.projectionExtent[0],
-     this.projectionExtent[3],
-    ],
-    resolutions: this.resolution,
-    matrixIds: this.matrixId,
-    // KCE_Layer bound in geoserver
-    extent: this.mapservice.extentMap,
-   }),
-   style: '',
-   wrapX: true,
-   tileLoadFunction: this.tileLoader,
-  }),
-  zIndex: 2,
- });
- // --------------- night  -------------
- WMTSLayerNIGHTFAPOI = new TileLayer({
-  opacity: 1,
-  source: new WMTS({
-   attributions:
-    'Tiles © <a href="https://services.arcgisonline.com/arcgis/rest/' +
-    'services/Demographics/USA_Population_Density/MapServer/">ArcGIS</s>',
-   url: this.WMTSUrl,
-   layer: this.WMTSNightFaPoiLayerName,
-   matrixSet: this.projLike,
-   format: 'image/png',
-   projection: this.projections,
-   tileGrid: new WMTSTileGrid({
-    origin: [
-     this.projectionExtent[0],
-     this.projectionExtent[3],
-    ],
-    resolutions: this.resolution,
-    matrixIds: this.matrixId,
-    // KCE_Layer bound in geoserver
-    extent: this.mapservice.extentMap,
-   }),
-   style: '',
-   wrapX: true,
-   tileLoadFunction: this.tileLoader,
-  }),
-  zIndex: 2,
- });
- WMTSLayerNIGHTFA = new TileLayer({
-  opacity: 1,
-  source: new WMTS({
-   attributions:
-    'Tiles © <a href="https://services.arcgisonline.com/arcgis/rest/' +
-    'services/Demographics/USA_Population_Density/MapServer/">ArcGIS</s>',
-   url: this.WMTSUrl,
-   layer: this.WMTSNightFaLayerName,
-   matrixSet: this.projLike,
-   format: 'image/png',
-   projection: this.projections,
-   tileGrid: new WMTSTileGrid({
-    origin: [
-     this.projectionExtent[0],
-     this.projectionExtent[3],
-    ],
-    resolutions: this.resolution,
-    matrixIds: this.matrixId,
-    // KCE_Layer bound in geoserver
-    extent: this.mapservice.extentMap,
-   }),
-   style: '',
-   wrapX: true,
-   tileLoadFunction: this.tileLoader,
-  }),
-  zIndex: 2,
- });
- WMTSLayerNIGHTENPOI = new TileLayer({
-  opacity: 1,
-  source: new WMTS({
-   attributions:
-    'Tiles © <a href="https://services.arcgisonline.com/arcgis/rest/' +
-    'services/Demographics/USA_Population_Density/MapServer/">ArcGIS</s>',
-   url: this.WMTSUrl,
-   layer: this.WMTSNightEnPoiLayerName,
-   matrixSet: this.projLike,
-   format: 'image/png',
-   projection: this.projections,
-   tileGrid: new WMTSTileGrid({
-    origin: [
-     this.projectionExtent[0],
-     this.projectionExtent[3],
-    ],
-    resolutions: this.resolution,
-    matrixIds: this.matrixId,
-    // KCE_Layer bound in geoserver
-    extent: this.mapservice.extentMap,
-   }),
-   style: '',
-   wrapX: true,
-   tileLoadFunction: this.tileLoader,
-  }),
-  zIndex: 2,
- });
- WMTSLayerNIGHTEN = new TileLayer({
-  opacity: 1,
-  source: new WMTS({
-   attributions:
-    'Tiles © <a href="https://services.arcgisonline.com/arcgis/rest/' +
-    'services/Demographics/USA_Population_Density/MapServer/">ArcGIS</s>',
-   url: this.WMTSUrl,
-   layer: this.WMTSNightEnLayerName,
-   matrixSet: this.projLike,
-   format: 'image/png',
-   projection: this.projections,
-   tileGrid: new WMTSTileGrid({
-    origin: [
-     this.projectionExtent[0],
-     this.projectionExtent[3],
-    ],
-    resolutions: this.resolution,
-    matrixIds: this.matrixId,
-    // KCE_Layer bound in geoserver
-    extent: this.mapservice.extentMap,
-   }),
-   style: '',
-   wrapX: true,
-   tileLoadFunction: this.tileLoader,
-  }),
-  zIndex: 2,
- });
- // ----DEM----
- WMTSLayerTerrain = new TileLayer({
-  opacity: 1,
-  visible: true,
-  source: new WMTS({
-   attributions:
-    'Tiles © <a href="https://services.arcgisonline.com/arcgis/rest/' +
-    'services/Demographics/USA_Population_Density/MapServer/">ArcGIS</s>',
-   url: this.WMTSUrl,
-   layer: this.WMTSTerrainLayerName,
-   matrixSet: this.projLike,
-   format: 'image/png',
-   projection: this.projections,
-   tileGrid: new WMTSTileGrid({
-    origin: [
-     this.projectionExtent[0],
-     this.projectionExtent[3],
-    ],
-    resolutions: this.resolution,
-    matrixIds: this.matrixId,
-    // az geoserver begirim extent ro
-    extent: [
-     5152078.29,
-     3452021.1,
-     6638063.34,
-     4591795.67,
-    ],
-   }),
-   style: '',
-   wrapX: true,
-   tileLoadFunction: this.tileLoader,
-  }),
-  zIndex: 5,
- });
- // ----TraffidArea----
- WMTSLayerRestrictedArea = new TileLayer({
-  opacity: 1,
-  source: new WMTS({
-   attributions:
-    'Tiles © <a href="https://services.arcgisonline.com/arcgis/rest/' +
-    'services/Demographics/USA_Population_Density/MapServer/">ArcGIS</s>',
-   url: this.WMTSUrl,
-   layer: this.WMTSRestrictedAreaLayerName,
-   matrixSet: this.projLike,
-   format: 'image/png',
-   projection: this.projections,
-   tileGrid: new WMTSTileGrid({
-    origin: [
-     this.projectionExtent[0],
-     this.projectionExtent[3],
-    ],
-    resolutions: this.resolution,
-    matrixIds: this.matrixId,
-    // az geoserver begirim extent ro
-    extent: [
-     5152078.29,
-     3452021.1,
-     6638063.34,
-     4591795.67,
-    ],
-   }),
-   style: '',
-   wrapX: true,
-   tileLoadFunction: this.tileLoader,
-  }),
-  zIndex: 4,
- });
- // ----oddEvenArea----
- WMTSLayerOddEvenArea = new TileLayer({
-  opacity: 1,
-  source: new WMTS({
-   attributions:
-    'Tiles © <a href="https://services.arcgisonline.com/arcgis/rest/' +
-    'services/Demographics/USA_Population_Density/MapServer/">ArcGIS</s>',
-   url: this.WMTSUrl,
-   layer: this.WMTSOddEvenLayerName,
-   matrixSet: this.projLike,
-   format: 'image/png',
-   projection: this.projections,
-   tileGrid: new WMTSTileGrid({
-    origin: [
-     this.projectionExtent[0],
-     this.projectionExtent[3],
-    ],
-    resolutions: this.resolution,
-    matrixIds: this.matrixId,
-    // az geoserver begirim extent ro
-    extent: [
-     5016353.97,
-     4251739.56,
-     5731325.03,
-     4517514.12,
-    ],
-   }),
-   style: '',
-   wrapX: true,
-   tileLoadFunction: this.tileLoader,
-  }),
-  zIndex: 4,
- });
- // ----Traffic----
  WMTSLayerTraffic = new TileLayer({
   source: new TileWMS({
    url: this.WMSUrl,
    params: {
-    LAYERS: [
-     this.WMTSTrafficLayerName,
-    ],
+    LAYERS: [ this.WMTSTrafficLayerName ],
     TILED: true,
     WIDTH: 265,
     HEIGHT: 256,
@@ -487,6 +153,8 @@ export class PublicVarService {
    transition: 0,
   }),
   zIndex: 4,
+  minZoom: 10,
+  maxZoom: 19,
  });
  // ----OSM----
  OSMLayer = new TileLayer({
@@ -504,93 +172,6 @@ export class PublicVarService {
    url: 'http://mt1.google.com/vt/lyrs=s&hl=pl&&x={x}&y={y}&z={z}',
   }),
  });
- // ----label for google satellite----
- SatelliteOverlayFA = new TileLayer({
-  opacity: 1,
-  source: new WMTS({
-   attributions:
-    'Tiles © <a href="https://services.arcgisonline.com/arcgis/rest/' +
-    'services/Demographics/USA_Population_Density/MapServer/">ArcGIS</s>',
-   url: this.WMTSUrl,
-   layer: 'NETWORK_SP5',
-   matrixSet: this.projLike,
-   format: 'image/png',
-   projection: this.projections,
-   tileGrid: new WMTSTileGrid({
-    origin: [
-     this.projectionExtent[0],
-     this.projectionExtent[3],
-    ],
-    resolutions: this.resolution,
-    matrixIds: this.matrixId,
-    // az geoserver begirim extent ro
-    extent: [
-     4902831.14,
-     2884211.38,
-     20037508.34,
-     4833345.25,
-    ],
-   }),
-   style: 'Gooya2018Q3_V2_New:GOOGLE_LABEL_FA',
-   wrapX: true,
-   tileLoadFunction: this.tileLoader,
-  }),
-  zIndex: 2,
- });
- SatelliteOverlayEN = new TileLayer({
-  opacity: 1,
-  source: new WMTS({
-   attributions:
-    'Tiles © <a href="https://services.arcgisonline.com/arcgis/rest/' +
-    'services/Demographics/USA_Population_Density/MapServer/">ArcGIS</s>',
-   url: this.WMTSUrl,
-   layer: 'NETWORK_SP5',
-   matrixSet: this.projLike,
-   format: 'image/png',
-   projection: this.projections,
-   tileGrid: new WMTSTileGrid({
-    origin: [
-     this.projectionExtent[0],
-     this.projectionExtent[3],
-    ],
-    resolutions: this.resolution,
-    matrixIds: this.matrixId,
-    // az geoserver begirim extent ro
-    extent: [
-     4902831.14,
-     2884211.38,
-     20037508.34,
-     4833345.25,
-    ],
-   }),
-   style: 'Gooya2018Q3_V2_New:GOOGLE_LABEL_EN',
-   wrapX: true,
-   tileLoadFunction: this.tileLoader,
-  }),
-  zIndex: 2,
- });
-
- tileLoader(tile, src) {
-  const client = new XMLHttpRequest();
-  client.open('GET', src);
-  client.responseType = 'arraybuffer';
-  client.onload = function(){
-   if (this.status === 200) {
-    const arrayBufferView = new Uint8Array(this.response);
-    const blob = new Blob(
-     [
-      arrayBufferView,
-     ],
-     { type: 'image/png' },
-    );
-    const urlCreator = window.URL; // || window.webkitURL;
-    const imageUrl = urlCreator.createObjectURL(blob);
-    tile.getImage().src = imageUrl;
-    //  tile.getImage().src = src;
-   }
-  };
-  client.send();
- }
 
  removeAllLayers(map: Map) {
   let layer;
@@ -605,7 +186,6 @@ export class PublicVarService {
     layer.get('name') !== 'search' &&
     layer.get('name') !== 'searchFilter' &&
     layer.get('name') !== 'iconClickSearch'
-
    ) {
     map.removeLayer(layer);
    }
@@ -632,12 +212,10 @@ export class PublicVarService {
   trafficAreaStatus,
   trafficStatus,
  ) {
+  let LayerName;
   if (styleStatus === 'Auto') {
    const time = new Date();
-   const pray = prayTimes.getTimes(time, [
-    this.clientInfo.longitude,
-    this.clientInfo.latitude,
-   ]);
+   const pray = prayTimes.getTimes(time, [ this.clientInfo.longitude, this.clientInfo.latitude ]);
    console.log(pray);
    this.hour = time.getHours();
    this.hourSunset = pray.sunset.split(':')[0];
@@ -650,46 +228,123 @@ export class PublicVarService {
   if (styleStatus === 'Day' || (styleStatus === 'Auto' && !this.isNight)) {
    if (PersianStatus) {
     if (poiStatus) {
-     map.addLayer(this.WMTSLayerDAYFAPOI);
+     LayerName = this.WMTSDayFaPoiLayerName;
+     //  map.addLayer(this.WMTSLayerDAYFAPOI);
     } else {
-     map.addLayer(this.WMTSLayerDAYFA);
+     LayerName = this.WMTSDayFaLayerName;
+     //  map.addLayer(this.WMTSLayerDAYFA);
     }
    } else {
     if (poiStatus) {
-     map.addLayer(this.WMTSLayerDAYENPOI);
+     LayerName = this.WMTSDayEnPoiLayerName;
+     //  map.addLayer(this.WMTSLayerDAYENPOI);
     } else {
-     map.addLayer(this.WMTSLayerDAYEN);
+     LayerName = this.WMTSDayEnLayerName;
+     //  map.addLayer(this.WMTSLayerDAYEN);
     }
    }
   } else if (styleStatus === 'Night' || (styleStatus === 'Auto' && this.isNight)) {
    if (PersianStatus) {
     if (poiStatus) {
-     map.addLayer(this.WMTSLayerNIGHTFAPOI);
+     LayerName = this.WMTSNightFaPoiLayerName;
+     //  map.addLayer(this.WMTSLayerNIGHTFAPOI);
     } else {
-     map.addLayer(this.WMTSLayerNIGHTFA);
+     LayerName = this.WMTSNightFaLayerName;
+
+     //  map.addLayer(this.WMTSLayerNIGHTFA);
     }
    } else {
     if (poiStatus) {
-     map.addLayer(this.WMTSLayerNIGHTENPOI);
+     LayerName = this.WMTSNightEnPoiLayerName;
+
+     //  map.addLayer(this.WMTSLayerNIGHTENPOI);
     } else {
-     map.addLayer(this.WMTSLayerNIGHTEN);
+     LayerName = this.WMTSNightEnLayerName;
     }
    }
   }
+  map.addLayer(this.createWMTSLayer(LayerName));
 
   if (terrainStatus) {
-   this.mapservice.map.addLayer(this.WMTSLayerTerrain);
-  }
-
-  if (trafficAreaStatus) {
-   this.mapservice.map.addLayer(this.WMTSLayerRestrictedArea);
+   map.addLayer(this.createWMTSLayer(this.WMTSTerrainLayerName, this.WMTSTerrainLayerName, 3, 14, 0));
   }
   if (trafficStatus) {
-   this.mapservice.map.addLayer(this.WMTSLayerTraffic);
+   //zIndex=4
+   map.addLayer(this.WMTSLayerTraffic);
   }
   if (OddEvenStatus) {
-   this.mapservice.map.addLayer(this.WMTSLayerOddEvenArea);
+   map.addLayer(this.createWMTSLayer(this.WMTSOddEvenLayerName, this.WMTSOddEvenLayerName));
+  }
+  if (trafficAreaStatus) {
+   map.addLayer(this.createWMTSLayer(this.WMTSRestrictedAreaLayerName, this.WMTSRestrictedAreaLayerName));
   }
  }
-
+ createWMTSLayer(LayerName, WMTSname = 'KCE', zIndex = 2, maxZoom = 19, minZoom = 0, style = '') {
+  let extentLayer;
+  if (LayerName === this.WMTSOddEvenLayerName) {
+   extentLayer = [ 5016353.97, 4251739.56, 5731325.03, 4517514.12 ];
+  } else if (LayerName === this.WMTSRestrictedAreaLayerName) {
+   extentLayer = [ 5152078.29, 3452021.1, 6638063.34, 4591795.67 ];
+  } else {
+   extentLayer = this.mapservice.extentMap;
+  }
+  // ----for add wmts laye to map----
+  const projLike = this.mapservice.project;
+  const projections = getProjection(projLike);
+  const projectionExtent = projections.getExtent();
+  const size = (projectionExtent[2] - projectionExtent[0]) / 256;
+  const resolution = Array.from({ length: this.mapservice.maxZoom + 1 }, (x, z) => size / Math.pow(2, z));
+  const matrixId = Array.from({ length: this.mapservice.maxZoom + 1 }, (x, z) => projLike + ':' + z);
+  return new TileLayer({
+   opacity: 1,
+   source: new WMTS({
+    url: this.WMTSUrl,
+    layer: LayerName,
+    matrixSet: projLike,
+    format: 'image/png8',
+    projection: projections,
+    tileGrid: new WMTSTileGrid({
+     origin: [ projectionExtent[0], projectionExtent[3] ],
+     resolutions: resolution,
+     matrixIds: matrixId,
+     // KCE_Layer bound in geoserver
+     extent: extentLayer,
+    }),
+    style: style,
+    wrapX: true,
+    tileLoadFunction: tileLoader,
+   }),
+   zIndex: zIndex,
+   minZoom: minZoom,
+   maxZoom: maxZoom,
+   name: WMTSname,
+  });
+  function tileLoader(tile, src){
+   const client = new XMLHttpRequest();
+   client.open('GET', src);
+   client.responseType = 'arraybuffer';
+   client.onload = function(){
+    if (this.status === 200) {
+     const arrayBufferView = new Uint8Array(this.response);
+     const blob = new Blob([ arrayBufferView ], { type: 'image/png' });
+     const urlCreator = window.URL; // || window.webkitURL;
+     const imageUrl = urlCreator.createObjectURL(blob);
+     tile.getImage().src = imageUrl;
+     //  tile.getImage().src = src;
+    }
+   };
+   client.send();
+  }
+ }
 }
+
+  // resolution: Array<number> = Array.from({ length: this.mapservice.maxZoom + 1 }, (x, z) => this.size / Math.pow(2, (z+1)));
+  //  resolution = [
+  //        0.703125, 0.3515625, 0.17578125, 0.087890625,
+  //        0.0439453125, 0.02197265625, 0.010986328125,
+  //        0.0054931640625, 0.00274658203125, 0.001373291015625,
+  //        6.866455078125E-4, 3.4332275390625E-4, 1.71661376953125E-4,
+  //        8.58306884765625E-5, 4.291534423828125E-5, 2.1457672119140625E-5,
+  //          1.0728836059570312E-5, 5.364418029785156E-6, 2.682209014892578E-6,
+  //        1.341104507446289E-6, 6.705522537231445E-7, 3.3527612686157227E-7
+  //  ];
