@@ -42,7 +42,6 @@ export class MiniMapComponent implements OnInit {
   // hame laye haye add shode b mini map remove mikinim chon dagig moshakhas nist che layei add az in ravesh estefadeh mikonim
   this.publicVar.removeAllLayers(this.publicVar.miniMap);
   this.publicVar.miniMap.addLayer(this.publicVar.SatelliteLayer);
-
   // ---- base map----
   this.publicVar.removeAllLayers(this.mapservice.map);
   this.publicVar.wichLayerAdd(
@@ -87,7 +86,21 @@ export class MiniMapComponent implements OnInit {
     ),
    );
   }
-
+  if (this.publicVar.isTrafficAreaON) {
+   this.mapservice.map.addLayer(
+    this.publicVar.createWMTSLayer(
+     this.publicVar.WMTSRestrictedAreaLayerName,
+     this.publicVar.WMTSRestrictedAreaLayerName,
+     6,
+    ),
+   );
+  }
+  if (this.publicVar.isOddEvenON) {
+   this.mapservice.map.addLayer(
+    this.publicVar.createWMTSLayer(this.publicVar.WMTSOddEvenLayerName, this.publicVar.WMTSOddEvenLayerName),
+    5,
+   );
+  }
   // ----mini map----
   this.publicVar.miniMap.removeLayer(this.publicVar.SatelliteLayer);
   this.publicVar.wichLayerAdd(
