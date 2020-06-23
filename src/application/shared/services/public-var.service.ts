@@ -67,10 +67,10 @@ export class PublicVarService {
  isOpenPlaces = false;
 
  isNight = false;
- hour;
- hourSunset;
+//  hour;
+//  hourSunset;
  // kodom halat style check bashad
- styleMode = 'Auto';
+ styleMode = 'Day';
  isShowOptionStyle = false;
  // ---- menu ----
  // ---- contextmenu ----
@@ -213,19 +213,19 @@ export class PublicVarService {
   trafficStatus,
  ) {
   let LayerName;
-  if (styleStatus === 'Auto') {
-   const time = new Date();
-   const pray = prayTimes.getTimes(time, [ this.clientInfo.longitude, this.clientInfo.latitude ]);
-   console.log(pray);
-   this.hour = time.getHours();
-   this.hourSunset = pray.sunset.split(':')[0];
-   if (this.hourSunset <= this.hour) {
-    this.isNight = true;
-   } else {
-    this.isNight = false;
-   }
-  }
-  if (styleStatus === 'Day' || (styleStatus === 'Auto' && !this.isNight)) {
+  // if (styleStatus === 'Auto') {
+  //  const time = new Date();
+  //  const pray = prayTimes.getTimes(time, [ this.clientInfo.longitude, this.clientInfo.latitude ]);
+  //  console.log(pray);
+  //  this.hour = time.getHours();
+  //  this.hourSunset = pray.sunset.split(':')[0];
+  //  if (this.hourSunset <= this.hour) {
+  //   this.isNight = true;
+  //  } else {
+  //   this.isNight = false;
+  //  }
+  // }
+  if (styleStatus === 'Day') {
    if (PersianStatus) {
     if (poiStatus) {
      LayerName = this.WMTSDayFaPoiLayerName;
@@ -243,21 +243,16 @@ export class PublicVarService {
      //  map.addLayer(this.WMTSLayerDAYEN);
     }
    }
-  } else if (styleStatus === 'Night' || (styleStatus === 'Auto' && this.isNight)) {
+  } else if (styleStatus === 'Night') {
    if (PersianStatus) {
     if (poiStatus) {
      LayerName = this.WMTSNightFaPoiLayerName;
-     //  map.addLayer(this.WMTSLayerNIGHTFAPOI);
     } else {
      LayerName = this.WMTSNightFaLayerName;
-
-     //  map.addLayer(this.WMTSLayerNIGHTFA);
     }
    } else {
     if (poiStatus) {
      LayerName = this.WMTSNightEnPoiLayerName;
-
-     //  map.addLayer(this.WMTSLayerNIGHTENPOI);
     } else {
      LayerName = this.WMTSNightEnLayerName;
     }
@@ -337,7 +332,6 @@ export class PublicVarService {
   }
  }
 }
-
   // resolution: Array<number> = Array.from({ length: this.mapservice.maxZoom + 1 }, (x, z) => this.size / Math.pow(2, (z+1)));
   //  resolution = [
   //        0.703125, 0.3515625, 0.17578125, 0.087890625,

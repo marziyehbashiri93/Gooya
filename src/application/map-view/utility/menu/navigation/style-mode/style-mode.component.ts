@@ -10,20 +10,14 @@ import { PublicVarService } from 'src/application/shared/services/public-var.ser
 export class StyleModeComponent implements OnInit {
  constructor(public publicVar: PublicVarService, private mapservice: MapService) {}
  // chon component menu ba ng if baz basteh mishavad nemitavanad megdar value stylecheck ra negah darad baya dar service benevisim
- styles = [
-  { styleEn: 'Auto', styleFa: 'اتوماتیک' },
-  { styleEn: 'Night', styleFa: 'شب' },
-  { styleEn: 'Day', styleFa: 'روز' },
- ];
+ styles = [{ styleEn: 'Day', styleFa: 'روز' }, { styleEn: 'Night', styleFa: 'شب' } ];
 
  styleValue = this.styles[0];
  isShowOptionStyle = false;
 
  ngOnInit() {
-   // baraye inke bedonim che kalameh i dar style namayesh bedim
-  if (this.publicVar.styleMode === 'Day') {
-   this.styleValue = this.styles[2];
-  } else if (this.publicVar.styleMode === 'Night') {
+  // baraye inke bedonim che kalameh i dar style namayesh bedim
+  if (this.publicVar.styleMode === 'Night') {
    this.styleValue = this.styles[1];
   } else {
    this.styleValue = this.styles[0];
@@ -39,15 +33,11 @@ export class StyleModeComponent implements OnInit {
     this.styleValue = this.styles[1];
     this.publicVar.styleMode = this.styleValue.styleEn;
     this.publicVar.isNight = true;
-   } else if (styletype === 'Day') {
-    console.log('day');
-    this.styleValue = this.styles[2];
-    this.publicVar.styleMode = this.styleValue.styleEn;
-    this.publicVar.isNight = false;
    } else {
-    console.log('auto');
+    console.log('day');
     this.styleValue = this.styles[0];
     this.publicVar.styleMode = this.styleValue.styleEn;
+    this.publicVar.isNight = false;
    }
    this.publicVar.wichLayerAdd(
     this.mapservice.map,

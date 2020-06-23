@@ -234,22 +234,6 @@ export class BaseMapComponent implements OnInit, AfterViewInit {
    this.publicVar.isTrafficAreaON,
    this.publicVar.isTrafficON,
   );
-
-  setInterval(() => {
-   if (this.publicVar.styleMode === 'Auto') {
-    this.publicVar.removeAllLayers(this.mapservice.map);
-    this.publicVar.wichLayerAdd(
-     this.mapservice.map,
-     this.publicVar.styleMode,
-     this.publicVar.isPersian,
-     this.publicVar.isPoiON,
-     this.publicVar.isTerrainON,
-     this.publicVar.isOddEvenON,
-     this.publicVar.isTrafficAreaON,
-     this.publicVar.isTrafficON,
-    );
-   }
-  }, 3.6e6);
  }
 
  // ---- change mouse cursor when move on map ----
