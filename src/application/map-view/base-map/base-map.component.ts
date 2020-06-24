@@ -33,7 +33,7 @@ import { PublicVarService } from '../../shared/services/public-var.service';
   ]),
  ],
  encapsulation: ViewEncapsulation.None,
- providers:[TrafficComponent]
+ providers: [ TrafficComponent ],
 })
 export class BaseMapComponent implements OnInit, AfterViewInit {
  innertHeight = '100vh';
@@ -48,7 +48,6 @@ export class BaseMapComponent implements OnInit, AfterViewInit {
   window.addEventListener('resize', fuc => {
    this.innertHeight = window.innerHeight + 'px';
   });
-
   // ---- first we get ip from https://api.ipify.org?format=json ----
   this.httpClient
    .get<{ ip: string }>('https://api.ipify.org?format=json')
@@ -58,23 +57,15 @@ export class BaseMapComponent implements OnInit, AfterViewInit {
    })
    .catch(err => {
     alert('cant get ip');
-   })
-   .then(() => {
-    // ---- then send ip to http://ip-api.com/json/ and get info about ip----
-    const getURl = 'https://freegeoip.app/json/' + this.publicVar.ipAddress.ip;
-    this.httpClient
-     .get<CtientInfo>(getURl)
-     .toPromise()
-     .then(userInfo => {
-      this.publicVar.clientInfo = userInfo;
-      console.log(userInfo);
-     })
-     .then(() => {
-      this.addLayer();
-      // this.changeStyleMap();
-     });
    });
-
+  //  .then(() => {
+  //   // ---- then send ip to http://ip-api.com/json/ and get info about ip----
+  //   const getURl = 'https://freegeoip.app/json/' + this.publicVar.ipAddress.ip;
+  //   this.httpClient.get<CtientInfo>(getURl).toPromise().then(userInfo => {
+  //    this.publicVar.clientInfo = userInfo;
+  //    console.log(userInfo);
+  //   });
+  //  });
   // ---- get client infomation like ip, os , ... ----
   window.addEventListener('DOMContentLoaded', e => {
    //  get token response  //
@@ -106,11 +97,13 @@ export class BaseMapComponent implements OnInit, AfterViewInit {
   this.setTarget();
   this.setView();
   this.BBOX();
+  this.addLayer();
  }
  ngAfterViewInit() {
   this.zoomCursor();
   this.moveCursor();
  }
+ // ---- ol function ----
  BBOX() {
   let shouldUpdate = true;
   const view = this.mapservice.map.getView();
@@ -152,7 +145,6 @@ export class BaseMapComponent implements OnInit, AfterViewInit {
    shouldUpdate = false;
   });
  }
- // ---- ol function ----
  setView() {
   let Zoom;
   let Center;
@@ -171,7 +163,6 @@ export class BaseMapComponent implements OnInit, AfterViewInit {
     hashStatic = localStorage.getItem('hash');
    }
    hashSplit = hashStatic.split(',');
-   console.log(hashSplit);
    const lang = hashSplit[1];
    const lat = hashSplit[0].replace('#', '');
    if (lang.split('.')[0].length < 4 && lat.split('.')[0].length < 3) {
@@ -196,11 +187,8 @@ export class BaseMapComponent implements OnInit, AfterViewInit {
  setTarget() {
   this.mapservice.map.setTarget('map');
  }
-
  addLayer() {
-  if (localStorage.getItem('style')) {
-   this.publicVar.styleMode = localStorage.getItem('style');
-  }
+  this.publicVar.styleMode = localStorage.getItem('style') ? localStorage.getItem('style') : 'Day';
   if (localStorage.getItem('Status')) {
    // chon result storage string bayad intori tabdil konim b boolean
    console.log('hasstroage');
@@ -209,7 +197,7 @@ export class BaseMapComponent implements OnInit, AfterViewInit {
    this.publicVar.isTrafficON = (JSON.parse(localStorage.getItem('Status')) as Status).traffic;
    this.publicVar.isTrafficAreaON = (JSON.parse(localStorage.getItem('Status')) as Status).trafficArea;
    this.publicVar.isTerrainON = (JSON.parse(localStorage.getItem('Status')) as Status).terrain;
-   this.publicVar.isTrafficHelpON = this.publicVar.isTrafficON
+   this.publicVar.isTrafficHelpON = this.publicVar.isTrafficON;
   }
   this.publicVar.status = {
    poi: this.publicVar.isPoiON,
@@ -217,12 +205,8 @@ export class BaseMapComponent implements OnInit, AfterViewInit {
    oddEven: this.publicVar.isOddEvenON,
    trafficArea: this.publicVar.isTrafficAreaON,
    traffic: this.publicVar.isTrafficON,
-   lan: 'FA',
+   lan: this.publicVar.isPersian ? 'FA' : 'EN',
   };
-  if (!this.publicVar.isPersian) {
-   this.publicVar.status.lan = 'EN';
-  }
-
   this.publicVar.wichLayerAdd(
    this.mapservice.map,
    this.publicVar.styleMode,
@@ -234,7 +218,6 @@ export class BaseMapComponent implements OnInit, AfterViewInit {
    this.publicVar.isTrafficON,
   );
  }
-
  // ---- change mouse cursor when move on map ----
  moveCursor() {
   this.mapservice.map.on('movestart', (evt: Event) => {
@@ -248,6 +231,7 @@ export class BaseMapComponent implements OnInit, AfterViewInit {
    }
   });
  }
+ // ---- change mouse cursor when zoom on map ----
  zoomCursor() {
   let oldResolution = this.mapservice.map.getView().getResolution();
   this.mapservice.map.getView().on('change:resolution', (evt: Event) => {
@@ -262,25 +246,24 @@ export class BaseMapComponent implements OnInit, AfterViewInit {
    oldResolution = newResolution;
   });
  }
- // ---- change mouse cursor when move on map ----
 }
 
-interface GetTokenResponse {
- userNotExists: boolean;
- invalidUserNameOrPassword: boolean;
- token: string;
- user: User;
-}
+// interface GetTokenResponse {
+//  userNotExists: boolean;
+//  invalidUserNameOrPassword: boolean;
+//  token: string;
+//  user: User;
+// }
 
-interface User {
- id: number;
- emailAddress: string;
- plainPassword: string;
- shareCode: string;
- stamp: string;
- userInfoJson: string;
- isEmailVerified: boolean;
- isActive: boolean;
- thumbnail: string;
- createTime: Date;
-}
+// interface User {
+//  id: number;
+//  emailAddress: string;
+//  plainPassword: string;
+//  shareCode: string;
+//  stamp: string;
+//  userInfoJson: string;
+//  isEmailVerified: boolean;
+//  isActive: boolean;
+//  thumbnail: string;
+//  createTime: Date;
+// }

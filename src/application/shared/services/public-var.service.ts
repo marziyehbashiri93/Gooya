@@ -28,7 +28,7 @@ export class PublicVarService {
  portMap = '3000';
  portApi = '4001';
  apikey = 'apikey=ali12345';
- token: string;
+//  token: string;
  WMTSUrl = this.baseUrl + ':' + this.portMap + '/api/Map/WMTS/' + '?' + this.apikey;
  WMSUrl = this.baseUrl + ':' + this.portMap + '/api/Map/WMS/' + '?' + this.apikey;
  WMTSDayFaLayerName = 'KCE_DAY_FA';
@@ -89,7 +89,7 @@ export class PublicVarService {
  deviceInfo: DeviceInfos;
  deviceType: string;
  ipAddress: any;
- clientInfo: CtientInfo;
+//  clientInfo: CtientInfo;
  // ---- for get client information ----
  // ---- for missing Map ----
  missingMap: Map;
