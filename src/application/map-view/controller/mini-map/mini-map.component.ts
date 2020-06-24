@@ -117,11 +117,6 @@ export class MiniMapComponent implements OnInit {
 
  changeMap() {
   this.publicVar.isOpenPopupAttribute = false;
-  if (this.publicVar.isMiniMapSatellite) {
-   // ---if dont remove this layer ,when change map this layer stay on map ----
-   this.goMapToSatellite();
-  } else {
-   this.goSatelliteToMap();
-  }
+  this.publicVar.isMiniMapSatellite ? this.goMapToSatellite() : this.goSatelliteToMap();
  }
 }
