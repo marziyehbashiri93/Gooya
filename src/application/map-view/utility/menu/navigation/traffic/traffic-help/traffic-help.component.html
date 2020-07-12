@@ -1,12 +1,25 @@
-<div class="traffic" id="traffic" *ngIf="this.publicVar.isTrafficHelpON">
+<div @openCloseTraffic
+  class="traffic"
+  id="traffic"
+  *ngIf="this.publicVar.isTrafficHelpON && this.publicVar.isMiniMapSatellite"
+>
   <div class="content">
-    <div style="font-size: 11px ;color: #212121;">ترافیک</div>
+    <div style="font-size: 11px; color: #212121;">
+      <span *ngIf="this.publicVar.isPersian">ترافیک</span>
+      <span *ngIf="!this.publicVar.isPersian">Traffic</span>
+    </div>
     <div class="grid-container">
-      <div class="txt-status">آهسته</div>
+      <div class="txt-status">
+        <span *ngIf="this.publicVar.isPersian">آهسته</span>
+        <span *ngIf="!this.publicVar.isPersian">Slow</span>
+      </div>
       <div class="brown structure-colors"></div>
       <div class="red structure-colors"></div>
       <div class="orange structure-colors"></div>
-      <div class="txt-status">سریع</div>
+      <div class="txt-status">
+        <span *ngIf="this.publicVar.isPersian">سریع</span>
+        <span *ngIf="!this.publicVar.isPersian">Fast</span>
+      </div>
     </div>
     <label class="switch">
       <input
