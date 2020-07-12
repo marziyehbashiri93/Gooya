@@ -34,11 +34,7 @@ export class MousePositionComponent implements OnInit, DoCheck {
 
  setMousePosition(numberStringX: number, projects: string) {
   let undefine;
-  if (this.publicVar.isPersian) {
-   undefine = 'نامشخص';
-  } else {
-   undefine = 'undefined';
-  }
+  this.publicVar.isPersian ? (undefine = 'نامشخص') : (undefine = 'undefined');
   this.mapservice.map.addControl(
    new MousePosition({
     coordinateFormat: createStringXY(numberStringX),
@@ -52,11 +48,7 @@ export class MousePositionComponent implements OnInit, DoCheck {
  changeMousePositionFormat() {
   // agar time out nazarim barayer this.mousePosition undifine mideh
   let undefine;
-  if (this.publicVar.isPersian) {
-   undefine = 'نامشخص';
-  } else {
-   undefine = 'undefined';
-  }
+  this.publicVar.isPersian ? (undefine = 'نامشخص') : (undefine = 'undefined');
   const mousePosContent = this.mousePosition.nativeElement.innerText;
   const arrayMouse = mousePosContent.split(',');
   const long = parseFloat(arrayMouse[0]);
@@ -66,34 +58,32 @@ export class MousePositionComponent implements OnInit, DoCheck {
   if (long > 0) {
    longFormat = long + 'E';
   } else if (long < 0) {
-   longFormat =  Math.abs(long) + 'W';
+   longFormat = Math.abs(long) + 'W';
   } else {
    longFormat = long.toString();
   }
   if (lat > 0) {
    latFormat = lat + 'N';
   } else if (lat < 0) {
-   latFormat =  Math.abs(lat )+ 'S';
+   latFormat = Math.abs(lat) + 'S';
   } else {
    latFormat = lat.toString();
   }
   const moseFormat = longFormat + ' , ' + latFormat;
-  if (mousePosContent !== undefine  && arrayMouse[0] !== undefined && arrayMouse[1] !== undefined) {
-   if (!this.checkboxMouseposition.nativeElement.checked) {
-    this.mousePositionValue = moseFormat;
-   } else {
-    this.mousePositionValue = mousePosContent;
-   }
+  if (mousePosContent !== undefine && arrayMouse[0] !== undefined && arrayMouse[1] !== undefined) {
+   !this.checkboxMouseposition.nativeElement.checked
+    ? (this.mousePositionValue = moseFormat)
+    : (this.mousePositionValue = mousePosContent);
   } else {
    this.mousePositionValue = undefine;
   }
  }
 
  changeMousePosProject() {
-  this.checkboxMouseposition.nativeElement.addEventListener('change', (event) => {
-   this.mapservice.map.getControls().forEach((element) => {
+  this.checkboxMouseposition.nativeElement.addEventListener('change', event => {
+   this.mapservice.map.getControls().forEach(element => {
     const elemKey = element.getKeys();
-    elemKey.forEach((elm) => {
+    elemKey.forEach(elm => {
      if (elm === 'projection') {
       this.mapservice.map.removeControl(element);
       if (this.checkboxMouseposition.nativeElement.checked) {

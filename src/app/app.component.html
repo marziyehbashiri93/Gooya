@@ -1,1 +1,3 @@
-<app-base-map></app-base-map>
+<app-base-map [ngStyle]="{direction : !this.publicVar.isPersian ?'ltr':'rtl',
+  fontFamily:!this.publicVar.isPersian ? 'Calibri':'Sahel,Calibri'
+}"></app-base-map>

@@ -34,7 +34,7 @@ export class TrafficHelpComponent implements OnInit {
       //   this.mapservice.map.on('moveend', (evt: Event) => {
       //   });
       setInterval(() => {
-         console.log('update');
+         console.log('updatetraffic');
          if (this.publicVar.isTrafficON) {
             const source = this.publicVar.WMTSLayerTraffic.getSource();
             const params = source.getParams();
@@ -42,7 +42,7 @@ export class TrafficHelpComponent implements OnInit {
             source.updateParams(params);
          }
       },20000)
-   }
+   } 
 }
 
 
