@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { toStringXY } from 'ol/coordinate';
 import GeoJSON from 'ol/format/GeoJSON.js';
 import { transform } from 'ol/proj';
@@ -16,18 +16,12 @@ import { RoutResult } from './../../../shared/interface/rout-result';
 @Component({
  selector: 'app-direction',
  templateUrl: './direction.component.html',
- styleUrls: [
-  './direction.component.scss',
- ],
- animations: [
-  slide,
- ],
+ styleUrls: [ './direction.component.scss' ],
+ animations: [ slide ],
 })
 export class DirectionComponent implements OnInit {
  StringXY: string = null;
- isClickHasNetwork: boolean;
-
- // baraye negahdari mokhtasat noqteh click shode
+ routingError = null;
 
  constructor(
   public publicVar: PublicVarService,
@@ -42,12 +36,11 @@ export class DirectionComponent implements OnInit {
  openDirection(focusElement: string, isFromRightClick = false) {
   this.publicVar.DirectionFocusInput = focusElement;
   this.publicVar.isOpenPopupAttribute = false;
-  // close other element
   // chon function close direction ra nemitavanim dar barkhi az component ha call konim in 2 value ra inja null mikonim
-  if (!isFromRightClick) {
-   this.publicVar.DirectionEndPointValue = null;
-   this.publicVar.DirectionStartPointValue = null;
-  }
+  // if (!isFromRightClick) {
+  //  this.publicVar.DirectionEndPointValue = null;
+  //  this.publicVar.DirectionStartPointValue = null;
+  // }
   if (this.publicVar.isOpenMeasure) {
    this.measure.openMeasure();
   }
@@ -65,10 +58,9 @@ export class DirectionComponent implements OnInit {
   this.publicVar.DirectionStartPointValue = null;
   this.publicVar.startpointCoord = null;
   this.publicVar.endpointCoord = null;
-  this.isClickHasNetwork = null;
-
   this.cleanDirection();
  }
+
  cleanDirection() {
   this.publicVar.removeLayerByName('start-point');
   this.publicVar.removeLayerByName('end-point');
@@ -81,32 +73,28 @@ export class DirectionComponent implements OnInit {
    nextInput.focus();
   }
  }
- // baraye in k noqteh i ke roye map
+ // baraye in k noqteh i ke roye map click mikonim tabdil b address shavad
  getClickLoctionAddress() {
   // ---- if client click on map----
   this.mapservice.map.on('singleclick', (evt: Event) => {
    if (this.publicVar.isOpenDirection) {
     // ---- get client clicked coordinate ----
     const geoLocations = (evt as any).coordinate;
-    this.publicVar.removeLayerByName('routing');
-    console.log('click');
     console.log('focus', this.publicVar.DirectionFocusInput);
-    this.publicVar.removeLayerByName(this.publicVar.DirectionFocusInput);
-    this.setpoint(geoLocations, this.publicVar.DirectionFocusInput);
-    // if (this.publicVar.DirectionFocusInput === 'start-point') {
-    // } else if (this.publicVar.DirectionFocusInput === 'end-point') {
-    //  this.publicVar.removeLayerByName('end-point');
-    //  this.setpoint(geoLocations, 'end-point');
-    // }
-
     // ---- if client fouces on start and end  point ----
     if (this.publicVar.DirectionFocusInput === 'start-point' || this.publicVar.DirectionFocusInput === 'end-point') {
+     this.publicVar.removeLayerByName('routing');
+     this.publicVar.removeLayerByName(this.publicVar.DirectionFocusInput);
+     this.setpoint(geoLocations, this.publicVar.DirectionFocusInput);
      this.LocationToAddress(geoLocations);
+     this.searchRout();
     }
    }
   });
  }
+
  setpoint(location: Array<number>, typePoint: string) {
+  this.publicVar.removeLayerByName(typePoint);
   let styles;
   const geojsonObjects = {
    type: 'FeatureCollection',
@@ -129,30 +117,18 @@ export class DirectionComponent implements OnInit {
   if (typePoint === 'start-point') {
    styles = new Style({
     image: new Icon({
-     anchor: [
-      0.5,
-      0.5,
-     ],
+     anchor: [ 0.5, 0.5 ],
      scale: 0.08,
-     imgSize: [
-      300,
-      300,
-     ],
+     imgSize: [ 300, 300 ],
      src: '../../../../assets/img/direction-start.svg',
     }),
    });
   } else if (typePoint === 'end-point') {
    styles = new Style({
     image: new Icon({
-     anchor: [
-      0.5,
-      0.5,
-     ],
+     anchor: [ 0.5, 0.5 ],
      scale: 0.08,
-     imgSize: [
-      300,
-      300,
-     ],
+     imgSize: [ 300, 300 ],
      src: '../../../../assets/img/direction-end.svg',
     }),
    });
@@ -169,6 +145,7 @@ export class DirectionComponent implements OnInit {
   });
   this.mapservice.map.addLayer(vectorLayer);
  }
+
  LocationToAddress(geoLocation: Array<number>) {
   /* mokhtasat noqteh vared shode ra baresi mikonim dakhel iran hast ya na
     agar bod, ebteda mokhtasat ra be onvane value input qarar midahim,sepas
@@ -190,7 +167,6 @@ export class DirectionComponent implements OnInit {
     this.publicVar.DirectionEndPointValue = this.StringXY;
     this.publicVar.endpointCoord = geoLocation;
    }
-
    const XYDecimal = transform(geoLocation, this.mapservice.project, 'EPSG:4326');
    const zoom = this.mapservice.map.getView().getZoom();
    const URL =
@@ -207,7 +183,6 @@ export class DirectionComponent implements OnInit {
    this.httpClient.get(URL).toPromise().then(response => {
     // agar line baraye maasir yabi yaft
     if (response[0]) {
-     this.isClickHasNetwork = true;
      const nearFeature = response[0];
      if (nearFeature.F_NAME === '?') {
       nearFeature.F_NAME = 'عارضه بی نام';
@@ -226,8 +201,6 @@ export class DirectionComponent implements OnInit {
        this.publicVar.DirectionEndPointValue = response[0].E_NAME;
       }
      }
-    } else {
-     this.isClickHasNetwork = false;
     }
    });
   } else {
@@ -239,7 +212,6 @@ export class DirectionComponent implements OnInit {
     this.publicVar.DirectionEndPointValue = null;
     this.publicVar.endpointCoord = null;
    }
-   this.isClickHasNetwork = null;
   }
  }
 
@@ -260,11 +232,11 @@ export class DirectionComponent implements OnInit {
   this.setpoint(this.publicVar.endpointCoord, 'end-point');
   this.searchRout();
  }
+
  searchRout() {
+  this.routingError = false;
   if (this.publicVar.DirectionStartPointValue != null && this.publicVar.DirectionEndPointValue != null) {
    // chon aval bayad baraye orgin va destination y ro bedim reverse va join mikonim\
-   console.log('this.publicVar.startpointCoord', this.publicVar.startpointCoord);
-
    const url =
     'http://apimap.ir/api/map/route?origin=' +
     transform(this.publicVar.startpointCoord, this.mapservice.project, 'EPSG:4326').reverse().join() +
@@ -273,100 +245,116 @@ export class DirectionComponent implements OnInit {
     '&key=29e70c42798fb6381dbb2bd6f552b24ab22d48823ef903a3e82e1a01926144bc';
    console.log(url);
    this.httpClient.get(url).toPromise().then((dirResult: RoutResult) => {
-    if (dirResult.status == 200) {
-     console.log(dirResult.status);
+    const coord = dirResult.result.paths[0].points.coordinates;
 
-     const stylesLine1 = {
-      LineString: new Style({
+    const originDistance = this.calcDistance(
+     this.publicVar.startpointCoord,
+     transform(coord[0], 'EPSG:4326', this.mapservice.project),
+    );
+    const destinationDistance = this.calcDistance(
+     this.publicVar.endpointCoord,
+     transform(coord[coord.length - 1], 'EPSG:4326', this.mapservice.project),
+    );
+    const stylesLine1 = {
+     LineString: [
+      new Style({
        stroke: new Stroke({
-        color: '#4285F4',
+        color: 'rgba(99, 125, 171,0.9)',
+        width: 7,
+        zIndex: 1,
+       }),
+      }),
+      new Style({
+       stroke: new Stroke({
+        color: 'rgba(66, 133, 244,0.9)',
         width: 4,
         zIndex: 2,
        }),
       }),
-     };
-     const stylesLine2 = {
-      LineString: new Style({
-       stroke: new Stroke({
-        color: '#637EAB',
-        width: 6,
-        zIndex: 1,
-       }),
+     ],
+     MultiLineString: new Style({
+      stroke: new Stroke({
+       color: '#637EAB',
+       lineDash: [ 6 ],
+       width: 3,
       }),
-     };
-     const styleFunction = feature => {
-      return [
-       stylesLine2[feature.getGeometry().getType()],
-       stylesLine1[feature.getGeometry().getType()],
-      ];
-     };
-     const transformCoords = [];
-     dirResult.result.paths[0].points.coordinates.forEach(e => {
-      transformCoords.push(transform(e, 'EPSG:4326', this.mapservice.project));
-     });
-     const geojsonObjects = {
-      type: 'FeatureCollection',
-      crs: {
-       type: 'name',
-       properties: {
-        name: 'EPSG:900913',
+     }),
+    };
+    const styleFunction = feature => {
+     // return [ stylesLine2[feature.getGeometry().getType()], stylesLine1[feature.getGeometry().getType()] ];
+     return stylesLine1[feature.getGeometry().getType()];
+    };
+    const transformCoords = [];
+    coord.forEach(e => {
+     transformCoords.push(transform(e, 'EPSG:4326', this.mapservice.project));
+    });
+    const geojsonObjects = {
+     type: 'FeatureCollection',
+     crs: {
+      type: 'name',
+      properties: {
+       name: 'EPSG:900913',
+      },
+     },
+     features: [
+      {
+       type: 'Feature',
+       geometry: {
+        type: 'LineString',
+        coordinates: transformCoords,
        },
       },
-      features: [
-       {
-        type: 'Feature',
-        geometry: {
-         type: 'LineString',
-         coordinates: transformCoords,
-        },
+      {
+       type: 'Feature',
+       geometry: {
+        type: 'MultiLineString',
+        coordinates: [
+         [ this.publicVar.endpointCoord, transform(coord[coord.length - 1], 'EPSG:4326', this.mapservice.project) ],
+         [ this.publicVar.startpointCoord, transform(coord[0], 'EPSG:4326', this.mapservice.project) ],
+        ],
        },
-      ], //  type: 'Feature',
-     };
+      },
+     ],
+    };
 
-     const vectorSource = new VectorSource({
-      features: new GeoJSON().readFeatures(geojsonObjects),
-     });
-     console.log(vectorSource);
-     const vectorLayer = new VectorLayer({
-      source: vectorSource,
-      style: styleFunction,
-      name: 'routing',
-      zIndex: 1004,
-     });
-     const minxy = transform(
-      [
-       dirResult.result.paths[0].bbox[0],
-       dirResult.result.paths[0].bbox[1],
-      ],
-      'EPSG:4326',
-      this.mapservice.project,
-     );
-     const maxxy = transform(
-      [
-       dirResult.result.paths[0].bbox[2],
-       dirResult.result.paths[0].bbox[3],
-      ],
-      'EPSG:4326',
-      this.mapservice.project,
-     );
-     const bbox = [
-      minxy[0],
-      minxy[1],
-      maxxy[0],
-      maxxy[1],
-     ];
-     this.mapservice.map.getView().fit(bbox, {
-      padding: [
-       30,
-       30,
-       30,
-       30,
-      ],
-     });
-     this.mapservice.map.addLayer(vectorLayer);
-    } else {
-    }
+    const vectorSource = new VectorSource({
+     features: new GeoJSON().readFeatures(geojsonObjects),
+    });
+    const vectorLayer = new VectorLayer({
+     source: vectorSource,
+     style: styleFunction,
+     name: 'routing',
+     zIndex: 1004,
+    });
+    const minxy = transform(
+     [ dirResult.result.paths[0].bbox[0], dirResult.result.paths[0].bbox[1] ],
+     'EPSG:4326',
+     this.mapservice.project,
+    );
+    const maxxy = transform(
+     [ dirResult.result.paths[0].bbox[2], dirResult.result.paths[0].bbox[3] ],
+     'EPSG:4326',
+     this.mapservice.project,
+    );
+    const bbox = [ minxy[0], minxy[1], maxxy[0], maxxy[1] ];
+    this.mapservice.map.getView().fit(bbox, {
+     padding: [ 30, 30, 30, 30 ],
+    });
+    this.mapservice.map.addLayer(vectorLayer);
+   }).catch(err => {
+    this.routingError = true;
+    console.log('this.routingError', this.routingError);
    });
+  }
+ }
+ // mohasebeh fasle orgin/destination k karbar click kardeh ba mabda masiryabi
+ calcDistance(loc1: Array<number>, loc2: Array<number>) {
+  return Math.sqrt(Math.pow(loc2[0] - loc1[0], 2) + Math.pow(loc2[1] - loc1[1], 2));
+ }
+ // baraye zamani k focus roye mabda va maqsad mishava measure basteh shavad
+ closeMeasure() {
+  if (this.publicVar.isOpenMeasure) {
+   this.measure.openMeasure();
   }
  }
 }

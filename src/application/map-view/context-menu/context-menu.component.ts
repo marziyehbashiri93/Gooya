@@ -110,11 +110,11 @@ export class ContextMenuComponent implements OnInit {
  // ---- get right click positon and zoom leve base map to set map center ----
  // ----Direction FromTo Here ----
  DirectionFromToHere(elemntID: string) {
+  this.publicVar.removeLayerByName('routing');
   this.direction.openDirection(elemntID, true);
-  this.publicVar.endpointCoord = this.clientClickCoord;
-  this.publicVar.removeLayerByName(elemntID);
   this.direction.LocationToAddress(this.clientClickCoord);
   this.direction.setpoint(this.clientClickCoord, elemntID);
+  this.direction.searchRout();
  }
  // ----Direction FromTo Here ----
 

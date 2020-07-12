@@ -61,7 +61,7 @@ export class TooltipsDirective {
       this.renderer.createText(this.tooltipTitle) // textNode
     );
 
-    this.renderer.appendChild(document.body, this.tooltip);
+    this.renderer.appendChild(document.getElementsByTagName('app-base-map')[0], this.tooltip);
     // this.renderer.appendChild(this.el.nativeElement, this.tooltip);
 
     this.renderer.addClass(this.tooltip, 'ng-tooltip');

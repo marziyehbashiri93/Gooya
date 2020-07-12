@@ -28,11 +28,12 @@ export class PublicVarService {
  portMap = '3000';
  portApi = '4001';
  apikey = 'apikey=ali12345';
-//  token: string;
+ //  token: string;
  WMTSUrl = this.baseUrl + ':' + this.portMap + '/api/Map/WMTS/' + '?' + this.apikey;
  WMSUrl = this.baseUrl + ':' + this.portMap + '/api/Map/WMS/' + '?' + this.apikey;
  WMTSDayFaLayerName = 'KCE_DAY_FA';
- WMTSDayFaPoiLayerName = 'KCE_DAY_FA_POI';
+ //  WMTSDayFaPoiLayerName = 'KCE_DAY_FA_POI';
+ WMTSDayFaPoiLayerName = 'KCE_DAY_FA_TRAFFIC';
  WMTSDayEnLayerName = 'KCE_DAY_EN';
  WMTSDayEnPoiLayerName = 'KCE_DAY_EN_POI';
  WMTSNightFaLayerName = 'KCE_NIGHT_FA';
@@ -89,7 +90,7 @@ export class PublicVarService {
  deviceInfo: DeviceInfos;
  deviceType: string;
  ipAddress: any;
-//  clientInfo: CtientInfo;
+ //  clientInfo: CtientInfo;
  // ---- for get client information ----
  // ---- for missing Map ----
  missingMap: Map;
@@ -190,13 +191,23 @@ export class PublicVarService {
   }
  }
  removeLayerByName(name: string) {
-  const layerArray = this.mapservice.map.getLayers().getArray();
-  const len = layerArray.length;
-  for (let index = 0; index < len; index++) {
-   if (layerArray[index].get('name') === name) {
-    this.mapservice.map.removeLayer(layerArray[index]);
-    break;
+  // const layerArray = this.mapservice.map.getLayers().getArray();
+  // const len = layerArray.length;
+  // for (let index = 0; index < len; index++) {
+  //  if (layerArray[index].get('name') === name) {
+  //   this.mapservice.map.removeLayer(layerArray[index]);
+  //   break;
+  //  }
+  // }
+  const layersToRemove = [];
+  this.mapservice.map.getLayers().forEach(layer => {
+   if (layer.get('name') === name) {
+    layersToRemove.push(layer);
    }
+  });
+  const len = layersToRemove.length;
+  for (let i = 0; i < len; i++) {
+   this.mapservice.map.removeLayer(layersToRemove[i]);
   }
  }
  wichLayerAdd(
@@ -258,6 +269,7 @@ export class PublicVarService {
   if (trafficAreaStatus) {
    map.addLayer(this.createWMTSLayer(this.WMTSRestrictedAreaLayerName, this.WMTSRestrictedAreaLayerName, 6));
   }
+  map.addLayer(this.OSMLayer);
  }
  createWMTSLayer(LayerName, WMTSname = 'KCE', zIndex = 2, maxZoom = 19, minZoom = 0, style = '') {
   let extentLayer;

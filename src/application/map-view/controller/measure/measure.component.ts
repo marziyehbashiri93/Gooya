@@ -1,3 +1,5 @@
+
+import { DirectionComponent } from './../../utility/direction/direction.component';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import Overlay from 'ol/Overlay';
 import GeometryType from 'ol/geom/GeometryType';
@@ -71,7 +73,6 @@ class MeasureComponent implements OnInit {
   this.publicVar.isOpenPopupAttribute = false;
   if (!this.publicVar.isOpenMeasure) {
    // colse other element
-   this.publicVar.isOpenDirection = false;
    this.publicVar.isOpenPlaces = false;
    this.mapservice.map.addLayer(this.publicVar.measureLayer);
    this.publicVar.isOpenMeasure = true;
