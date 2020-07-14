@@ -1,5 +1,3 @@
-import { TrafficComponent } from './../utility/menu/navigation/traffic/traffic.component';
-import { Status } from './../../shared/interface/status';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { HttpClient } from '@angular/common/http';
 import { AfterViewInit, Component, OnInit, ViewEncapsulation } from '@angular/core';
@@ -7,9 +5,10 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { transform } from 'ol/proj';
 import View from 'ol/View';
 import { fadeAnimation } from 'src/application/shared/animation/fadeAnimation';
-import { CtientInfo } from 'src/application/shared/interface/ctient-info';
 import { MapService } from '../../shared/services/map.service';
 import { PublicVarService } from '../../shared/services/public-var.service';
+import { Status } from './../../shared/interface/status';
+import { TrafficComponent } from './../utility/menu/navigation/traffic/traffic.component';
 @Component({
  selector: 'app-base-map',
  templateUrl: './base-map.component.html',

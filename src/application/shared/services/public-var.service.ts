@@ -269,7 +269,7 @@ export class PublicVarService {
   if (trafficAreaStatus) {
    map.addLayer(this.createWMTSLayer(this.WMTSRestrictedAreaLayerName, this.WMTSRestrictedAreaLayerName, 6));
   }
-  map.addLayer(this.OSMLayer);
+  // map.addLayer(this.OSMLayer);
  }
  createWMTSLayer(LayerName, WMTSname = 'KCE', zIndex = 2, maxZoom = 19, minZoom = 0, style = '') {
   let extentLayer;

@@ -54,10 +54,7 @@ export class DirectionComponent {
   this.publicVar.isOpenDirection = false;
   this.publicVar.mouseCursor = 'grab';
   // bayad baraye search badi in maqadir khali bashad
-  this.publicVar.DirectionEndPointValue = null;
-  this.publicVar.DirectionStartPointValue = null;
-  this.publicVar.startpointCoord = null;
-  this.publicVar.endpointCoord = null;
+  this.publicVar.DirectionEndPointValue = this.publicVar.DirectionEndPointValue = this.publicVar.startpointCoord = this.publicVar.endpointCoord = null;
   this.cleanDirection();
  }
 
@@ -115,7 +112,7 @@ export class DirectionComponent {
     this.publicVar.DirectionEndPointValue = this.StringXY;
     this.publicVar.endpointCoord = geoLocation;
    }
-   const XYDecimal = transform(geoLocation, this.mapservice.project, 'EPSG:);
+   const XYDecimal = transform(geoLocation, this.mapservice.project, 'EPSG:4326');
    const zoom = this.mapservice.map.getView().getZoom();
    const URL =
     this.publicVar.baseUrl +
@@ -255,7 +252,6 @@ export class DirectionComponent {
      const styleFunction = feature => {
       return stylesLine[feature.getGeometry().getType()];
      };
-
 
      coord.forEach(e => {
       transformCoords.push(transform(e, 'EPSG:4326', this.mapservice.project));
