@@ -27,6 +27,7 @@ $padding: 12px;
  .mini-map-box {
   position: absolute;
   bottom: 20px;
+  z-index: 3;
  }
  .some-control {
   position: absolute;

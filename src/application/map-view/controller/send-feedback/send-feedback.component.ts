@@ -1,3 +1,4 @@
+import { DirectionComponent } from 'src/application/map-view/utility/direction/direction.component';
 import { Component, OnInit } from '@angular/core';
 import { ReportErrorComponent } from 'src/application/partial/report-error/report-error.component';
 import { MapService } from 'src/application/shared/services/map.service';
@@ -16,22 +17,21 @@ import { IranBoundryService } from 'src/application/shared/services/iran-boundry
   </div>
 `,
 styleUrls: [ './send-feedback.component.scss' ],
-providers: [ ReportErrorComponent ],
+providers: [ ReportErrorComponent ,DirectionComponent],
 })
 export class SendFeedbackComponent implements OnInit {
 constructor(
 public mapservice: MapService,
 public publicVar: PublicVarService,
 public IranBoundry: IranBoundryService,
-public ReportError: ReportErrorComponent
+public ReportError: ReportErrorComponent,
+private direction:DirectionComponent
 ) {}
 
 ngOnInit() {}
 openReportError() {
 // agar funclose direction ro call konim error midahad
-this.publicVar.isOpenDirection = false;
-this.publicVar.DirectionEndPointValue = null;
-this.publicVar.DirectionStartPointValue = null;
+this.direction.closeDirection()
 this.ReportError.openReportError();
 }
 changeExtent() {

@@ -111,7 +111,7 @@ export class ContextMenuComponent implements OnInit {
  // ----Direction FromTo Here ----
  DirectionFromToHere(elemntID: string) {
   this.publicVar.removeLayerByName('routing');
-  this.direction.openDirection(elemntID, true);
+  this.direction.openDirection(elemntIDtrue);
   this.direction.LocationToAddress(this.clientClickCoord);
   this.direction.setpoint(this.clientClickCoord, elemntID);
   this.direction.searchRout();

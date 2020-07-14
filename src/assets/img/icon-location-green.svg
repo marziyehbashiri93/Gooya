@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 24.0.2, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 30 36" style="enable-background:new 0 0 30 36;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#FFFFFF;}
+	.st1{fill:#1C870A;}
+	.st2{opacity:0.38;}
+	.st3{fill:url(#SVGID_1_);}
+	.st4{fill:url(#SVGID_2_);}
+</style>
+<title>Asset 2</title>
+<g>
+	<g id="ad3b2c5c-bbdb-40fb-8b79-4244f35d82c6">
+		<g id="fb42e1e9-c359-4c60-ad76-a80f8edd49fc">
+			<image style="overflow:visible;opacity:0.18;enable-background:new    ;" width="30" height="36" xlink:href="E1C40D.png" >
+			</image>
+			<circle class="st0" cx="12.5" cy="12.4" r="8"/>
+			<path class="st1" d="M13.3,1.4C7,1.1,1.6,6.1,1.4,12.4c-0.2,5.1,2.9,9.7,7.7,11.3c1.1,2.4,3.1,6.7,3.1,6.7s2.4-4.7,3.3-6.4
+				c6.1-1.5,9.9-7.7,8.4-13.9C22.7,5.2,18.4,1.6,13.3,1.4z M20.2,13.2c-0.2,4.1-3.7,7.3-7.8,7.1c-4.1-0.2-7.3-3.7-7.1-7.8
+				C5.5,8.4,9,5.3,13.1,5.4c0,0,0,0,0,0C17.2,5.6,20.4,9.1,20.2,13.2z"/>
+			<circle class="st1" cx="12.8" cy="12.9" r="3.5"/>
+			<path class="st1" d="M13,0.9C6.7,0.6,1.3,5.5,1,11.8C0.8,16.9,4,21.6,8.8,23.2c1.1,2.4,3.2,6.7,3.2,6.7s2.4-4.7,3.3-6.4
+				c6.1-1.5,9.9-7.8,8.4-13.9C22.4,4.7,18.1,1.1,13,0.9z M20,12.7c-0.2,4.1-3.7,7.3-7.8,7.1S4.9,16.1,5.1,12
+				c0.2-4.1,3.7-7.3,7.8-7.1C17,5.1,20.2,8.6,20,12.7C20,12.7,20,12.7,20,12.7z"/>
+			<circle class="st1" cx="12.5" cy="12.4" r="3.5"/>
+			<g class="st2">
+				
+					<radialGradient id="SVGID_1_" cx="12.5165" cy="22.5959" r="13.0859" gradientTransform="matrix(1 0 0 -1 0 38)" gradientUnits="userSpaceOnUse">
+					<stop  offset="0" style="stop-color:#FFFFFF;stop-opacity:0"/>
+					<stop  offset="0.11" style="stop-color:#EBEBEB;stop-opacity:0.13"/>
+					<stop  offset="0.51" style="stop-color:#A4A4A4;stop-opacity:0.6"/>
+					<stop  offset="0.82" style="stop-color:#787878;stop-opacity:0.89"/>
+					<stop  offset="1" style="stop-color:#686867"/>
+				</radialGradient>
+				<path class="st3" d="M13,0.9C6.7,0.6,1.3,5.5,1,11.8C0.8,16.9,4,21.6,8.8,23.2c1.1,2.4,3.2,6.7,3.2,6.7s2.4-4.7,3.3-6.4
+					c6.1-1.5,9.9-7.8,8.4-13.9C22.4,4.7,18.1,1.1,13,0.9z M20,12.7c-0.2,4.1-3.7,7.3-7.8,7.1S4.9,16.1,5.1,12
+					c0.2-4.1,3.7-7.3,7.8-7.1C17,5.1,20.2,8.6,20,12.7C20,12.7,20,12.7,20,12.7z"/>
+				
+					<radialGradient id="SVGID_2_" cx="12.5152" cy="25.638" r="3.5009" gradientTransform="matrix(1 0 0 -1 -2.059409e-04 37.993)" gradientUnits="userSpaceOnUse">
+					<stop  offset="0" style="stop-color:#FFFFFF;stop-opacity:0"/>
+					<stop  offset="0.11" style="stop-color:#EBEBEB;stop-opacity:0.13"/>
+					<stop  offset="0.51" style="stop-color:#A4A4A4;stop-opacity:0.6"/>
+					<stop  offset="0.82" style="stop-color:#787878;stop-opacity:0.89"/>
+					<stop  offset="1" style="stop-color:#686867"/>
+				</radialGradient>
+				<circle class="st4" cx="12.5" cy="12.4" r="3.5"/>
+			</g>
+		</g>
+	</g>
+</g>
+</svg>

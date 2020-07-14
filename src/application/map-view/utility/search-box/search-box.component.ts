@@ -282,9 +282,9 @@ export class SearchBoxComponent implements OnInit {
    });
    let srcImage;
    if (nameLayer === 'iconHoverSearch') {
-    srcImage = '../../../../assets/img/icon-search-hover.svg';
+    srcImage = '../../../../assets/img/icon-location-red.svg';
    } else {
-    srcImage = '../../../../assets/img/icon-search-click.svg';
+    srcImage = '../../../../assets/img/icon-location-green.svg';
    }
    const iconStyle = new Style({
     image: new Icon({

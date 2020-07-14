@@ -53,17 +53,17 @@
                 this.publicVar.isPersian
                   ? 'مبدا را انتخاب یا روی نقشه کلیک کنید...'
                   : 'Choose starting point or click on the map...'
-              " (keyup.enter)="nextInput(endPoint)" [(ngModel)]="this.publicVar.DirectionStartPointValue" #startPoint
+              " (keyup.enter)="nextInput(endPoint);search(startPoint)" [(ngModel)]="this.publicVar.DirectionStartPointValue" #startPoint
               [autofocus]="this.publicVar.DirectionFocusInput == 'start-point'"
               (focusin)="this.publicVar.DirectionFocusInput = 'start-point';closeMeasure()"
-              (focusout)="this.publicVar.DirectionFocusInput = ''" />
+              (focusout)="this.publicVar.DirectionFocusInput = ''" (keydown)='clearDirInput($event)' />
             <!-- (click)="goToLocation(this.publicVar.startPointLocation)" -->
             <svg id="searchIcon" class="searchIcon" height="13pt" viewBox="0 0 1000 1000" [ngStyle]="{
                 opacity:
                   this.publicVar.DirectionFocusInput == 'start-point'
                     ? '1'
                     : '0'
-              }">
+              }" (click)="search(startPoint)">
               <path
                 d="M890.5 109.6c-132.7-132.9-347.8-132.9-480.6 0C286.3 233.4 278 428.7 384.6 562.3L10 937.5l52.5 52.6 374.4-374.9c133.5 108 329.5 99.9 453.5-24.3 132.8-132.9 132.8-348.4.1-481.3zm-47.6 433.6c-106.5 106.6-279.1 106.6-385.6 0s-106.5-279.5 0-386.1c106.5-106.6 279.1-106.6 385.6 0s106.5 279.5 0 386.1z" />
             </svg>
@@ -75,15 +75,15 @@
                 this.publicVar.isPersian
                   ? 'مقصد را انتخاب کنید...'
                   : 'Choose destination...'
-              " (keyup.enter)="searchRout()" [(ngModel)]="this.publicVar.DirectionEndPointValue" #endPoint
+              " (keyup.enter)="search(startPoint);searchRout()" [(ngModel)]="this.publicVar.DirectionEndPointValue" #endPoint
               [autofocus]="this.publicVar.DirectionFocusInput == 'end-point'"
               (focusin)="this.publicVar.DirectionFocusInput = 'end-point' ;closeMeasure()"
-              (focusout)="this.publicVar.DirectionFocusInput = ''" />
+              (focusout)="this.publicVar.DirectionFocusInput = ''" (keydown)='clearDirInput($event)' />
             <!-- (click)="goToLocation(this.publicVar.endPointLocation)" -->
             <svg id="searchIcon2" class="searchIcon" height="13pt" viewBox="0 0 1000 1000" [ngStyle]="{
                 opacity:
                   this.publicVar.DirectionFocusInput == 'end-point' ? '1' : '0'
-              }">
+              }" (click)="search(endPoint)">
               <path
                 d="M890.5 109.6c-132.7-132.9-347.8-132.9-480.6 0C286.3 233.4 278 428.7 384.6 562.3L10 937.5l52.5 52.6 374.4-374.9c133.5 108 329.5 99.9 453.5-24.3 132.8-132.9 132.8-348.4.1-481.3zm-47.6 433.6c-106.5 106.6-279.1 106.6-385.6 0s-106.5-279.5 0-386.1c106.5-106.6 279.1-106.6 385.6 0s106.5 279.5 0 386.1z" />
             </svg>
@@ -109,30 +109,39 @@
       </div>
     </div>
     <div class="result">
-      <div class="error">
-        <svg *ngIf="this.publicVar.isDirectionInIran == false ||  this.routingError== true" height="20px"
-          viewBox="0 0 32 32" width="20px">
-          <g fill="none" fill-rule="evenodd" id="Icons new Arranged Names Color" stroke="none" stroke-width="1">
-            <g fill="#DD0101">
-              <path
-                d="M14.4242327,6.14839275 C15.2942987,4.74072976 16.707028,4.74408442 17.5750205,6.14839275 L28.3601099,23.59738 C29.5216388,25.4765951 28.6755462,27 26.4714068,27 L5.5278464,27 C3.32321557,27 2.47386317,25.4826642 3.63914331,23.59738 Z M16,20 C16.5522847,20 17,19.5469637 17,19.0029699 L17,12.9970301 C17,12.4463856 16.5561352,12 16,12 C15.4477153,12 15,12.4530363 15,12.9970301 L15,19.0029699 C15,19.5536144 15.4438648,20 16,20 Z M16,24 C16.5522848,24 17,23.5522848 17,23 C17,22.4477152 16.5522848,22 16,22 C15.4477152,22 15,22.4477152 15,23 C15,23.5522848 15.4477152,24 16,24 Z M16,24" />
+      <div class="error" *ngIf="this.publicVar.isDirectionInIran == false ||  this.routingError== true">
+        <div>
+          <svg height="20px" viewBox="0 0 32 32" width="20px">
+            <g fill="none" fill-rule="evenodd" id="Icons new Arranged Names Color" stroke="none" stroke-width="1">
+              <g fill="#DD0101">
+                <path
+                  d="M14.4242327,6.14839275 C15.2942987,4.74072976 16.707028,4.74408442 17.5750205,6.14839275 L28.3601099,23.59738 C29.5216388,25.4765951 28.6755462,27 26.4714068,27 L5.5278464,27 C3.32321557,27 2.47386317,25.4826642 3.63914331,23.59738 Z M16,20 C16.5522847,20 17,19.5469637 17,19.0029699 L17,12.9970301 C17,12.4463856 16.5561352,12 16,12 C15.4477153,12 15,12.4530363 15,12.9970301 L15,19.0029699 C15,19.5536144 15.4438648,20 16,20 Z M16,24 C16.5522848,24 17,23.5522848 17,23 C17,22.4477152 16.5522848,22 16,22 C15.4477152,22 15,22.4477152 15,23 C15,23.5522848 15.4477152,24 16,24 Z M16,24" />
+              </g>
             </g>
-          </g>
-        </svg>
-        <span *ngIf="
+          </svg>
+          <span *ngIf="
         this.publicVar.isDirectionInIran == false && this.publicVar.isPersian">
-          مکان مورد نظر خارج از محدوده ایران است.
-        </span>
-        <span *ngIf="this.publicVar.isDirectionInIran == false && !this.publicVar.isPersian">
-          The location is outside Iran
-        </span>
-        <span *ngIf="this.routingError== true && this.publicVar.isPersian">
-          باعرض پوزش،مسیریابی امکان پذیر نبود.
-        </span>
-        <span *ngIf="this.routingError== true && !this.publicVar.isPersian">
-          Sorry, we could not calculate driving directions
-        </span>
+            مکان مورد نظر خارج از محدوده ایران است.
+          </span>
+          <span *ngIf="this.publicVar.isDirectionInIran == false && !this.publicVar.isPersian">
+            The location is outside Iran
+          </span>
+          <span *ngIf="this.routingError== true && this.publicVar.isPersian">
+            باعرض پوزش،مسیریابی امکان پذیر نبود.
+          </span>
+          <span *ngIf="this.routingError== true && !this.publicVar.isPersian">
+            Sorry, we could not calculate driving directions.
+          </span>
+        </div>
+      </div>
+
+      <div class="search_result" *ngIf="this.searchResult">
+        <div class="result-item" *ngFor="let item of searchResult; let i = index" (click)="selectResult(item)">
+          <li>
+            <div>
+              <p>{{ item.name }}</p>
+              <p> {{ item.l_city }} {{ item.h_city }}</p>
+            </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
