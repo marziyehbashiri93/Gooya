@@ -76,6 +76,7 @@ export class SearchBoxComponent implements OnInit {
     this.mapservice.project,
     'EPSG:4326',
    );
+   console.log(mapCenterTransform);
    this.httpClient
     .get(
      'http://apimap.ir/api/map/search?q=' +
