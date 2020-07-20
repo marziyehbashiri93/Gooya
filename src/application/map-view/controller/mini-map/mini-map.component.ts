@@ -36,8 +36,7 @@ export class MiniMapComponent implements OnInit {
  }
 
  goSatelliteToMap() {
-  this.publicVar.isMiniMapSatellite = true;
-  this.publicVar.isMap = true;
+  this.publicVar.isMiniMapSatellite = this.publicVar.isMap = true;
   // ----mini map----
   // hame laye haye add shode b mini map remove mikinim chon dagig moshakhas nist che layei add az in ravesh estefadeh mikonim
   this.publicVar.removeAllLayers(this.publicVar.miniMap);
@@ -57,35 +56,21 @@ export class MiniMapComponent implements OnInit {
  }
  goMapToSatellite() {
   console.log('maptostelite');
-  this.publicVar.isMiniMapSatellite = false;
-  this.publicVar.isMap = false;
+  this.publicVar.isMiniMapSatellite = this.publicVar.isMap = false;
   //  hamaye laya ha ra az map hazf mikonin
   this.publicVar.removeAllLayers(this.mapservice.map);
-
   this.mapservice.map.addLayer(this.publicVar.SatelliteLayer);
-  if (this.publicVar.isPersian) {
-   this.mapservice.map.addLayer(
-    this.publicVar.createWMTSLayer(
-     this.publicVar.WMTSSatelliteOverlayLayerName,
-     this.publicVar.WMTSSatelliteOverlayLayerName,
-     3,
-     14,
-     0,
-     'Gooya2018Q3_V2_New:GOOGLE_LABEL_FA',
-    ),
-   );
-  } else {
-   this.mapservice.map.addLayer(
-    this.publicVar.createWMTSLayer(
-     this.publicVar.WMTSSatelliteOverlayLayerName,
-     this.publicVar.WMTSSatelliteOverlayLayerName,
-     3,
-     14,
-     0,
-     'Gooya2018Q3_V2_New:GOOGLE_LABEL_EN',
-    ),
-   );
-  }
+  this.mapservice.map.addLayer(
+   this.publicVar.createWMTSLayer(
+    this.publicVar.WMTSSatelliteOverlayLayerName,
+    this.publicVar.WMTSSatelliteOverlayLayerName,
+    3,
+    19,
+    12,
+    this.publicVar.isPersian ? 'Gooya2018Q3_V2_New:GOOGLE_LABEL_FA' : 'Gooya2018Q3_V2_New:GOOGLE_LABEL_EN',
+   ),
+  );
+
   if (this.publicVar.isTrafficAreaON) {
    this.mapservice.map.addLayer(
     this.publicVar.createWMTSLayer(

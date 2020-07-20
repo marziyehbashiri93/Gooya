@@ -153,17 +153,104 @@
   }
   .result {
    width: 100%;
-   height: auto;
+   height: calc(100vh - 190px);
    .error {
-    display: flex;
-    align-items: flex-end;
-    margin: 10px;
-    color: $color-red-required;
-    font-size: 0.95em;
-    svg {
-     width: 5.2%;
-     padding: 0 10px;
+    & > div:first-child {
+     margin: 10px;
+     display: flex;
+     align-items: flex-end;
+     color: $color-red-required;
+     font-size: 0.95em;
+     svg {
+      width: 5.2%;
+      padding: 0 10px;
+     }
     }
+   }
+
+   .search_result {
+    height: 100%;
+    overflow: scroll;
+    overflow-x: hidden;
+    &::-webkit-scrollbar {
+     width: 5px;
+    }
+    /* Track */
+    &::-webkit-scrollbar-track {
+     background: $color-light;
+    }
+    /* Handle */
+    &::-webkit-scrollbar-thumb {
+     background: lighten($color: $color-gray-svg, $amount: 30);
+     border-radius: 1px 0 0 1px;
+    }
+    /* Handle on hover */
+    &::-webkit-scrollbar-thumb:hover {
+     background: #555;
+    }
+    scrollbar-color: lighten($color: $color-gray-svg, $amount: 30) $color-light;
+    scrollbar-width: thin;
+    // scrooolll
+    /* width */
+    // scrooolll
+    .result-item {
+     padding: 2px 11px;
+     border-bottom: 1px solid rgba($color-gray-svg, 0.2);
+     cursor: pointer;
+     &:hover {
+      background: rgba(211, 228, 239, 0.27);
+     }
+     li {
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      > div:first-child {
+       :first-child {
+        margin: 5px 0px;
+        font-size: 0.95em;
+       }
+       :last-child {
+        opacity: 0.6;
+        font-size: 0.8em;
+        padding-top: 5px;
+        margin: 1px 0px 5px;
+       }
+      }
+      > div:last-child {
+       button {
+        background: none;
+        opacity: 0.3;
+        cursor: pointer;
+        border: 1px solid;
+        border-radius: 23%;
+        width: 23px;
+        height: 23px;
+        padding: 0 0px 1px 1px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        &:hover {
+         fill: #5591f5;
+         opacity: 1;
+         background: #fff;
+         border-color: #5591f5;
+        }
+       }
+      }
+     }
+    }
+   }
+   .direction-result{
+     display: flex;
+     flex-direction: column;
+     padding: 11px;
+     color: #5f5c5c;
+     font-size: 0.95em;
+     span{
+      margin: 6px 0;
+     }
+
    }
   }
  }

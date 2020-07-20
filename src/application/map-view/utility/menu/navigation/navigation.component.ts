@@ -97,11 +97,7 @@ export class NavigationComponent implements OnInit {
  }
 
  changeLan() {
-  if (this.publicVar.isPersian) {
-   this.publicVar.status.lan = 'EN';
-  } else {
-   this.publicVar.status.lan = 'FA';
-  }
+  this.publicVar.status.lan = this.publicVar.isPersian ? 'EN' : 'FA';
   localStorage.setItem('Status', JSON.stringify(this.publicVar.status));
   location.reload();
  }

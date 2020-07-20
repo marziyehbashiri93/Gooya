@@ -1,14 +1,14 @@
 import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, ElementRef, Inject, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import Feature from 'ol/Feature';
 import GeoJSON from 'ol/format/GeoJSON.js';
 import Point from 'ol/geom/Point';
 import VectorLayer from 'ol/layer/Vector';
-import VectorSource from 'ol/source/Vector';
 import { transform } from 'ol/proj';
-import { Circle as CircleStyle, Fill, Icon, Stroke, Style } from 'ol/style';
+import VectorSource from 'ol/source/Vector';
+import { Icon, Style } from 'ol/style';
 import { slide } from 'src/application/shared/animation/slide';
 import { SearchResult } from 'src/application/shared/interface/search-result';
 import { MapService } from 'src/application/shared/services/map.service';
@@ -18,12 +18,8 @@ import { DirectionComponent } from '../direction/direction.component';
 @Component({
  selector: 'app-search-box',
  templateUrl: './search-box.component.html',
- styleUrls: [
-  './search-box.component.scss',
- ],
- animations: [
-  slide,
- ],
+ styleUrls: [ './search-box.component.scss' ],
+ animations: [ slide ],
 })
 export class SearchBoxComponent implements OnInit {
  searchForm: FormGroup;
@@ -58,17 +54,9 @@ export class SearchBoxComponent implements OnInit {
   this.cleanSearch();
   // ba kodam zaban search konim agar adad bod bar asase zaban site search shavad,dar qeyre in sorat tashkhis dadeh shavad zaban chist
   if (/[0-9]/.test(searchTxt)) {
-   if (this.publicVar.isPersian) {
-    searchLang = 'fa';
-   } else {
-    searchLang = 'en';
-   }
+   searchLang = this.publicVar.isPersian ? 'fa' : 'en';
   } else {
-   if (/^[a-zA-Z]+$/.test(searchTxt)) {
-    searchLang = 'en';
-   } else {
-    searchLang = 'fa';
-   }
+   searchLang = /^[a-zA-Z]+$/.test(searchTxt) ? 'en' : 'fa';
   }
   if (searchTxt.length >= 3) {
    const mapCenterTransform: Array<number> = transform(
@@ -91,19 +79,14 @@ export class SearchBoxComponent implements OnInit {
     )
     .toPromise()
     .then((results: any) => {
+     this.publicVar.isOpenSearchResult = true;
      if (results.status === 200 && results.result) {
       this.modifyResult(results.result);
       this.resultTotal = results.result;
       // bar asase an radio k checke filter mikonim result ra
       this.showResult(this.resultForm.value.TabRadio);
-      this.publicVar.isOpenSearchResult = true;
       this.mapservice.map.getView().fit(this.findExtent(results.result), {
-       padding: [
-        30,
-        30,
-        30,
-        30,
-       ],
+       padding: [ 30, 30, 30, 30 ],
       });
       this.searchExtent = this.mapservice.map.getView().calculateExtent(this.mapservice.map.getSize());
 
@@ -111,8 +94,10 @@ export class SearchBoxComponent implements OnInit {
      } else {
       console.log('error');
       this.showError = true;
-      this.publicVar.isOpenSearchResult = true;
      }
+    })
+    .catch(error => {
+     this.publicVar.isOpenSearchResult = this.showError = true;
     });
   }
  }
@@ -142,7 +127,6 @@ export class SearchBoxComponent implements OnInit {
   this.publicVar.removeLayerByName('search');
   this.removeMarkerToResult('iconClickSearch');
   this.SearchResults = null;
-  console.log(this.SearchResults);
 
   if (id !== 'allTabRadio') {
    if (id === 'streetTabRadio') {
@@ -159,16 +143,11 @@ export class SearchBoxComponent implements OnInit {
   if (this.SearchResults[0]) {
    this.addMarkerToAllResults(this.createPointcoord(this.SearchResults));
    if (
-    JSON.stringify(this.mapservice.map.getView().calculateExtent(this.mapservice.map.getSize())) !=
+    JSON.stringify(this.mapservice.map.getView().calculateExtent(this.mapservice.map.getSize())) !==
     JSON.stringify(this.searchExtent)
    ) {
     this.mapservice.map.getView().fit(this.findExtent(this.SearchResults), {
-     padding: [
-      30,
-      30,
-      30,
-      30,
-     ],
+     padding: [ 30, 30, 30, 30 ],
     });
    }
   }
@@ -215,7 +194,7 @@ export class SearchBoxComponent implements OnInit {
    view.animate(
     {
      center: location,
-     duration: duration,
+     duration,
     },
     callback,
    );
@@ -229,7 +208,7 @@ export class SearchBoxComponent implements OnInit {
     },
     {
      zoom: 15,
-     duration: duration,
+     duration,
     },
     callback,
    );
@@ -243,30 +222,21 @@ export class SearchBoxComponent implements OnInit {
    const markerStyle = {
     Point: new Style({
      image: new Icon({
-      anchor: [
-       0.5,
-       0.5,
-      ],
+      anchor: [ 0.5, 0.5 ],
       scale: 0.25,
-      imgSize: [
-       28,
-       28,
-      ],
+      imgSize: [ 28, 28 ],
       src: '../../../../assets/img/icon-search-result.svg',
      }),
     }),
    };
 
    const styleFunction = feature => {
-    return [
-     markerStyle[feature.getGeometry().getType()],
-    ];
+    return [ markerStyle[feature.getGeometry().getType()] ];
    };
-   const vectorSource = new VectorSource({
-    features: new GeoJSON().readFeatures(geoJsonObj),
-   });
    const vectorLayer = new VectorLayer({
-    source: vectorSource,
+    source: new VectorSource({
+     features: new GeoJSON().readFeatures(geoJsonObj),
+    }),
     style: styleFunction,
     name: 'search',
     zIndex: 1008,
@@ -281,32 +251,21 @@ export class SearchBoxComponent implements OnInit {
    const iconFeature = new Feature({
     geometry: new Point(location),
    });
-   let srcImage;
-   if (nameLayer === 'iconHoverSearch') {
-    srcImage = '../../../../assets/img/icon-search-hover.svg';
-   } else {
-    srcImage = '../../../../assets/img/icon-search-click.svg';
-   }
    const iconStyle = new Style({
     image: new Icon({
-     anchor: [
-      0.4,
-      0.8,
-     ],
+     anchor: [ 0.4, 0.8 ],
      scale: 1,
-     imgSize: [
-      30,
-      36,
-     ],
-     src: srcImage,
+     imgSize: [ 30, 36 ],
+     src:
+      nameLayer === 'iconHoverSearch'
+       ? '../../../../assets/img/icon-location-red.svg'
+       : '../../../../assets/img/icon-location-green.svg',
     }),
    });
 
    iconFeature.setStyle(iconStyle);
    const vectorSource = new VectorSource({
-    features: [
-     iconFeature,
-    ],
+    features: [ iconFeature ],
    });
 
    const vectorLayer = new VectorLayer({
@@ -381,10 +340,7 @@ export class SearchBoxComponent implements OnInit {
   this.cleanSearch();
  }
  cleanSearch() {
-  this.SearchResults = null;
-  this.resultTotal = null;
-  this.showError = null;
-
+  this.SearchResults = this.resultTotal = this.showError = null;
   this.publicVar.removeLayerByName('search');
   this.publicVar.removeLayerByName('searchFilter');
   this.publicVar.removeLayerByName('iconClickSearch');
@@ -400,13 +356,6 @@ export class SearchBoxComponent implements OnInit {
    Y = location[1];
    X = location[0];
   }
-  return transform(
-   [
-    X,
-    Y,
-   ],
-   'EPSG:4326',
-   this.mapservice.project,
-  );
+  return transform([ X, Y ], 'EPSG:4326', this.mapservice.project);
  }
 }
