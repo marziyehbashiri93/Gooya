@@ -32,6 +32,6 @@ export class TrafficHelpComponent implements OnInit {
     params.t = Math.random();
     source.updateParams(params);
    }
-  });
+  },20000);
  }
 }

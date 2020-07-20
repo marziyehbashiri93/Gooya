@@ -6,8 +6,8 @@ import { PublicVarService } from 'src/application/shared/services/public-var.ser
 import { IranBoundryService } from 'src/application/shared/services/iran-boundry.service';
 
 @Component({
-  selector: 'app-send-feedback',
-  template: `
+ selector: 'app-send-feedback',
+ template: `
   <div class="send-feedback" (click)="this.publicVar.isauthenticate ? openReportError():this.publicVar.isOpenMustLogin = true;
   this.publicVar.isOpenPopupAttribute = false;changeExtent()"
   [ngStyle]="{ padding: this.publicVar.isPersian ? '1px 10px' : '1px 7px' }"
@@ -16,30 +16,28 @@ import { IranBoundryService } from 'src/application/shared/services/iran-boundry
   <span *ngIf="!this.publicVar.isPersian">Send feedback</span>
   </div>
 `,
-styleUrls: [ './send-feedback.component.scss' ],
-providers: [ ReportErrorComponent ,DirectionComponent],
+ styleUrls: [ './send-feedback.component.scss' ],
+ providers: [ ReportErrorComponent, DirectionComponent ],
 })
 export class SendFeedbackComponent implements OnInit {
-constructor(
-public mapservice: MapService,
-public publicVar: PublicVarService,
-public IranBoundry: IranBoundryService,
-public ReportError: ReportErrorComponent,
-private direction:DirectionComponent
-) {}
+ constructor(
+  public mapservice: MapService,
+  public publicVar: PublicVarService,
+  public IranBoundry: IranBoundryService,
+  public ReportError: ReportErrorComponent,
+  private direction: DirectionComponent,
+ ) {}
 
-ngOnInit() {}
-openReportError() {
-// agar funclose direction ro call konim error midahad
-this.direction.closeDirection()
-this.ReportError.openReportError();
-}
-changeExtent() {
-setTimeout(() => {
- const extentBaseMap = this.mapservice.map
-  .getView()
-  .calculateExtent(this.mapservice.map.getSize());
- this.ReportError.addMap(extentBaseMap, undefined);
-}, 10);
-}
+ ngOnInit() {}
+ openReportError() {
+  // agar funclose direction ro call konim error midahad
+  this.direction.closeDirection();
+  this.ReportError.openReportError();
+ }
+ changeExtent() {
+  setTimeout(() => {
+   const extentBaseMap = this.mapservice.map.getView().calculateExtent(this.mapservice.map.getSize());
+   this.ReportError.addMap(extentBaseMap, undefined);
+  }, 10);
+ }
 }

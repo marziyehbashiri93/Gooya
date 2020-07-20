@@ -241,6 +241,17 @@
      }
     }
    }
+   .direction-result{
+     display: flex;
+     flex-direction: column;
+     padding: 11px;
+     color: #5f5c5c;
+     font-size: 0.95em;
+     span{
+      margin: 6px 0;
+     }
+
+   }
   }
  }
 }

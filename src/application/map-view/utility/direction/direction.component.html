@@ -53,10 +53,12 @@
                 this.publicVar.isPersian
                   ? 'مبدا را انتخاب یا روی نقشه کلیک کنید...'
                   : 'Choose starting point or click on the map...'
-              " (keyup.enter)="nextInput(endPoint);search(startPoint)" [(ngModel)]="this.publicVar.DirectionStartPointValue" #startPoint
+              " [(ngModel)]="this.publicVar.DirectionStartPointValue" #startPoint
               [autofocus]="this.publicVar.DirectionFocusInput == 'start-point'"
               (focusin)="this.publicVar.DirectionFocusInput = 'start-point';closeMeasure()"
-              (focusout)="this.publicVar.DirectionFocusInput = ''" (keydown)='clearDirInput($event)' />
+              (focusout)="this.publicVar.DirectionFocusInput = ''"
+              (keyup.enter)="nextInput(endPoint);search(startPoint)" (keydown)='clearDirInput($event)'
+              (keyup)="search(startPoint)" />
             <!-- (click)="goToLocation(this.publicVar.startPointLocation)" -->
             <svg id="searchIcon" class="searchIcon" height="13pt" viewBox="0 0 1000 1000" [ngStyle]="{
                 opacity:
@@ -75,11 +77,11 @@
                 this.publicVar.isPersian
                   ? 'مقصد را انتخاب کنید...'
                   : 'Choose destination...'
-              " (keyup.enter)="search(startPoint);searchRout()" [(ngModel)]="this.publicVar.DirectionEndPointValue" #endPoint
+              " [(ngModel)]="this.publicVar.DirectionEndPointValue" #endPoint
               [autofocus]="this.publicVar.DirectionFocusInput == 'end-point'"
-              (focusin)="this.publicVar.DirectionFocusInput = 'end-point' ;closeMeasure()"
-              (focusout)="this.publicVar.DirectionFocusInput = ''" (keydown)='clearDirInput($event)' />
-            <!-- (click)="goToLocation(this.publicVar.endPointLocation)" -->
+              (focusin)="this.publicVar.DirectionFocusInput = 'end-point';closeMeasure()"
+              (focusout)="this.publicVar.DirectionFocusInput = ''" (keyup.enter)="searchRout()"
+              (keydown)="clearDirInput($event)" (keyup)="search(endPoint)" />
             <svg id="searchIcon2" class="searchIcon" height="13pt" viewBox="0 0 1000 1000" [ngStyle]="{
                 opacity:
                   this.publicVar.DirectionFocusInput == 'end-point' ? '1' : '0'
@@ -143,5 +145,9 @@
               <p> {{ item.l_city }} {{ item.h_city }}</p>
             </div>
         </div>
+      </div>
+      <div class="direction-result" *ngIf="directionDistance || directionTime ">
+        <span class="time">مسافت : {{directionDistance}}</span>
+        <span class="distance">زمان: {{directionTime}}</span>
       </div>
     </div>

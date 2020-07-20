@@ -54,14 +54,14 @@
         class="menu-option"
         (click)="
           this.publicVar.isauthenticate
-            ? openYourPlace()
+            ? this.yourPlaces.openPlaces()
             : (this.publicVar.isOpenMustLogin = true)
         "
       >
       <span *ngIf="this.publicVar.isPersian">مکان مورد علاقه</span>
       <span *ngIf="!this.publicVar.isPersian">Your places</span>
       </li>
-      <li class="menu-option" (click)="openMeasure()">
+      <li class="menu-option" (click)="this.measure.openMeasure()">
         <span *ngIf="this.publicVar.isPersian">اندازه گیری فاصله</span>
         <span *ngIf="!this.publicVar.isPersian">Measure distance</span>
       </li>

@@ -269,7 +269,7 @@ export class PublicVarService {
   if (trafficAreaStatus) {
    map.addLayer(this.createWMTSLayer(this.WMTSRestrictedAreaLayerName, this.WMTSRestrictedAreaLayerName, 6));
   }
-  // map.addLayer(this.OSMLayer);
+  map.addLayer(this.OSMLayer);
  }
  createWMTSLayer(LayerName, WMTSname = 'KCE', zIndex = 2, maxZoom = 19, minZoom = 0, style = '') {
   let extentLayer;
@@ -293,7 +293,6 @@ export class PublicVarService {
     url: this.WMTSUrl,
     layer: LayerName,
     matrixSet: projLike,
-    format: 'image/png8',
     projection: projections,
     tileGrid: new WMTSTileGrid({
      origin: [ projectionExtent[0], projectionExtent[3] ],
@@ -304,7 +303,7 @@ export class PublicVarService {
     }),
     style: style,
     wrapX: true,
-    tileLoadFunction: tileLoader,
+    // tileLoadFunction: tileLoader,
    }),
    zIndex: zIndex,
    minZoom: minZoom,
@@ -322,7 +321,7 @@ export class PublicVarService {
      const urlCreator = window.URL; // || window.webkitURL;
      const imageUrl = urlCreator.createObjectURL(blob);
      tile.getImage().src = imageUrl;
-     //  tile.getImage().src = src;
+      // tile.getImage().src = src;
     }
    };
    client.send();

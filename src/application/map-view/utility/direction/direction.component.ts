@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { toStringXY } from 'ol/coordinate';
 import GeoJSON from 'ol/format/GeoJSON.js';
@@ -13,6 +13,7 @@ import { PublicVarService } from 'src/application/shared/services/public-var.ser
 import { MeasureComponent } from '../../controller/measure/measure.component';
 import { RoutResult } from './../../../shared/interface/rout-result';
 import { SearchResult } from './../../../shared/interface/search-result';
+import { VirtualTimeScheduler } from 'rxjs';
 
 @Component({
  selector: 'app-direction',
@@ -24,6 +25,8 @@ export class DirectionComponent {
  StringXY: string = null;
  routingError = null;
  searchResult: SearchResult = null;
+ directionDistance: any = null;
+ directionTime = null;
  // az kodam input search kardim
  searchFromInput;
  constructor(
@@ -62,6 +65,8 @@ export class DirectionComponent {
   this.publicVar.removeLayerByName('start-point');
   this.publicVar.removeLayerByName('end-point');
   this.publicVar.removeLayerByName('routing');
+  this.directionDistance = null;
+  this.directionTime = null;
  }
 
  nextInput(nextInput: HTMLInputElement) {
@@ -82,6 +87,8 @@ export class DirectionComponent {
    ) {
     // ---- get client clicked coordinate ----
     this.searchResult = null;
+    this.directionDistance = null;
+    this.directionTime = null;
     this.publicVar.removeLayerByName('routing');
     this.publicVar.removeLayerByName(this.publicVar.DirectionFocusInput);
     const geoLocations = (evt as any).coordinate;
@@ -209,6 +216,8 @@ export class DirectionComponent {
 
  searchRout() {
   this.routingError = false;
+  this.directionDistance = null;
+  this.directionTime = null;
   if (this.publicVar.DirectionStartPointValue != null && this.publicVar.DirectionEndPointValue != null) {
    // chon aval bayad baraye orgin va destination y ro bedim reverse va join mikonim\
    const url =
@@ -223,7 +232,37 @@ export class DirectionComponent {
     .toPromise()
     .then((dirResult: RoutResult) => {
      const transformCoords = [];
+     console.log(dirResult);
      const coord = dirResult.result.paths[0].points.coordinates;
+     const dis = dirResult.result.paths[0].distance;
+     if (Math.floor(dis / 1000) > 0) {
+      this.directionDistance = (dis / 1000).toString().split('.')[0] + ' کیلومتر  ';
+      if (dis - Math.floor(dis / 1000) * 1000 > 0) {
+       this.directionDistance =
+        this.directionDistance + 'و ' + Math.round(dis - Math.floor(dis / 1000) * 1000).toString() + ' متر ';
+      }
+     } else {
+      this.directionDistance = Math.round(dis).toString() + ' متر ';
+     }
+     const time = dirResult.result.paths[0].time;
+     if (time >= 3600000) {
+      this.directionTime = Math.round(time / 3600000).toString() + 'ساعت';
+      if (time - Math.round(time / 3600000) * 3600000 > 60000) {
+       this.directionTime =
+        this.directionTime + ' و ' + (time - Math.round(time / 3600000) * 3600000).toString() + 'دقیقه';
+      }
+     } else {
+      this.directionTime = (time / 60000).toFixed(2).toString() + ' دقیقه';
+     }
+     //  this.directionTime =
+     //   dirResult.result.paths[0].time >= 3600000
+     //    ?
+     //    : dirResult.result.paths[0].time >= 60000
+     //      ? Math.round(dirResult.result.paths[0].time / 60000).toString() + 'دقیقه'
+     //      : Math.round(dirResult.result.paths[0].time / 1000).toString() + 'ثانیه';
+
+     console.log(dirResult.result.paths[0].distance);
+     console.log(dirResult.result.paths[0].time);
      const stylesLine = {
       LineString: [
        new Style({
@@ -320,10 +359,14 @@ export class DirectionComponent {
  }
 
  search(input: HTMLInputElement) {
+  this.routingError = null;
+  console.log('search');
   // search baraye yaftan mabda ya maqsad
   input.focus();
   this.publicVar.removeLayerByName(input.id);
   this.publicVar.removeLayerByName('routing');
+  this.directionDistance = null;
+  this.directionTime = null;
   this.searchFromInput = input.id;
   let searchLang;
   if (/[0-9]/.test(input.value)) {
@@ -331,18 +374,20 @@ export class DirectionComponent {
   } else {
    searchLang = /^[a-zA-Z]+$/.test(input.value) ? 'en' : 'fa';
   }
-  if (input.value.length >= 3) {
+  if (input.value.length >= 2) {
    const mapCenterTransform: Array<number> = transform(
     this.mapservice.map.getView().getCenter(),
     this.mapservice.project,
     'EPSG:4326',
    );
-   const url = `http://apimap.ir/api/map/search?q=${input.value}
-   &lat=${mapCenterTransform[1].toString()}&lon=${mapCenterTransform[0].toString()}&
-   key=29e70c42798fb6381dbb2bd6f552b24ab22d48823ef903a3e82e1a01926144bc&language=${searchLang}`;
-   console.log(url);
+   const header = new HttpHeaders({
+    'Content-Type': 'application/text',
+   });
+   const headers = new HttpHeaders().set('Accept', 'application/json').set('Content-Type', 'application/json');
+   const url = `http://apimap.ir/api/map/search?q=${input.value}&lat=${mapCenterTransform[1].toString()}&lon=${mapCenterTransform[0].toString()}&key=29e70c42798fb6381dbb2bd6f552b24ab22d48823ef903a3e82e1a01926144bc&language=${searchLang}`;
+
    this.httpClient
-    .get(url)
+    .get(url, { headers: headers })
     .toPromise()
     .then((results: any) => {
      if (results.status === 200 && results.result) {
@@ -377,17 +422,22 @@ export class DirectionComponent {
    this.publicVar.endpointCoord = center;
   }
   this.searchResult = null;
+
+  this.searchRout();
  }
 
  clearDirInput(event) {
   // pak kardan meqdar iput va rout ba backspace
+  this.searchResult = null;
   if (event.keyCode === 8) {
    this.publicVar.removeLayerByName(event.target.id);
    this.publicVar.removeLayerByName('routing');
+   this.directionDistance = null;
+   this.directionTime = null;
    if (event.target.id === 'start-point') {
-    this.publicVar.DirectionStartPointValue = this.publicVar.startpointCoord = null;
+    this.publicVar.startpointCoord = null;
    } else if (event.target.id === 'end-point') {
-    this.publicVar.DirectionEndPointValue = this.publicVar.endpointCoord = null;
+    this.publicVar.endpointCoord = null;
    }
   }
  }

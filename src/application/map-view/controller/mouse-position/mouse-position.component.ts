@@ -47,8 +47,7 @@ export class MousePositionComponent implements OnInit, DoCheck {
 
  changeMousePositionFormat() {
   // agar time out nazarim barayer this.mousePosition undifine mideh
-  let undefine;
-  this.publicVar.isPersian ? (undefine = 'نامشخص') : (undefine = 'undefined');
+  const undefine = this.publicVar.isPersian ? 'نامشخص' : 'undefined';
   const mousePosContent = this.mousePosition.nativeElement.innerText;
   const arrayMouse = mousePosContent.split(',');
   const long = parseFloat(arrayMouse[0]);
@@ -71,9 +70,7 @@ export class MousePositionComponent implements OnInit, DoCheck {
   }
   const moseFormat = longFormat + ' , ' + latFormat;
   if (mousePosContent !== undefine && arrayMouse[0] !== undefined && arrayMouse[1] !== undefined) {
-   !this.checkboxMouseposition.nativeElement.checked
-    ? (this.mousePositionValue = moseFormat)
-    : (this.mousePositionValue = mousePosContent);
+   this.mousePositionValue = !this.checkboxMouseposition.nativeElement.checked ? moseFormat : mousePosContent;
   } else {
    this.mousePositionValue = undefine;
   }

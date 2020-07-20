@@ -111,7 +111,7 @@ export class ContextMenuComponent implements OnInit {
  // ----Direction FromTo Here ----
  DirectionFromToHere(elemntID: string) {
   this.publicVar.removeLayerByName('routing');
-  this.direction.openDirection(elemntIDtrue);
+  this.direction.openDirection(elemntID);
   this.direction.LocationToAddress(this.clientClickCoord);
   this.direction.setpoint(this.clientClickCoord, elemntID);
   this.direction.searchRout();
@@ -130,11 +130,4 @@ export class ContextMenuComponent implements OnInit {
   }, 10);
  }
 
- openYourPlace() {
-  this.yourPlaces.openPlaces();
- }
-
- openMeasure() {
-  this.measure.openMeasure();
- }
 }
