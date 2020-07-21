@@ -22,7 +22,7 @@ export class TerrainComponent implements OnInit {
   if (TerrainInput.checked) {
    this.publicVar.isTerrainON = true;
    this.mapservice.map.addLayer(
-    this.publicVar.createWMTSLayer(this.publicVar.WMTSTerrainLayerName, this.publicVar.WMTSTerrainLayerName, 3, 14, 0),
+    this.publicVar.createWMTSLayer(this.publicVar.WMTSTerrainLayerName, this.publicVar.WMTSTerrainLayerName,6, 14, 0),
    );
   } else {
    this.publicVar.isTerrainON = false;

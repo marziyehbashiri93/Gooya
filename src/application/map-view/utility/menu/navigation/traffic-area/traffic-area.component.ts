@@ -29,6 +29,7 @@ export class TrafficAreaComponent implements OnInit {
     this.publicVar.createWMTSLayer(
      this.publicVar.WMTSRestrictedAreaLayerName,
      this.publicVar.WMTSRestrictedAreaLayerName,
+     8
     ),
    );
   } else {

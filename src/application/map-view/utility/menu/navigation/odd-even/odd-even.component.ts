@@ -25,7 +25,7 @@ export class OddEvenComponent implements OnInit {
    this.publicVar.isOddEvenON = true;
    console.log('OddEvenInput.checked');
    this.mapservice.map.addLayer(
-    this.publicVar.createWMTSLayer(this.publicVar.WMTSOddEvenLayerName, this.publicVar.WMTSOddEvenLayerName),
+    this.publicVar.createWMTSLayer(this.publicVar.WMTSOddEvenLayerName, this.publicVar.WMTSOddEvenLayerName,7),
    );
   } else {
    this.publicVar.isOddEvenON = false;

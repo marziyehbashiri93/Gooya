@@ -57,7 +57,8 @@ export class DirectionComponent {
   this.publicVar.isOpenDirection = false;
   this.publicVar.mouseCursor = 'grab';
   // bayad baraye search badi in maqadir khali bashad
-  this.publicVar.DirectionEndPointValue = this.publicVar.DirectionEndPointValue = this.publicVar.startpointCoord = this.publicVar.endpointCoord = null;
+  this.publicVar.DirectionEndPointValue
+   = this.publicVar.DirectionStartPointValue = this.publicVar.startpointCoord = this.publicVar.endpointCoord = null;
   this.cleanDirection();
  }
 
@@ -252,7 +253,7 @@ export class DirectionComponent {
         this.directionTime + ' و ' + (time - Math.round(time / 3600000) * 3600000).toString() + 'دقیقه';
       }
      } else {
-      this.directionTime = (time / 60000).toFixed(2).toString() + ' دقیقه';
+      this.directionTime = Math.ceil(time / 60000).toString() + ' دقیقه';
      }
      //  this.directionTime =
      //   dirResult.result.paths[0].time >= 3600000

@@ -18,14 +18,16 @@ export class TrafficComponent implements OnInit {
  ngOnInit() {}
 
  switchTraffic(TrafficInput: HTMLInputElement) {
+  this.publicVar.removeAllLayers(this.mapservice.map);
   if (TrafficInput.checked) {
    this.publicVar.isTrafficON = true;
    this.publicVar.isTrafficHelpON = true;
-   this.mapservice.map.addLayer(this.publicVar.WMTSLayerTraffic);
+   this.publicVar.wichLayerAdd();
+   //  this.mapservice.map.addLayer(this.publicVar.WMTSLayerTraffic);
    console.log('Traffic.checked');
   } else {
    this.publicVar.isTrafficON = false;
-   this.mapservice.map.removeLayer(this.publicVar.WMTSLayerTraffic);
+   this.publicVar.wichLayerAdd();
    setTimeout(() => {
     this.publicVar.isTrafficHelpON = false;
    }, 300);

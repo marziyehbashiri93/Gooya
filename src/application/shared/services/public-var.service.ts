@@ -211,63 +211,64 @@ export class PublicVarService {
   }
  }
  wichLayerAdd(
-  map,
-  styleStatus,
-  PersianStatus,
-  poiStatus,
-  terrainStatus,
-  OddEvenStatus,
-  trafficAreaStatus,
-  trafficStatus,
+  map = this.mapservice.map,
+  styleStatus = this.styleMode,
+  PersianStatus = this.isPersian,
+  poiStatus = this.isPoiON,
+  terrainStatus = this.isTerrainON,
+  OddEvenStatus = this.isOddEvenON,
+  trafficAreaStatus = this.isTrafficAreaON,
+  trafficStatus = this.isTrafficON,
  ) {
-  let LayerName;
+  let NetWorkLayer;
+  let LabelLayer;
+  let PoiLayer;
   if (styleStatus === 'Day') {
+   NetWorkLayer = trafficStatus ? 'KCE_DAY_TRAFFIC' : 'KCE_DAY';
    if (PersianStatus) {
+    LabelLayer = 'LABEL_DAY_FA';
     if (poiStatus) {
-     LayerName = this.WMTSDayFaPoiLayerName;
      //  map.addLayer(this.WMTSLayerDAYFAPOI);
-    } else {
-     LayerName = this.WMTSDayFaLayerName;
-     //  map.addLayer(this.WMTSLayerDAYFA);
+     PoiLayer = 'POI';
+     map.addLayer(this.createWMTSLayer(PoiLayer, 'poi', 5, 19, 11, 'Gooya2018Q3_V2_New:POI_DAY_FA'));
     }
    } else {
+    LabelLayer = 'LABEL_DAY_EN';
     if (poiStatus) {
-     LayerName = this.WMTSDayEnPoiLayerName;
-     //  map.addLayer(this.WMTSLayerDAYENPOI);
-    } else {
-     LayerName = this.WMTSDayEnLayerName;
-     //  map.addLayer(this.WMTSLayerDAYEN);
+     PoiLayer = 'POI';
+     map.addLayer(this.createWMTSLayer(PoiLayer, 'poi', 5, 19, 11, 'Gooya2018Q3_V2_New:POI_DAY_EN'));
     }
    }
   } else if (styleStatus === 'Night') {
+   NetWorkLayer = 'KCE_NIGHT';
    if (PersianStatus) {
+    LabelLayer = 'LABEL_NIGHT_FA';
     if (poiStatus) {
-     LayerName = this.WMTSNightFaPoiLayerName;
-    } else {
-     LayerName = this.WMTSNightFaLayerName;
+     PoiLayer = 'POI';
+     map.addLayer(this.createWMTSLayer(PoiLayer, 'poi', 5, 19, 11, 'Gooya2018Q3_V2_New:POI_NIGHT_FA'));
     }
    } else {
+    LabelLayer = 'LABEL_NIGHT_EN';
     if (poiStatus) {
-     LayerName = this.WMTSNightEnPoiLayerName;
-    } else {
-     LayerName = this.WMTSNightEnLayerName;
+     PoiLayer = 'POI';
+     map.addLayer(this.createWMTSLayer(PoiLayer, 'poi', 5, 19, 11, 'Gooya2018Q3_V2_New:POI_NIGHT_EN'));
     }
    }
   }
-  map.addLayer(this.createWMTSLayer(LayerName));
+  map.addLayer(this.createWMTSLayer(NetWorkLayer, 'network', 2));
+  map.addLayer(this.createWMTSLayer(LabelLayer, 'lebel', 5));
 
   if (terrainStatus) {
-   map.addLayer(this.createWMTSLayer(this.WMTSTerrainLayerName, this.WMTSTerrainLayerName, 3, 14, 0));
+   map.addLayer(this.createWMTSLayer(this.WMTSTerrainLayerName, this.WMTSTerrainLayerName, 6, 14, 0));
   }
   if (trafficStatus) {
-   //zIndex=4
-   map.addLayer(this.WMTSLayerTraffic);
+   map.addLayer(this.WMTSLayerTraffic, this.WMTSLayerTraffic, 3);
   }
   if (OddEvenStatus) {
-   map.addLayer(this.createWMTSLayer(this.WMTSOddEvenLayerName, this.WMTSOddEvenLayerName, 5));
+   map.addLayer(this.createWMTSLayer(this.WMTSOddEvenLayerName, this.WMTSOddEvenLayerName, 7));
   }
   if (trafficAreaStatus) {
-   map.addLayer(this.createWMTSLayer(this.WMTSRestrictedAreaLayerName, this.WMTSRestrictedAreaLayerName, 6));
+   map.addLayer(this.createWMTSLayer(this.WMTSRestrictedAreaLayerName, this.WMTSRestrictedAreaLayerName, 8));
   }
   map.addLayer(this.OSMLayer);
  }
@@ -317,11 +318,11 @@ export class PublicVarService {
    client.onload = function(){
     if (this.status === 200) {
      const arrayBufferView = new Uint8Array(this.response);
-     const blob = new Blob([ arrayBufferView ], { type: 'image/png' });
+     const blob = new Blob([ arrayBufferView ], { type: 'application/openlayers' });
      const urlCreator = window.URL; // || window.webkitURL;
      const imageUrl = urlCreator.createObjectURL(blob);
      tile.getImage().src = imageUrl;
-      // tile.getImage().src = src;
+     // tile.getImage().src = src;
     }
    };
    client.send();

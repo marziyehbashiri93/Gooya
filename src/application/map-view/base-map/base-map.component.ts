@@ -89,6 +89,7 @@ export class BaseMapComponent implements OnInit, AfterViewInit {
    } else {
     this.publicVar.deviceType = 'Mobile';
    }
+   this.addLayer();
   });
  }
 
@@ -96,7 +97,7 @@ export class BaseMapComponent implements OnInit, AfterViewInit {
   this.setTarget();
   this.setView();
   this.BBOX();
-  this.addLayer();
+
  }
  ngAfterViewInit() {
   this.zoomCursor();

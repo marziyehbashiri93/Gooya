@@ -58,7 +58,7 @@ export class SearchBoxComponent implements OnInit {
   } else {
    searchLang = /^[a-zA-Z]+$/.test(searchTxt) ? 'en' : 'fa';
   }
-  if (searchTxt.length >= 3) {
+  if (searchTxt.length >= 2) {
    const mapCenterTransform: Array<number> = transform(
     this.mapservice.map.getView().getCenter(),
     this.mapservice.project,
@@ -149,6 +149,12 @@ export class SearchBoxComponent implements OnInit {
      padding: [ 30, 30, 30, 30 ],
     });
    }
+  }
+ }
+ clearResult(event) {
+  // pak kardan meqdar iput va rout ba backspace
+  if (event.keyCode === 8) {
+    this.SearchResults = null;
   }
  }
  // ---- baclick roye natayej search b location on miravad  ----
