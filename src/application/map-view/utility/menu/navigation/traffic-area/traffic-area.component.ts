@@ -27,14 +27,16 @@ export class TrafficAreaComponent implements OnInit {
    console.log('TrafficArea.checked');
    this.mapservice.map.addLayer(
     this.publicVar.createWMTSLayer(
-     this.publicVar.WMTSRestrictedAreaLayerName,
-     this.publicVar.WMTSRestrictedAreaLayerName,
-     8
+     this.publicVar.layerStatus.trafficArea.layerName,
+     this.publicVar.layerStatus.trafficArea.olName,
+     this.publicVar.layerStatus.trafficArea.zIndex,
+     this.publicVar.layerStatus.trafficArea.maxZoom,
+     this.publicVar.layerStatus.trafficArea.minZoom,
     ),
    );
   } else {
    this.publicVar.isTrafficAreaON = false;
-   this.publicVar.removeLayerByName(this.publicVar.WMTSRestrictedAreaLayerName);
+   this.publicVar.removeLayerByName(this.publicVar.layerStatus.trafficArea.olName);
   }
   this.publicVar.status.trafficArea = this.publicVar.isTrafficAreaON;
   localStorage.setItem('Status', JSON.stringify(this.publicVar.status));

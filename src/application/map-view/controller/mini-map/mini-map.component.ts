@@ -74,16 +74,23 @@ export class MiniMapComponent implements OnInit {
   if (this.publicVar.isTrafficAreaON) {
    this.mapservice.map.addLayer(
     this.publicVar.createWMTSLayer(
-     this.publicVar.WMTSRestrictedAreaLayerName,
-     this.publicVar.WMTSRestrictedAreaLayerName,
-     6,
-    ),
+      this.publicVar.layerStatus.trafficArea.layerName,
+      this.publicVar.layerStatus.trafficArea.olName,
+      this.publicVar.layerStatus.trafficArea.zIndex,
+      this.publicVar.layerStatus.trafficArea.maxZoom,
+      this.publicVar.layerStatus.trafficArea.minZoom,
+     ),
    );
   }
   if (this.publicVar.isOddEvenON) {
    this.mapservice.map.addLayer(
-    this.publicVar.createWMTSLayer(this.publicVar.WMTSOddEvenLayerName, this.publicVar.WMTSOddEvenLayerName),
-    5,
+    this.publicVar.createWMTSLayer(
+      this.publicVar.layerStatus.oddeven.layerName,
+      this.publicVar.layerStatus.oddeven.olName,
+      this.publicVar.layerStatus.oddeven.zIndex,
+      this.publicVar.layerStatus.oddeven.maxZoom,
+      this.publicVar.layerStatus.oddeven.minZoom,
+     )
    );
   }
   // ----mini map----

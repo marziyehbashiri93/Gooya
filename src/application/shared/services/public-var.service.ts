@@ -31,22 +31,134 @@ export class PublicVarService {
  //  token: string;
  WMTSUrl = this.baseUrl + ':' + this.portMap + '/api/Map/WMTS/' + '?' + this.apikey;
  WMSUrl = this.baseUrl + ':' + this.portMap + '/api/Map/WMS/' + '?' + this.apikey;
- WMTSDayFaLayerName = 'KCE_DAY_FA';
- //  WMTSDayFaPoiLayerName = 'KCE_DAY_FA_POI';
- WMTSDayFaPoiLayerName = 'KCE_DAY_FA_TRAFFIC';
- WMTSDayEnLayerName = 'KCE_DAY_EN';
- WMTSDayEnPoiLayerName = 'KCE_DAY_EN_POI';
- WMTSNightFaLayerName = 'KCE_NIGHT_FA';
- WMTSNightFaPoiLayerName = 'KCE_NIGHT_FA_POI';
- WMTSNightEnLayerName = 'KCE_NIGHT_EN';
- WMTSNightEnPoiLayerName = 'KCE_NIGHT_EN_POI';
- WMTSTerrainLayerName = 'IranDEM30m';
- WMTSOddEvenLayerName = 'ODDEVEN_AREAS';
- WMTSTrafficLayerName = 'TRAFFIC';
- WMTSRestrictedAreaLayerName = 'RESTRICTED_AREAS';
- WMTSSatelliteOverlayLayerName = 'NETWORK_SP5';
- isPersian = null;
 
+ //  WMTSDayFaLayerName = 'KCE_DAY_FA';
+ //  WMTSDayFaPoiLayerName = 'KCE_DAY_FA_TRAFFIC';
+ //  WMTSDayEnLayerName = 'KCE_DAY_EN';
+ //  WMTSNightFaLayerName = 'KCE_NIGHT_FA';
+ //  WMTSNightFaPoiLayerName = 'KCE_NIGHT_FA_POI';
+ //  WMTSNightEnLayerName = 'KCE_NIGHT_EN';
+ //  WMTSNightEnPoiLayerName = 'KCE_NIGHT_EN_POI';
+ //  WMTSPoiLayerName = 'POI';
+ //  //  WMTSTerrainLayerName = 'IranDEM30m';
+ //  WMTSOddEvenLayerName = 'ODDEVEN_AREAS';
+ //  WMTSTrafficLayerName = 'TRAFFIC';
+ //  WMTSRestrictedAreaLayerName = 'RESTRICTED_AREAS';
+ WMTSSatelliteOverlayLayerName = 'NETWORK_SP5';
+ // ----OSM----
+ OSMLayer = new TileLayer({
+  source: new OSM({
+   crossOrigin: 'All',
+  }),
+  zIndex: 1,
+ });
+
+ // ----google satelite----
+ SatelliteLayer = new TileLayer({
+  visible: true,
+  opacity: 1.0,
+  source: new XYZ({
+   //  url: 'http://mt0.google.com/vt/lyrs=y&hl=en&x={x}&y={y}&z={z}&s=Ga'  //----with lable ----
+   url: 'http://mt1.google.com/vt/lyrs=s&hl=pl&&x={x}&y={y}&z={z}',
+  }),
+ });
+ layerStatus = {
+  osm: {
+   layerName: this.OSMLayer,
+   olName: 'OSM',
+   zIndex: 1,
+   minZoom: 0,
+   maxZoom: 19,
+  },
+  network: {
+   layerName: {
+    day: 'KCE_DAY',
+    dayTraffic: 'KCE_DAY_TRAFFIC',
+    night: 'KCE_NIGHT',
+   },
+   olName: 'network',
+   zIndex: 2,
+   minZoom: 0,
+   maxZoom: 19,
+  },
+  terrain: {
+   layerName: 'IranDEM30m',
+   olName: 'terrain',
+   zIndex: 3,
+   minZoom: 0,
+   maxZoom: 13,
+  },
+  traffic: {
+   layerName: 'TRAFFIC',
+   olName: 'TRAFFIC',
+   zIndex: 4,
+   minZoom: 10,
+   maxZoom: 19,
+  },
+  label: {
+   layerName: {
+    dayFa: 'LABEL_DAY_FA',
+    dayEn: 'LABEL_DAY_EN',
+    nightFa: 'LABEL_NIGHT_FA',
+    nightEn: 'LABEL_NIGHT_EN',
+   },
+   olName: 'Label',
+   zIndex: 5,
+   minZoom: 0,
+   maxZoom: 19,
+  },
+  poi: {
+   layerName: {
+    dayFa: 'LABEL_DAY_FA_POI',
+    dayEn: 'LABEL_DAY_EN_POI',
+    nightFa: 'LABEL_NIGHT_FA_POI',
+    nightEn: 'LABEL_NIGHT_EN_POI',
+   },
+
+   olName: 'Label_POI',
+   zIndex: 6,
+   minZoom: 13,
+   maxZoom: 19,
+   //  style: {
+   //   dayFa: 'Gooya2018Q3_V2_New:POI_DAY_FA',
+   //   dayEn: 'Gooya2018Q3_V2_New:POI_DAY_EN',
+   //   nightFa: 'Gooya2018Q3_V2_New:POI_NIGHT_FA',
+   //   nightEn: 'Gooya2018Q3_V2_New:POI_NIGHT_EN',
+   //  },
+  },
+  oddeven: {
+   layerName: 'ODDEVEN_AREAS',
+   olName: 'ODDEVEN_AREAS',
+   zIndex: 7,
+   minZoom: 10,
+   maxZoom: 19,
+  },
+  trafficArea: {
+   layerName: 'RESTRICTED_AREAS',
+   olName: 'RESTRICTED_AREAS',
+   zIndex: 8,
+   minZoom: 10,
+   maxZoom: 19,
+  },
+ };
+ WMTSLayerTraffic = new TileLayer({
+  source: new TileWMS({
+   url: this.WMSUrl,
+   params: {
+    LAYERS: [ this.layerStatus.traffic.layerName ],
+    TILED: true,
+    WIDTH: 265,
+    HEIGHT: 256,
+   },
+   serverType: 'geoserver',
+   transition: 0,
+  }),
+  zIndex: this.layerStatus.traffic.zIndex,
+  minZoom: this.layerStatus.traffic.minZoom,
+  maxZoom: this.layerStatus.traffic.maxZoom,
+ });
+
+ isPersian = null;
  mouseCursor = 'grab';
  isOpenPopupLocation = false;
  isOpenReportError = false;
@@ -138,39 +250,6 @@ export class PublicVarService {
  // ---- for local storage ----
  status: Status;
 
- WMTSLayerTraffic = new TileLayer({
-  source: new TileWMS({
-   url: this.WMSUrl,
-   params: {
-    LAYERS: [ this.WMTSTrafficLayerName ],
-    TILED: true,
-    WIDTH: 265,
-    HEIGHT: 256,
-   },
-   serverType: 'geoserver',
-   transition: 0,
-  }),
-  zIndex: 4,
-  minZoom: 10,
-  maxZoom: 19,
- });
- // ----OSM----
- OSMLayer = new TileLayer({
-  source: new OSM({
-   crossOrigin: 'All',
-  }),
-  zIndex: 1,
- });
- // ----google satelite----
- SatelliteLayer = new TileLayer({
-  visible: true,
-  opacity: 1.0,
-  source: new XYZ({
-   //  url: 'http://mt0.google.com/vt/lyrs=y&hl=en&x={x}&y={y}&z={z}&s=Ga'  //----with lable ----
-   url: 'http://mt1.google.com/vt/lyrs=s&hl=pl&&x={x}&y={y}&z={z}',
-  }),
- });
-
  removeAllLayers(map: Map) {
   let layer;
   const layerArray = map.getLayers().getArray();
@@ -221,62 +300,81 @@ export class PublicVarService {
   trafficStatus = this.isTrafficON,
  ) {
   let NetWorkLayer;
-  let LabelLayer;
-  let PoiLayer;
+  let LabelLayer: string;
+  // let poiLayer;
   if (styleStatus === 'Day') {
-   NetWorkLayer = trafficStatus ? 'KCE_DAY_TRAFFIC' : 'KCE_DAY';
+   NetWorkLayer = trafficStatus
+    ? this.layerStatus.network.layerName.dayTraffic
+    : this.layerStatus.network.layerName.day;
    if (PersianStatus) {
-    LabelLayer = 'LABEL_DAY_FA';
-    if (poiStatus) {
-     //  map.addLayer(this.WMTSLayerDAYFAPOI);
-     PoiLayer = 'POI';
-     map.addLayer(this.createWMTSLayer(PoiLayer, 'poi', 5, 19, 11, 'Gooya2018Q3_V2_New:POI_DAY_FA'));
-    }
+    LabelLayer = poiStatus ? this.layerStatus.poi.layerName.dayFa : this.layerStatus.label.layerName.dayFa;
    } else {
-    LabelLayer = 'LABEL_DAY_EN';
-    if (poiStatus) {
-     PoiLayer = 'POI';
-     map.addLayer(this.createWMTSLayer(PoiLayer, 'poi', 5, 19, 11, 'Gooya2018Q3_V2_New:POI_DAY_EN'));
-    }
+    LabelLayer = poiStatus ? this.layerStatus.poi.layerName.dayEn : this.layerStatus.label.layerName.dayEn;
    }
   } else if (styleStatus === 'Night') {
-   NetWorkLayer = 'KCE_NIGHT';
+   NetWorkLayer = this.layerStatus.network.layerName.night;
    if (PersianStatus) {
-    LabelLayer = 'LABEL_NIGHT_FA';
-    if (poiStatus) {
-     PoiLayer = 'POI';
-     map.addLayer(this.createWMTSLayer(PoiLayer, 'poi', 5, 19, 11, 'Gooya2018Q3_V2_New:POI_NIGHT_FA'));
-    }
+    LabelLayer = this.layerStatus.label.layerName.nightFa;
+    LabelLayer = poiStatus ? this.layerStatus.poi.layerName.nightFa : this.layerStatus.label.layerName.nightFa;
    } else {
-    LabelLayer = 'LABEL_NIGHT_EN';
-    if (poiStatus) {
-     PoiLayer = 'POI';
-     map.addLayer(this.createWMTSLayer(PoiLayer, 'poi', 5, 19, 11, 'Gooya2018Q3_V2_New:POI_NIGHT_EN'));
-    }
+    LabelLayer = poiStatus ? this.layerStatus.poi.layerName.nightEn : this.layerStatus.label.layerName.nightEn;
    }
   }
-  map.addLayer(this.createWMTSLayer(NetWorkLayer, 'network', 2));
-  map.addLayer(this.createWMTSLayer(LabelLayer, 'lebel', 5));
+  map.addLayer(this.createWMTSLayer(NetWorkLayer, this.layerStatus.network.olName, this.layerStatus.network.zIndex));
+  console.log(LabelLayer);
+  console.log(LabelLayer.indexOf('POI'));
+
+  map.addLayer(
+   this.createWMTSLayer(
+    LabelLayer,
+    LabelLayer.indexOf('POI') === -1 ? this.layerStatus.label.olName : this.layerStatus.poi.olName,
+    this.layerStatus.label.zIndex,
+   ),
+  );
 
   if (terrainStatus) {
-   map.addLayer(this.createWMTSLayer(this.WMTSTerrainLayerName, this.WMTSTerrainLayerName, 6, 14, 0));
+   map.addLayer(
+    this.createWMTSLayer(
+     this.layerStatus.terrain.layerName,
+     this.layerStatus.terrain.olName,
+     this.layerStatus.terrain.zIndex,
+     this.layerStatus.terrain.maxZoom,
+     this.layerStatus.terrain.minZoom,
+    ),
+   );
   }
   if (trafficStatus) {
-   map.addLayer(this.WMTSLayerTraffic, this.WMTSLayerTraffic, 3);
+   map.addLayer(this.WMTSLayerTraffic, this.layerStatus.traffic.olName);
   }
   if (OddEvenStatus) {
-   map.addLayer(this.createWMTSLayer(this.WMTSOddEvenLayerName, this.WMTSOddEvenLayerName, 7));
+   map.addLayer(
+    this.createWMTSLayer(
+     this.layerStatus.oddeven.layerName,
+     this.layerStatus.oddeven.olName,
+     this.layerStatus.oddeven.zIndex,
+     this.layerStatus.oddeven.maxZoom,
+     this.layerStatus.oddeven.minZoom,
+    ),
+   );
   }
   if (trafficAreaStatus) {
-   map.addLayer(this.createWMTSLayer(this.WMTSRestrictedAreaLayerName, this.WMTSRestrictedAreaLayerName, 8));
+   map.addLayer(
+    this.createWMTSLayer(
+     this.layerStatus.trafficArea.layerName,
+     this.layerStatus.trafficArea.olName,
+     this.layerStatus.trafficArea.zIndex,
+     this.layerStatus.trafficArea.maxZoom,
+     this.layerStatus.trafficArea.minZoom,
+    ),
+   );
   }
-  map.addLayer(this.OSMLayer);
+  map.addLayer(this.layerStatus.osm.layerName, this.layerStatus.osm.olName, this.layerStatus.osm.zIndex);
  }
  createWMTSLayer(LayerName, WMTSname = 'KCE', zIndex = 2, maxZoom = 19, minZoom = 0, style = '') {
   let extentLayer;
-  if (LayerName === this.WMTSOddEvenLayerName) {
+  if (LayerName === this.layerStatus.oddeven.layerName) {
    extentLayer = [ 5016353.97, 4251739.56, 5731325.03, 4517514.12 ];
-  } else if (LayerName === this.WMTSRestrictedAreaLayerName) {
+  } else if (LayerName === this.layerStatus.trafficArea.layerName) {
    extentLayer = [ 5152078.29, 3452021.1, 6638063.34, 4591795.67 ];
   } else {
    extentLayer = this.mapservice.extentMap;
