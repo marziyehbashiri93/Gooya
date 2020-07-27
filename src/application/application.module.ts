@@ -48,7 +48,6 @@ import { ReportErrorComponent } from './partial/report-error/report-error.compon
 import { AutofocusDirective } from './shared/directive/autofocus.directive';
 import { HoverButtonDirective } from './shared/directive/hover-button.directive';
 import { TooltipsDirective } from './shared/directive/tooltips.directive';
-import { NoCommaPipe } from './shared/pipe/no-comma.pipe';
 import { TrafficHelpComponent } from './map-view/utility/menu/navigation/traffic/traffic-help/traffic-help.component';
 
 
@@ -82,7 +81,6 @@ import { TrafficHelpComponent } from './map-view/utility/menu/navigation/traffic
   YourPlacesComponent,
   FavoritHomeComponent,
   FavoritWorkComponent,
-  NoCommaPipe,
   AddMissingPlaceComponent,
   CloseComponent,
   LoginComponent,
