@@ -32,12 +32,10 @@ export class StyleModeComponent implements OnInit {
     console.log('night');
     this.styleValue = this.styles[1];
     this.publicVar.styleMode = this.styleValue.styleEn;
-    this.publicVar.isNight = true;
    } else {
     console.log('day');
     this.styleValue = this.styles[0];
     this.publicVar.styleMode = this.styleValue.styleEn;
-    this.publicVar.isNight = false;
    }
    this.publicVar.wichLayerAdd(
     this.mapservice.map,

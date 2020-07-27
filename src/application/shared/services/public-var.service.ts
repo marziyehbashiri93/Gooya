@@ -31,20 +31,6 @@ export class PublicVarService {
  //  token: string;
  WMTSUrl = this.baseUrl + ':' + this.portMap + '/api/Map/WMTS/' + '?' + this.apikey;
  WMSUrl = this.baseUrl + ':' + this.portMap + '/api/Map/WMS/' + '?' + this.apikey;
-
- //  WMTSDayFaLayerName = 'KCE_DAY_FA';
- //  WMTSDayFaPoiLayerName = 'KCE_DAY_FA_TRAFFIC';
- //  WMTSDayEnLayerName = 'KCE_DAY_EN';
- //  WMTSNightFaLayerName = 'KCE_NIGHT_FA';
- //  WMTSNightFaPoiLayerName = 'KCE_NIGHT_FA_POI';
- //  WMTSNightEnLayerName = 'KCE_NIGHT_EN';
- //  WMTSNightEnPoiLayerName = 'KCE_NIGHT_EN_POI';
- //  WMTSPoiLayerName = 'POI';
- //  //  WMTSTerrainLayerName = 'IranDEM30m';
- //  WMTSOddEvenLayerName = 'ODDEVEN_AREAS';
- //  WMTSTrafficLayerName = 'TRAFFIC';
- //  WMTSRestrictedAreaLayerName = 'RESTRICTED_AREAS';
- WMTSSatelliteOverlayLayerName = 'NETWORK_SP5';
  // ----OSM----
  OSMLayer = new TileLayer({
   source: new OSM({
@@ -52,7 +38,6 @@ export class PublicVarService {
   }),
   zIndex: 1,
  });
-
  // ----google satelite----
  SatelliteLayer = new TileLayer({
   visible: true,
@@ -114,17 +99,10 @@ export class PublicVarService {
     nightFa: 'LABEL_NIGHT_FA_POI',
     nightEn: 'LABEL_NIGHT_EN_POI',
    },
-
    olName: 'Label_POI',
    zIndex: 6,
    minZoom: 13,
    maxZoom: 19,
-   //  style: {
-   //   dayFa: 'Gooya2018Q3_V2_New:POI_DAY_FA',
-   //   dayEn: 'Gooya2018Q3_V2_New:POI_DAY_EN',
-   //   nightFa: 'Gooya2018Q3_V2_New:POI_NIGHT_FA',
-   //   nightEn: 'Gooya2018Q3_V2_New:POI_NIGHT_EN',
-   //  },
   },
   oddeven: {
    layerName: 'ODDEVEN_AREAS',
@@ -139,6 +117,17 @@ export class PublicVarService {
    zIndex: 8,
    minZoom: 10,
    maxZoom: 19,
+  },
+  satelliteOverlay: {
+   layerName: 'NETWORK_SP5',
+   olName: 'GOOGLE_LABEL_OVERLAY',
+   zIndex: 3,
+   minZoom: 12,
+   maxZoom: 19,
+   style: {
+    fa: 'Gooya2018Q3_V2_New:GOOGLE_LABEL_FA',
+    en: 'Gooya2018Q3_V2_New:GOOGLE_LABEL_EN',
+   },
   },
  };
  WMTSLayerTraffic = new TileLayer({
@@ -177,8 +166,6 @@ export class PublicVarService {
  isTrafficHelpON: boolean = false;
  isTrafficAreaON: boolean = false;
  isOpenPlaces = false;
-
- isNight = false;
  // kodom halat style check bashad
  styleMode = 'Day';
  isShowOptionStyle = false;
@@ -216,7 +203,6 @@ export class PublicVarService {
  // ---- for error map ----
  // ---- for mini map ----
  miniMap: Map;
- isMap = true;
  isMiniMapSatellite = true;
  // ---- for mini map ----
  // ---- login ----
@@ -320,10 +306,8 @@ export class PublicVarService {
     LabelLayer = poiStatus ? this.layerStatus.poi.layerName.nightEn : this.layerStatus.label.layerName.nightEn;
    }
   }
+  map.addLayer(this.layerStatus.osm.layerName, this.layerStatus.osm.olName, this.layerStatus.osm.zIndex);
   map.addLayer(this.createWMTSLayer(NetWorkLayer, this.layerStatus.network.olName, this.layerStatus.network.zIndex));
-  console.log(LabelLayer);
-  console.log(LabelLayer.indexOf('POI'));
-
   map.addLayer(
    this.createWMTSLayer(
     LabelLayer,
@@ -368,7 +352,6 @@ export class PublicVarService {
     ),
    );
   }
-  map.addLayer(this.layerStatus.osm.layerName, this.layerStatus.osm.olName, this.layerStatus.osm.zIndex);
  }
  createWMTSLayer(LayerName, WMTSname = 'KCE', zIndex = 2, maxZoom = 19, minZoom = 0, style = '') {
   let extentLayer;
@@ -416,11 +399,11 @@ export class PublicVarService {
    client.onload = function(){
     if (this.status === 200) {
      const arrayBufferView = new Uint8Array(this.response);
-     const blob = new Blob([ arrayBufferView ], { type: 'application/openlayers' });
+     const blob = new Blob([ arrayBufferView ], { type: 'image/png8' });
      const urlCreator = window.URL; // || window.webkitURL;
      const imageUrl = urlCreator.createObjectURL(blob);
      tile.getImage().src = imageUrl;
-     // tile.getImage().src = src;
+     tile.getImage().src = src;
     }
    };
    client.send();

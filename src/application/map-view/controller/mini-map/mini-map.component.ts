@@ -36,7 +36,7 @@ export class MiniMapComponent implements OnInit {
  }
 
  goSatelliteToMap() {
-  this.publicVar.isMiniMapSatellite = this.publicVar.isMap = true;
+  this.publicVar.isMiniMapSatellite = true;
   // ----mini map----
   // hame laye haye add shode b mini map remove mikinim chon dagig moshakhas nist che layei add az in ravesh estefadeh mikonim
   this.publicVar.removeAllLayers(this.publicVar.miniMap);
@@ -56,18 +56,18 @@ export class MiniMapComponent implements OnInit {
  }
  goMapToSatellite() {
   console.log('maptostelite');
-  this.publicVar.isMiniMapSatellite = this.publicVar.isMap = false;
+  this.publicVar.isMiniMapSatellite = false;
   //  hamaye laya ha ra az map hazf mikonin
   this.publicVar.removeAllLayers(this.mapservice.map);
   this.mapservice.map.addLayer(this.publicVar.SatelliteLayer);
   this.mapservice.map.addLayer(
    this.publicVar.createWMTSLayer(
-    this.publicVar.WMTSSatelliteOverlayLayerName,
-    this.publicVar.WMTSSatelliteOverlayLayerName,
-    3,
-    19,
-    12,
-    this.publicVar.isPersian ? 'Gooya2018Q3_V2_New:GOOGLE_LABEL_FA' : 'Gooya2018Q3_V2_New:GOOGLE_LABEL_EN',
+    this.publicVar.layerStatus.satelliteOverlay.layerName,
+    this.publicVar.layerStatus.satelliteOverlay.olName,
+    this.publicVar.layerStatus.satelliteOverlay.zIndex,
+    this.publicVar.layerStatus.satelliteOverlay.maxZoom,
+    this.publicVar.layerStatus.satelliteOverlay.minZoom,
+    this.publicVar.isPersian ?this.publicVar.layerStatus.satelliteOverlay.style.fa :this.publicVar.layerStatus.satelliteOverlay.style.en,
    ),
   );
 
