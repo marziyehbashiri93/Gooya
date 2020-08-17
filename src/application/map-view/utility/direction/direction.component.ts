@@ -13,7 +13,6 @@ import { PublicVarService } from 'src/application/shared/services/public-var.ser
 import { MeasureComponent } from '../../controller/measure/measure.component';
 import { RoutResult } from './../../../shared/interface/rout-result';
 import { SearchResult } from './../../../shared/interface/search-result';
-import { VirtualTimeScheduler } from 'rxjs';
 
 @Component({
  selector: 'app-direction',
@@ -381,9 +380,6 @@ export class DirectionComponent {
     this.mapservice.project,
     'EPSG:4326',
    );
-   const header = new HttpHeaders({
-    'Content-Type': 'application/text',
-   });
    const headers = new HttpHeaders().set('Accept', 'application/json').set('Content-Type', 'application/json');
    const url = `http://apimap.ir/api/map/search?q=${input.value}&lat=${mapCenterTransform[1].toString()}&lon=${mapCenterTransform[0].toString()}&key=29e70c42798fb6381dbb2bd6f552b24ab22d48823ef903a3e82e1a01926144bc&language=${searchLang}`;
 

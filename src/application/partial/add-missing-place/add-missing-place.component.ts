@@ -82,7 +82,7 @@ export class AddMissingPlaceComponent implements OnInit {
    false,
    false,
    false,
-   false
+   false,
   );
 
   if (extentCenter.length === 4) {
@@ -97,13 +97,16 @@ export class AddMissingPlaceComponent implements OnInit {
   this.publicVar.missingMap.on('moveend', (evt: Event) => {
    this.IsErrorInIran();
    // agar mouse position dar halat dd bood center dd namayesh dadeh shavad dar qeyr metric
-   if (this.publicVar.mousePositionProject === 'EPSG:4326') {
-    this.publicVar.missingMapCenter = toStringXY(
-     transform(this.publicVar.missingMap.getView().getCenter(), this.mapservice.project, 'EPSG:4326'),
-     5,
-    );
-   } else {
-    this.publicVar.missingMapCenter = toStringXY(this.publicVar.missingMap.getView().getCenter(), 0);
+   switch (this.publicVar.mousePositionProject) {
+    case 'EPSG:4326':
+     this.publicVar.missingMapCenter = toStringXY(
+      transform(this.publicVar.missingMap.getView().getCenter(), this.mapservice.project, 'EPSG:4326'),
+      5,
+     );
+     break;
+    default:
+     this.publicVar.missingMapCenter = toStringXY(this.publicVar.missingMap.getView().getCenter(), 0);
+     break;
    }
   });
  }
@@ -179,7 +182,7 @@ export class AddMissingPlaceComponent implements OnInit {
    POITel: this.missingPlaceForm.value.phone,
    POIPostalCode: this.missingPlaceForm.value.postalCode,
   };
-  this.httpClient.post(URL, body).toPromise().then((response) => {
+  this.httpClient.post(URL, body).toPromise().then(response => {
    console.log(response);
    if (response) {
     this.publicVar.isOpenPopupSuccess = true;
@@ -187,7 +190,7 @@ export class AddMissingPlaceComponent implements OnInit {
     this.publicVar.isOpenPopupError = true;
    }
   });
-  setTimeout((e) => {
+  setTimeout(e => {
    this.missingPlaceForm.reset();
   }, 300);
  }

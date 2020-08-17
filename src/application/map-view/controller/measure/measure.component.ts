@@ -1,4 +1,3 @@
-
 import { DirectionComponent } from './../../utility/direction/direction.component';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import Overlay from 'ol/Overlay';
@@ -42,7 +41,7 @@ class MeasureComponent implements OnInit {
  continueMsgEn = 'Click to continue drawing and dblclick to end';
  helpTooltipElement: HTMLDivElement;
  // payami k bayad namaysh dadeh shavad
- pointerMoveHandler = (evt) => {
+ pointerMoveHandler = evt => {
   if (evt.dragging) {
    return;
   }
@@ -65,7 +64,7 @@ class MeasureComponent implements OnInit {
    this.publicVar.helpTooltip.setPosition(evt.coordinate);
    this.helpTooltipElement.classList.remove('hidden');
   }
- }
+ };
 
  ngOnInit() {}
 
@@ -120,34 +119,42 @@ class MeasureComponent implements OnInit {
    }),
   });
   this.mapservice.map.addInteraction(this.publicVar.measuringTool);
-  this.publicVar.measuringTool.on('drawstart', (eventStart) => {
+  this.publicVar.measuringTool.on('drawstart', eventStart => {
    // baraye help tool tip
    this.publicVar.sketch = eventStart.feature;
    this.publicVar.measureLayer.getSource().clear();
-   eventStart.feature.on('change', (event) => {
+   eventStart.feature.on('change', event => {
     const measurement =
      geometryType === 'Polygon' ? event.target.getGeometry().getArea() : event.target.getGeometry().getLength();
     let measurementFormatted;
-    if (geometryType === 'Polygon') {
-     if (measurement > 10000) {
-      measurementFormatted = Math.round(measurement / 1000000 * 100) / 100 + ' km';
-     } else {
-      measurementFormatted = Math.round(measurement * 100) / 100 + ' m';
-     }
-    } else {
-     if (geometryType === 'LineString') {
-      if (measurement > 1000) {
-       measurementFormatted = Math.round(measurement / 1000 * 100) / 100 + ' km';
-      } else {
-       measurementFormatted = Math.round(measurement * 100) / 100 + ' m';
+    switch (geometryType) {
+     case 'Polygon':
+      switch (true) {
+       case measurement > 10000:
+        measurementFormatted = Math.round(measurement / 1000000 * 100) / 100 + ' km';
+        break;
+       default:
+        measurementFormatted = Math.round(measurement * 100) / 100 + ' m';
+        break;
       }
-     }
+      break;
+     default:
+      //linestring
+      switch (true) {
+       case measurement > 1000:
+        measurementFormatted = Math.round(measurement / 1000 * 100) / 100 + ' km';
+        break;
+       default:
+        measurementFormatted = Math.round(measurement * 100) / 100 + ' m';
+        break;
+      }
+      break;
     }
     this.publicVar.resultMeasure = measurementFormatted;
    });
   });
   // baraye anke vaghti finish draw shod hlep massage b halat start beravad
-  this.publicVar.measuringTool.on('drawend', (e) => {
+  this.publicVar.measuringTool.on('drawend', e => {
    this.publicVar.sketch = null;
   });
  }

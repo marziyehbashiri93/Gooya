@@ -1,3 +1,4 @@
+import { IranBoundryService } from 'src/application/shared/services/iran-boundry.service';
 import { Injectable } from '@angular/core';
 import { Draw } from 'ol/interaction';
 import TileLayer from 'ol/layer/Tile';
@@ -12,17 +13,16 @@ import WMTS from 'ol/source/WMTS';
 import XYZ from 'ol/source/XYZ';
 import { Fill, Stroke, Style } from 'ol/style';
 import WMTSTileGrid from 'ol/tilegrid/WMTS';
-import { CtientInfo } from '../interface/ctient-info';
 import { DeviceInfos } from '../interface/device-info';
 import { Status } from './../interface/status';
 import { MapService } from './map.service';
 import { SearchResult } from '../interface/search-result';
-
+import WKT from 'ol/format/WKT';
 @Injectable({
  providedIn: 'root',
 })
 export class PublicVarService {
- constructor(private mapservice: MapService) {}
+ constructor(private mapservice: MapService, private iranBoundry: IranBoundryService) {}
 
  baseUrl = 'http://45.82.138.85';
  portMap = '3000';
@@ -236,6 +236,33 @@ export class PublicVarService {
  // ---- for local storage ----
  status: Status;
 
+ createCoverOSM() {
+  let wkt = 'POLYGON((';
+  let i = 1;
+  this.iranBoundry.Iran.forEach(e => {
+   if (i !== this.iranBoundry.Iran.length) {
+    wkt = wkt + e.join(' ') + ' , ';
+   } else {
+    wkt = wkt + e.join(' ');
+   }
+   i++;
+  });
+  wkt = wkt + '))';
+  const format = new WKT();
+  const feature = format.readFeature(wkt);
+  return new VectorLayer({
+   source: new VectorSource({
+    features: [ feature ],
+   }),
+   style: new Style({
+    fill: new Fill({
+     color: 'blue',
+    }),
+   }),
+   zIndex: 1,
+  });
+ }
+
  removeAllLayers(map: Map) {
   let layer;
   const layerArray = map.getLayers().getArray();
@@ -265,11 +292,7 @@ export class PublicVarService {
   //  }
   // }
   const layersToRemove = [];
-  this.mapservice.map.getLayers().forEach(layer => {
-   if (layer.get('name') === name) {
-    layersToRemove.push(layer);
-   }
-  });
+  this.mapservice.map.getLayers().forEach(layer => (layer.get('name') === name ? layersToRemove.push(layer) : null));
   const len = layersToRemove.length;
   for (let i = 0; i < len; i++) {
    this.mapservice.map.removeLayer(layersToRemove[i]);
@@ -307,6 +330,8 @@ export class PublicVarService {
    }
   }
   map.addLayer(this.layerStatus.osm.layerName, this.layerStatus.osm.olName, this.layerStatus.osm.zIndex);
+  map.addLayer(this.createCoverOSM(), 'coverOSM');
+
   map.addLayer(this.createWMTSLayer(NetWorkLayer, this.layerStatus.network.olName, this.layerStatus.network.zIndex));
   map.addLayer(
    this.createWMTSLayer(

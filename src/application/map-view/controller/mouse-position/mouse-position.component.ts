@@ -54,19 +54,27 @@ export class MousePositionComponent implements OnInit, DoCheck {
   const lat = parseFloat(arrayMouse[1]);
   let longFormat: string = null;
   let latFormat: string = null;
-  if (long > 0) {
-   longFormat = long + 'E';
-  } else if (long < 0) {
-   longFormat = Math.abs(long) + 'W';
-  } else {
-   longFormat = long.toString();
+  switch (true) {
+   case long > 0:
+    longFormat = long + 'E';
+    break;
+   case long < 0:
+    longFormat = Math.abs(long) + 'W';
+    break;
+   default:
+    longFormat = long.toString();
+    break;
   }
-  if (lat > 0) {
-   latFormat = lat + 'N';
-  } else if (lat < 0) {
-   latFormat = Math.abs(lat) + 'S';
-  } else {
-   latFormat = lat.toString();
+  switch (true) {
+   case lat > 0:
+    latFormat = lat + 'N';
+    break;
+   case lat < 0:
+    latFormat = Math.abs(lat) + 'S';
+    break;
+   default:
+    latFormat = lat.toString();
+    break;
   }
   const moseFormat = longFormat + ' , ' + latFormat;
   if (mousePosContent !== undefine && arrayMouse[0] !== undefined && arrayMouse[1] !== undefined) {
