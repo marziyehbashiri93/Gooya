@@ -410,7 +410,7 @@ export class PublicVarService {
     }),
     style: style,
     wrapX: true,
-    // tileLoadFunction: tileLoader,
+    // tileLoadFunction: tileLoader,      //xhr///
    }),
    zIndex: zIndex,
    minZoom: minZoom,
