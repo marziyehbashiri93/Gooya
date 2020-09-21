@@ -18,6 +18,8 @@ import { Status } from './../interface/status';
 import { MapService } from './map.service';
 import { SearchResult } from '../interface/search-result';
 import WKT from 'ol/format/WKT';
+import { LoginInfo } from '../interface/login-info';
+// import { LoginInfo } from 'src/application/shared/interface/login-info';
 @Injectable({
  providedIn: 'root',
 })

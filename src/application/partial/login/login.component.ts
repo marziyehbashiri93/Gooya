@@ -48,10 +48,13 @@ export class LoginComponent implements OnInit {
 
    console.log('has loginDeta');
    console.log(loginDeta);
+   console.log(loginDeta.ID);
+
    this.publicVar.isauthenticate = true;
    this.loginVar.loginValue = loginDeta;
   }
  }
+
  openLogin() {
   this.publicVar.isOpenPopupAttribute = false;
   this.publicVar.isOpenLogin = true;

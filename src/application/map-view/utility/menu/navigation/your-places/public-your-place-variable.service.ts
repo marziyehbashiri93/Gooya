@@ -9,6 +9,7 @@ import { Icon, Style } from 'ol/style';
 import { MapService } from 'src/application/shared/services/map.service';
 import { PublicVarService } from 'src/application/shared/services/public-var.service';
 
+
 @Injectable({
  providedIn: 'root',
 })
@@ -22,6 +23,7 @@ export class PublicYourPlaceVariableService {
  isOpenHome: boolean = false;
  isExistHome: boolean = false;
  isOpenWork: boolean = false;
+ isExistWork: boolean = false;
  isOpenOtherPlace: boolean = false;
 
  maplayer: VectorLayer;
@@ -52,8 +54,8 @@ export class PublicYourPlaceVariableService {
 
    this.mapservice.map.addLayer(this.maplayer);
    // for return value and show on input
-   const Drag = ((PointerInteraction) => {
-    function Drag(){
+   const Drag = (( PointerInteraction ) => {
+    function Drag() {
      PointerInteraction.call(this, {
       handleDownEvent: handleDownEvent,
       handleDragEvent: handleDragEvent,
@@ -76,6 +78,7 @@ export class PublicYourPlaceVariableService {
    // Function handling "down" events.
    // If the function returns true then a drag sequence is started
    function handleDownEvent(evt){
+    // if (this.cursor_){}
     const map = evt.map;
     // Return the mouse click on the intersecting elements
     const feature = map.forEachFeatureAtPixel(evt.pixel, (feature) => {
@@ -126,7 +129,7 @@ export class PublicYourPlaceVariableService {
    }
    // Function handling "up" events.
    // If the function returns false then the current drag sequence is stopped.
-   function handleUpEvent(){
+   function handleUpEvent() {
     this.coordinate_ = null;
     this.feature_ = null;
     return false;
@@ -148,9 +151,9 @@ export class PublicYourPlaceVariableService {
   mapLayers.forEach((leyer) => {
    const properties = leyer.getProperties();
    for (const property in properties) {
-    if (property == 'name') {
+    if (property === 'name') {
      const name = leyer.get('name');
-     if (name == 'yourPlace') {
+     if (name === 'yourPlace') {
       this.mapservice.map.removeLayer(leyer);
      }
     }

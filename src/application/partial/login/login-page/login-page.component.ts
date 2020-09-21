@@ -48,9 +48,11 @@ export class LoginPageComponent implements OnInit {
   console.log(url);
 
   this.httpClient.get(url).toPromise().then((response) => {
-   console.log(response);
+   console.log('responsePrimery: ' + response);
+   console.log('typeof==>...' + typeof response);
    if (response !== 'null') {
     const result: LoginInfo = JSON.parse(response.toString());
+    console.log('loginfooo==>' + response);
 
     localStorage.setItem('login', response as string);
     const lenResult = Object.keys(result).length;

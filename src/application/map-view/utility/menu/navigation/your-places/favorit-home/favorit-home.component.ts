@@ -1,12 +1,13 @@
-import { transform } from 'ol/proj';
+import { state, style, trigger } from '@angular/animations';
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { trigger, state, style } from '@angular/animations';
+import { transform } from 'ol/proj';
+import { DirectionComponent } from 'src/application/map-view/utility/direction/direction.component';
+import { LoginVarService } from 'src/application/partial/login/login-var.service';
+import { IranBoundryService } from 'src/application/shared/services/iran-boundry.service';
 import { MapService } from 'src/application/shared/services/map.service';
 import { PublicVarService } from 'src/application/shared/services/public-var.service';
 import { PublicYourPlaceVariableService } from '../public-your-place-variable.service';
-import { IranBoundryService } from 'src/application/shared/services/iran-boundry.service';
-import { DirectionComponent } from 'src/application/map-view/utility/direction/direction.component';
-import { HttpClient } from '@angular/common/http';
 
 @Component({
  selector: 'app-favorit-home',
@@ -42,6 +43,7 @@ import { HttpClient } from '@angular/common/http';
  ],
 })
 export class FavoritHomeComponent implements OnInit {
+  // @ViewChild(LoginPageComponent, { static: false })////////////////
  // ----for home ----
  existHome = '';
  // showAddhome = false;
@@ -52,6 +54,8 @@ export class FavoritHomeComponent implements OnInit {
  homelocation: Array<number> = [ 5723891.316850067, 4264880.430199694 ];
  homelocationVal: string;
  coordPoint: Array<number>;
+ useID: number ;
+ 
  // ----for home ----
  constructor(
   private mapservice: MapService,
@@ -60,9 +64,13 @@ export class FavoritHomeComponent implements OnInit {
   public IranBoundry: IranBoundryService,
   public direction: DirectionComponent,
   private httpClient: HttpClient,
- ) {}
+  public loginVar: LoginVarService,
+ ) {
+  
+ }
 
- ngOnInit() {}
+ ngOnInit() {
+ }
 
  // ----this function for save Home location ----
 
@@ -107,26 +115,33 @@ export class FavoritHomeComponent implements OnInit {
   this.publicVarYourPlace.isExistHome = true;
   this.publicVarYourPlace.isOpenHome = false;
   const latlong = transform(this.coordPoint, this.mapservice.project, 'EPSG:4326');
-  console.log(latlong);
+  // const use = this.publicVar.loginDeta.ID;
+  // this.useID = this.publicVar.loginDeta.ID;
+  this.useID = this.loginVar.loginValue.ID;
+  console.log('useID ==>>>>>>>>>>' + this.useID);
 
   const body = {
-   UserID: 1,
+   ID: 0,
+   UserID: this.useID,
    Lat: latlong[1],
    Lon: latlong[0],
-   PointName: 'خانه',
-   PointTypecode: 1,
+   PointName: 'مطب',
+   PointTypecode: 3,
   };
-  console.log(body);
-  const URL = this.publicVar.baseUrl + ':' + this.publicVar.portApi + '/api/user/InterestedPoints';
+  console.log('BODY==>' + body.UserID);
+  const URL = this.publicVar.baseUrl + ':' + this.publicVar.portApi + '/api/user/SaveInterestedPoints';
   this.httpClient.post(URL, body).toPromise().then((response) => {
-   console.log(response);
-   if (response) {
+   console.log('typeof' + typeof response);
+   console.log('response:' + response);
+   console.log('url:' + URL);
+   if (response == 'true,') {
     this.publicVarYourPlace.removePoint();
     this.openCloseHome();
-   }else{
-     alert ('Error')
+   } else {
+     alert ('ثبت مکان مورد نظر با مشکل مواجه شده است');
    }
   });
+  // this.dataYourPlace();
  }
 
  opendirectionHome() {
@@ -176,4 +191,37 @@ export class FavoritHomeComponent implements OnInit {
  NoDeleteHome() {
   this.isOpenHomeDelete = false;
  }
+
+ dataYourPlace() {
+  // const useeID = this.loginVar.loginValue.ID;
+  // this.useID = this.loginVar.loginValue.ID;
+  
+  // http://ServerIP:Port/api/User/LoadInterestedPoints?userid=20&PointTypes=
+  const userid = this.useID;
+  const PointTypes = 3 ;
+  const url =
+   this.publicVar.baseUrl +
+   ':' +
+   this.publicVar.portApi +
+   '/api/User/LoadInterestedPoints?userid=' +
+   userid +
+   '&PointTypes=' +
+   PointTypes;
+  console.log('urlGET==> ' + url);
+
+  this.httpClient.get(url).toPromise().then((response) => {
+   console.log('responseGET: ' + response);
+   console.log('typeof' + typeof response);
+   const result = JSON.parse(response.toString());
+   console.log(  result[0] );
+  //  const use = this.publicVar.loginDeta.ID;
+
+  //  console.log('result==>>>>>>>>>>' + useeID);
+  //  console.log('result==>>>>>>>>>>' + typeof this.publicVar.loginDeta.ID );
+   console.log('*************************************');
+  
+  });
+ }
+
+
 }

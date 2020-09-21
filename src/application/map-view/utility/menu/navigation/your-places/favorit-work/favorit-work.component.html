@@ -1,1 +1,58 @@
-<p>favorit-work works!</p>
+<div
+  class="favorit-work"
+  [@openCloseWork]="
+    this.publicVarYourPlace.isOpenWork
+      ? this.publicVarYourPlace.isExistWork
+        ? this.isOpenWorkEdit
+          ? 'openEditWork'
+          : 'openHaveWork'
+        : 'openDontHaveWork'
+      : 'close'
+  "
+>
+  <div (click)="openCloseWork()">
+    <svg viewBox="0 0 47.88 39.27">
+        <g data-name="suitcase">
+          <path
+            d="M7.98 6.55v32.72h-3.2A4.85 4.85 0 0 1 0 34.36V11.45a4.84 4.84 0 0 1 4.78-4.9z"
+            data-name="left"
+          />
+          <path d="M9.58 6.54h28.73v32.72H9.58z" data-name="middle" />
+          <path
+            d="M39.9 6.55h3.16a4.85 4.85 0 0 1 4.79 4.9v22.91a4.86 4.86 0 0 1-4.79 4.91H39.9z"
+            data-name="right"
+          />
+          <path
+            d="M16.75 6.14V3.68A3.64 3.64 0 0 1 20.35 0h7.18a3.64 3.64 0 0 1 3.59 3.68v2.46h-2.4V3.68a1.21 1.21 0 0 0-1.19-1.22h-7.18a1.21 1.21 0 0 0-1.2 1.22v2.46z"
+            data-name="handle"
+          />
+        </g>
+    </svg>
+    <span *ngIf="this.publicVar.isPersian">محل کار</span>
+    <span *ngIf="!this.publicVar.isPersian">Work</span>
+  </div>
+
+  <div class="container-work">
+          <!-- work-addBox -->
+    <div class="work-addbox"
+    *ngIf="this.publicVarYourPlace.isOpenWork && this.existWork == 'DontHaveWork'" >
+    <input
+      [appTooltips]="
+        this.publicVar.isPersian
+          ? 'آدرس را از طریق مکان نما مشخص کنید'
+          : 'Select address with pointer'
+      "
+      placement="top"
+      delay="500"
+      fontSize="0.85"
+      [value]="coordPoint"
+    />
+    <button (click)="addNewWork()">
+      <span *ngIf="this.publicVar.isPersian">افزودن</span>
+      <span *ngIf="!this.publicVar.isPersian">Add</span>
+    </button>
+  </div>
+  </div>
+
+
+</div>
