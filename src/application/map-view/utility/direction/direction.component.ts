@@ -28,6 +28,7 @@ export class DirectionComponent {
  directionTime = null;
  // az kodam input search kardim
  searchFromInput;
+//  showError;            // agar bekhaim be karbar begim baiad bishtar az do kalame search kone
  constructor(
   public publicVar: PublicVarService,
   public mapservice: MapService,
@@ -53,6 +54,7 @@ export class DirectionComponent {
  }
 
  closeDirection() {
+  this.searchResult = null;
   this.publicVar.isOpenDirection = false;
   this.publicVar.mouseCursor = 'grab';
   // bayad baraye search badi in maqadir khali bashad
@@ -67,6 +69,9 @@ export class DirectionComponent {
   this.publicVar.removeLayerByName('routing');
   this.directionDistance = null;
   this.directionTime = null;
+  this.publicVar.isDirectionInIran = true;
+  this.routingError = null;
+  // this.showError = null;
  }
 
  nextInput(nextInput: HTMLInputElement) {
@@ -92,6 +97,7 @@ export class DirectionComponent {
     this.publicVar.removeLayerByName('routing');
     this.publicVar.removeLayerByName(this.publicVar.DirectionFocusInput);
     const geoLocations = (evt as any).coordinate;
+    console.log('geoLocations===>' + geoLocations);
     this.LocationToAddress(geoLocations);
     this.setpoint(geoLocations, this.publicVar.DirectionFocusInput);
     this.searchRout();
@@ -141,9 +147,9 @@ export class DirectionComponent {
       nearFeature.E_NAME = 'anonymous feature';
      }
      if (this.publicVar.DirectionFocusInput === 'start-point') {
-      this.publicVar.DirectionStartPointValue = this.publicVar.isPersian ? response[0].F_NAME : response[0].E_NAME;
+      this.publicVar.DirectionStartPointValue = this.publicVar.isPersian ? response[0].F_Name : response[0].E_Name;
      } else if (this.publicVar.DirectionFocusInput === 'end-point') {
-      this.publicVar.DirectionEndPointValue = this.publicVar.isPersian ? response[0].F_NAME : response[0].E_NAME;
+      this.publicVar.DirectionEndPointValue = this.publicVar.isPersian ? response[0].F_Name : response[0].E_Name;
      }
     }
    });
@@ -215,7 +221,7 @@ export class DirectionComponent {
  }
 
  searchRout() {
-  this.routingError = false;
+  this.routingError = null;
   this.directionDistance = null;
   this.directionTime = null;
   if (this.publicVar.DirectionStartPointValue != null && this.publicVar.DirectionEndPointValue != null) {
@@ -225,7 +231,7 @@ export class DirectionComponent {
     transform(this.publicVar.startpointCoord, this.mapservice.project, 'EPSG:4326').reverse().join() +
     '&destination=' +
     transform(this.publicVar.endpointCoord, this.mapservice.project, 'EPSG:4326').reverse().join() +
-    '&key=29e70c42798fb6381dbb2bd6f552b24ab22d48823ef903a3e82e1a01926144bc';
+    '&key=49136bd13c11cbfd7d2c2814c7c70ef54fa96f3e5f85f45c135742d95da2bc3d';
    console.log(url);
    this.httpClient
     .get(url)
@@ -245,24 +251,10 @@ export class DirectionComponent {
       this.directionDistance = Math.round(dis).toString() + ' متر ';
      }
      const time = dirResult.result.paths[0].time;
-     if (time >= 3600000) {
-      this.directionTime = Math.round(time / 3600000).toString() + 'ساعت';
-      if (time - Math.round(time / 3600000) * 3600000 > 60000) {
-       this.directionTime =
-        this.directionTime + ' و ' + (time - Math.round(time / 3600000) * 3600000).toString() + 'دقیقه';
-      }
-     } else {
-      this.directionTime = Math.ceil(time / 60000).toString() + ' دقیقه';
-     }
-     //  this.directionTime =
-     //   dirResult.result.paths[0].time >= 3600000
-     //    ?
-     //    : dirResult.result.paths[0].time >= 60000
-     //      ? Math.round(dirResult.result.paths[0].time / 60000).toString() + 'دقیقه'
-     //      : Math.round(dirResult.result.paths[0].time / 1000).toString() + 'ثانیه';
+     this.directionTime = this.msToTime(time);
 
-     console.log(dirResult.result.paths[0].distance);
-     console.log(dirResult.result.paths[0].time);
+     console.log('distance: ' + dirResult.result.paths[0].distance);
+     console.log('time: ' + dirResult.result.paths[0].time);
      const stylesLine = {
       LineString: [
        new Style({
@@ -353,6 +345,20 @@ export class DirectionComponent {
   }
  }
 
+ msToTime(ms) {
+  let seconds = (ms / 1000);
+  let minutes = (seconds / 60);
+  seconds = seconds % 60;
+  const hours = (minutes / 60);
+  minutes = minutes % 60;
+
+  if (ms < 3600000) {
+    return ` ${minutes.toFixed(0)} دقیقه و ${seconds.toFixed(0)} ثانیه `;
+  } else {
+    return `${hours.toFixed(0)} ساعت و ${minutes.toFixed(0)} دقیقه و ${seconds.toFixed(0)} ثانیه`;
+  }
+ }
+
  calcDistance(loc1: Array<number>, loc2: Array<number>) {
   // mohasebeh fasle orgin/destination k karbar click kardeh ba mabda masiryabi
   return Math.sqrt(Math.pow(loc2[0] - loc1[0], 2) + Math.pow(loc2[1] - loc1[1], 2));
@@ -360,7 +366,7 @@ export class DirectionComponent {
 
  search(input: HTMLInputElement) {
   this.routingError = null;
-  console.log('search');
+  // console.log('search');
   // search baraye yaftan mabda ya maqsad
   input.focus();
   this.publicVar.removeLayerByName(input.id);
@@ -374,16 +380,23 @@ export class DirectionComponent {
   } else {
    searchLang = /^[a-zA-Z]+$/.test(input.value) ? 'en' : 'fa';
   }
-  if (input.value.length >= 2) {
-   const mapCenterTransform: Array<number> = transform(
+  if (input.value.length >= 3) {
+    // this.showError = false;
+    const mapCenterTransform: Array<number> = transform(
     this.mapservice.map.getView().getCenter(),
     this.mapservice.project,
     'EPSG:4326',
    );
-   const headers = new HttpHeaders().set('Accept', 'application/json').set('Content-Type', 'application/json');
-   const url = `http://apimap.ir/api/map/search?q=${input.value}&lat=${mapCenterTransform[1].toString()}&lon=${mapCenterTransform[0].toString()}&key=29e70c42798fb6381dbb2bd6f552b24ab22d48823ef903a3e82e1a01926144bc&language=${searchLang}`;
+  //  console.log('mapCenterTransform===>>>' + mapCenterTransform);
 
-   this.httpClient
+    const headers = new HttpHeaders().set('Accept', 'application/json').set('Content-Type', 'application/json');
+    const url = `http://apimap.ir/api/map/search?q=${input.value}
+    &lat=${mapCenterTransform[1].toString()}
+    &lon=${mapCenterTransform[0].toString()}
+    &key=49136bd13c11cbfd7d2c2814c7c70ef54fa96f3e5f85f45c135742d95da2bc3d
+    &language=${searchLang}`;
+
+    this.httpClient
     .get(url, { headers: headers })
     .toPromise()
     .then((results: any) => {
@@ -394,17 +407,24 @@ export class DirectionComponent {
     .catch(() => {
      if (this.publicVar.isPersian) {
       alert('درحال حاضرامکان جستجو وجود ندارد.');
+     
      } else {
+
      }
     });
-   console.log(url);
-  }
+  } 
+  // else if (input.value.length <= 2) {
+  //   this.showError = true;
+  // }
+
  }
 
+
  selectResult(item: SearchResult) {
-  console.log(item.location);
+  console.log(item.geometry);
   this.publicVar.removeLayerByName('iconClickSearch');
-  const center = transform([ item.location[1], item.location[0] ], 'EPSG:4326', this.mapservice.project);
+  const center = transform([ item.geometry[0], item.geometry[1] ], 'EPSG:4326', this.mapservice.project);
+  console.log('center===>>' + center);
   this.mapservice.map.getView().animate({
    center,
    zoom: 17,
@@ -445,4 +465,6 @@ export class DirectionComponent {
    this.measure.openMeasure();
   }
  }
+
+
 }

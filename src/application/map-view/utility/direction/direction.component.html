@@ -111,7 +111,7 @@
       </div>
     </div>
     <div class="result">
-      <div class="error" *ngIf="this.publicVar.isDirectionInIran == false ||  this.routingError== true">
+      <div class="error" *ngIf="this.publicVar.isDirectionInIran == false ||  routingError">
         <div>
           <svg height="20px" viewBox="0 0 32 32" width="20px">
             <g fill="none" fill-rule="evenodd" id="Icons new Arranged Names Color" stroke="none" stroke-width="1">
@@ -121,17 +121,16 @@
               </g>
             </g>
           </svg>
-          <span *ngIf="
-        this.publicVar.isDirectionInIran == false && this.publicVar.isPersian">
+          <span *ngIf="this.publicVar.isDirectionInIran == false && this.publicVar.isPersian">
             مکان مورد نظر خارج از محدوده ایران است.
           </span>
           <span *ngIf="this.publicVar.isDirectionInIran == false && !this.publicVar.isPersian">
             The location is outside Iran
           </span>
-          <span *ngIf="this.routingError== true && this.publicVar.isPersian">
+          <span *ngIf="this.routingError == true && this.publicVar.isPersian">
             باعرض پوزش،مسیریابی امکان پذیر نبود.
           </span>
-          <span *ngIf="this.routingError== true && !this.publicVar.isPersian">
+          <span *ngIf="this.routingError == true && !this.publicVar.isPersian">
             Sorry, we could not calculate driving directions.
           </span>
         </div>
@@ -150,4 +149,9 @@
         <span class="time">مسافت : {{directionDistance}}</span>
         <span class="distance">زمان: {{directionTime}}</span>
       </div>
+
+      <!-- <div class="error-search" *ngIf="showError">
+        <span *ngIf="this.publicVar.isPersian">متن جست و جو نباید کمتر از 3 کاراکتر باشد.</span>
+        <span *ngIf="!this.publicVar.isPersian">Search text should not be less than 3 characters.</span>
+      </div> -->
     </div>

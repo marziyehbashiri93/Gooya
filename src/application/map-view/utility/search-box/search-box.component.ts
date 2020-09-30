@@ -64,19 +64,14 @@ export class SearchBoxComponent implements OnInit {
     this.mapservice.project,
     'EPSG:4326',
    );
-   console.log(mapCenterTransform);
+   console.log('mapCenterTransform===>>>' + mapCenterTransform);
+   const url = `http://apimap.ir/api/map/search?q=${searchTxt}
+   &lat=${mapCenterTransform[1].toString()}
+   &lon=${mapCenterTransform[0].toString()}
+   &key=49136bd13c11cbfd7d2c2814c7c70ef54fa96f3e5f85f45c135742d95da2bc3d&
+   language=${searchLang}`;
    this.httpClient
-    .get(
-     'http://apimap.ir/api/map/search?q=' +
-      searchTxt +
-      '&lat=' +
-      mapCenterTransform[1].toString() +
-      '&lon=' +
-      mapCenterTransform[0].toString() +
-      '&key=29e70c42798fb6381dbb2bd6f552b24ab22d48823ef903a3e82e1a01926144bc&' +
-      'language=' +
-      searchLang,
-    )
+    .get( url )
     .toPromise()
     .then((results: any) => {
      this.publicVar.isOpenSearchResult = true;
@@ -99,6 +94,7 @@ export class SearchBoxComponent implements OnInit {
     .catch(error => {
      this.publicVar.isOpenSearchResult = this.showError = true;
     });
+    console.log('search==>>' + url);
   }
  }
  // ---- hazf shomal jonob va ,... va hamcnin h-city haye h ba l-city yeksanan  ----
@@ -161,8 +157,8 @@ export class SearchBoxComponent implements OnInit {
  // ---- baclick roye natayej search b location on miravad  ----
  GoToLocation(i) {
   this.publicVar.removeLayerByName('iconClickSearch');
-  const center = this.declareXYlocation(this.SearchResults[i].location);
-  console.log(center);
+  const center = this.declareXYlocation(this.SearchResults[i].geometry);
+  console.log('======>>>' + center);
   // this.mapservice.map.getView().animate({
   //  center,
   //  zoom: 17,
@@ -253,7 +249,7 @@ export class SearchBoxComponent implements OnInit {
  // ---- for add or remve  point when click/hover to result----
  addMarkerToResult(i, nameLayer = 'iconHoverSearch') {
   if (isPlatformBrowser(this.platformId)) {
-   const location = this.declareXYlocation(this.SearchResults[i].location);
+   const location = this.declareXYlocation(this.SearchResults[i].geometry);
    const iconFeature = new Feature({
     geometry: new Point(location),
    });
@@ -290,8 +286,8 @@ export class SearchBoxComponent implements OnInit {
   const locationX = [];
   const locationY = [];
   obj.forEach((el: SearchResult) => {
-   locationX.push(this.declareXYlocation(el.location)[0]);
-   locationY.push(this.declareXYlocation(el.location)[1]);
+   locationX.push(this.declareXYlocation(el.geometry)[0]);
+   locationY.push(this.declareXYlocation(el.geometry)[1]);
   });
   return [
    Math.min.apply(Math.min, locationX),
@@ -304,7 +300,7 @@ export class SearchBoxComponent implements OnInit {
  createPointcoord(obj: Array<SearchResult>) {
   const featureArray = [];
   obj.forEach((el: SearchResult) => {
-   const coord = this.declareXYlocation(el.location);
+   const coord = this.declareXYlocation(el.geometry);
    featureArray.push({
     type: 'Feature',
     geometry: {
@@ -327,7 +323,7 @@ export class SearchBoxComponent implements OnInit {
  }
  gotoDirection(location, name) {
   this.closeSearch();
-  console.log(location);
+  console.log('gotoDirection==>' + location);
   this.publicVar.removeLayerByName('iconHoverSearch');
   this.publicVar.removeLayerByName('iconClickSearch');
 
@@ -353,8 +349,8 @@ export class SearchBoxComponent implements OnInit {
  }
  // location migirad tabdil mikonad ,chon dar bakhshe location x,y jabaja mishid intori neveshtim in func ro
  declareXYlocation(location) {
-  let Y;
-  let X;
+  let Y = location[1];
+  let X = location[0];
   if (location[0] < location[1]) {
    Y = location[0];
    X = location[1];

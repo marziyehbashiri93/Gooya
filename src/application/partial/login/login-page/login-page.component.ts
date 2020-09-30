@@ -1,11 +1,9 @@
-import { Component, OnInit, ViewChild, ElementRef, PLATFORM_ID, Inject } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { PublicVarService } from 'src/application/shared/services/public-var.service';
 import { HttpClient } from '@angular/common/http';
-import { LoginVarService } from '../login-var.service';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { LoginInfo } from 'src/application/shared/interface/login-info';
-import { isPlatformBrowser } from '@angular/common';
-import { encode } from 'punycode';
+import { PublicVarService } from 'src/application/shared/services/public-var.service';
+import { LoginVarService } from '../login-var.service';
 
 @Component({
  selector: 'app-login-page',
@@ -52,7 +50,7 @@ export class LoginPageComponent implements OnInit {
    console.log('typeof==>...' + typeof response);
    if (response !== 'null') {
     const result: LoginInfo = JSON.parse(response.toString());
-    console.log('loginfooo==>' + response);
+    console.log('loginfooo==>' + result);
 
     localStorage.setItem('login', response as string);
     const lenResult = Object.keys(result).length;

@@ -6,6 +6,7 @@ import { Pointer as PointerInteraction } from 'ol/interaction.js';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import { Icon, Style } from 'ol/style';
+import { LoginInfo } from 'src/application/shared/interface/login-info';
 import { MapService } from 'src/application/shared/services/map.service';
 import { PublicVarService } from 'src/application/shared/services/public-var.service';
 
@@ -25,6 +26,7 @@ export class PublicYourPlaceVariableService {
  isOpenWork: boolean = false;
  isExistWork: boolean = false;
  isOpenOtherPlace: boolean = false;
+
 
  maplayer: VectorLayer;
  layerSource: VectorSource = new VectorSource();

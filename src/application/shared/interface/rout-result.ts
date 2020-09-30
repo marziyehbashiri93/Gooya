@@ -4,9 +4,9 @@ export interface RoutResult {
   'paths': [
    {
     'distance': number;
-    'weight': number;
+    // 'weight': number; ///
     'time': number;
-    'transfers': number;
+    // 'transfers': number; ///
     'points_encoded': boolean;
     'bbox': Array<number>;
     'points': {
@@ -24,10 +24,10 @@ export interface RoutResult {
       'street_name': string;
      }
     ];
-    'legs': [];
-    'details': [];
-    'ascend': 0;
-    'descend': 0;
+    // 'legs': []; ///
+    // 'details': []; ///
+    // 'ascend': 0; ///
+    // 'descend': 0; ///
     'snapped_waypoints': {
      'type': 'LineString';
      'coordinates': Array<Array<number>>;

@@ -27,9 +27,9 @@ export class AttributeLayerComponent implements OnInit {
  ) {}
 
  ngOnInit() {
-  // window.addEventListener('DOMContentLoaded', (e) => {
-  //  this.openPopupAttribute();
-  // });
+//   window.addEventListener('DOMContentLoaded', (e) => {
+//    this.openPopupAttribute();
+//   });
  }
 
  openPopupAttribute() {
@@ -85,15 +85,15 @@ export class AttributeLayerComponent implements OnInit {
       console.log(identy);
       if (this.publicVar.isPersian) {
       }
-      if ((!identy[0] || identy[0].F_NAME === '?') && this.publicVar.isPersian) {
+      if ((!identy[0] || identy[0].F_Name === '?') && this.publicVar.isPersian) {
        this.featureName = 'عارضه بی نام';
-      } else if ((!identy[0] || identy[0].E_NAME === '?') && !this.publicVar.isPersian) {
+      } else if ((!identy[0] || identy[0].E_Name === '?') && !this.publicVar.isPersian) {
        this.featureName = 'anonymous feature';
       } else {
        if (this.publicVar.isPersian) {
-        this.featureName = identy[0].F_NAME;
+        this.featureName = identy[0].F_Name;
        } else {
-        this.featureName = identy[0].E_NAME;
+        this.featureName = identy[0].E_Name;
        }
       }
       this.publicVar.isOpenPopupAttribute = true;

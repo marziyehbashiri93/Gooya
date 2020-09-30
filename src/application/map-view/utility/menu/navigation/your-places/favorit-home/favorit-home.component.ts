@@ -1,9 +1,12 @@
+import { LoginInfo } from './../../../../../../shared/interface/login-info';
+// import { YourPlaceInfo } from './../../../../../../shared/interface/your-place-info';
 import { state, style, trigger } from '@angular/animations';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { transform } from 'ol/proj';
 import { DirectionComponent } from 'src/application/map-view/utility/direction/direction.component';
 import { LoginVarService } from 'src/application/partial/login/login-var.service';
+import { YourPlaceInfo } from 'src/application/shared/interface/your-place-info';
 import { IranBoundryService } from 'src/application/shared/services/iran-boundry.service';
 import { MapService } from 'src/application/shared/services/map.service';
 import { PublicVarService } from 'src/application/shared/services/public-var.service';
@@ -54,7 +57,7 @@ export class FavoritHomeComponent implements OnInit {
  homelocation: Array<number> = [ 5723891.316850067, 4264880.430199694 ];
  homelocationVal: string;
  coordPoint: Array<number>;
- useID: number ;
+ userID: LoginInfo = JSON.parse(localStorage.getItem('login').toString());
  
  // ----for home ----
  constructor(
@@ -66,7 +69,6 @@ export class FavoritHomeComponent implements OnInit {
   private httpClient: HttpClient,
   public loginVar: LoginVarService,
  ) {
-  
  }
 
  ngOnInit() {
@@ -105,6 +107,7 @@ export class FavoritHomeComponent implements OnInit {
      this.coordPoint = [ geom.getFirstCoordinate()[0].toFixed(0), geom.getFirstCoordinate()[1].toFixed(0) ];
     });
    }
+   this.dataYourPlace();
   }
 
   this.existHome = '';
@@ -115,14 +118,11 @@ export class FavoritHomeComponent implements OnInit {
   this.publicVarYourPlace.isExistHome = true;
   this.publicVarYourPlace.isOpenHome = false;
   const latlong = transform(this.coordPoint, this.mapservice.project, 'EPSG:4326');
-  // const use = this.publicVar.loginDeta.ID;
-  // this.useID = this.publicVar.loginDeta.ID;
-  this.useID = this.loginVar.loginValue.ID;
-  console.log('useID ==>>>>>>>>>>' + this.useID);
+ 
 
   const body = {
    ID: 0,
-   UserID: this.useID,
+   UserID: this.userID.ID,
    Lat: latlong[1],
    Lon: latlong[0],
    PointName: 'مطب',
@@ -132,7 +132,7 @@ export class FavoritHomeComponent implements OnInit {
   const URL = this.publicVar.baseUrl + ':' + this.publicVar.portApi + '/api/user/SaveInterestedPoints';
   this.httpClient.post(URL, body).toPromise().then((response) => {
    console.log('typeof' + typeof response);
-   console.log('response:' + response);
+   console.log('responsePOS: ' + response);
    console.log('url:' + URL);
    if (response == 'true,') {
     this.publicVarYourPlace.removePoint();
@@ -141,7 +141,9 @@ export class FavoritHomeComponent implements OnInit {
      alert ('ثبت مکان مورد نظر با مشکل مواجه شده است');
    }
   });
-  // this.dataYourPlace();
+
+ 
+  
  }
 
  opendirectionHome() {
@@ -155,7 +157,7 @@ export class FavoritHomeComponent implements OnInit {
    this.direction.getClickLoctionAddress();
    this.direction.LocationToAddress(this.homelocation);
   }, 300);
-  this.mapservice.map.getView().setCenter(this.homelocation)
+  this.mapservice.map.getView().setCenter(this.homelocation);
  }
 
  openHomeEdit() {
@@ -196,32 +198,60 @@ export class FavoritHomeComponent implements OnInit {
   // const useeID = this.loginVar.loginValue.ID;
   // this.useID = this.loginVar.loginValue.ID;
   
-  // http://ServerIP:Port/api/User/LoadInterestedPoints?userid=20&PointTypes=
-  const userid = this.useID;
-  const PointTypes = 3 ;
-  const url =
-   this.publicVar.baseUrl +
-   ':' +
-   this.publicVar.portApi +
-   '/api/User/LoadInterestedPoints?userid=' +
-   userid +
-   '&PointTypes=' +
-   PointTypes;
+  const userid = 21;
+  const PointTypes = 1 ;
+  const url = `${this.publicVar.baseUrl}:${this.publicVar.portApi}/api/User/LoadInterestedPoints?userid=${userid}
+  &PointTypes=${PointTypes}`;
+  //  this.publicVar.baseUrl +
+  //  ':' +
+  //  this.publicVar.portApi +
+  //  '/api/User/LoadInterestedPoints?userid=' +
+  //  userid +
+  //  '&PointTypes=' +
+  //  PointTypes;
   console.log('urlGET==> ' + url);
+  
 
   this.httpClient.get(url).toPromise().then((response) => {
    console.log('responseGET: ' + response);
    console.log('typeof' + typeof response);
-   const result = JSON.parse(response.toString());
-   console.log(  result[0] );
-  //  const use = this.publicVar.loginDeta.ID;
+   response = JSON.parse(response.toString());
+   console.log('result' + response[0]);
 
-  //  console.log('result==>>>>>>>>>>' + useeID);
-  //  console.log('result==>>>>>>>>>>' + typeof this.publicVar.loginDeta.ID );
+  //  const lon = result.Lon;
+  //  const lat = result.Lat;
+
+  //  console.log (lon);
+  
+
+
+  
+  
+
    console.log('*************************************');
   
   });
  }
 
+
+//  setAddress() {
+//   const XYDecimal = transform(this.publicVar.errorMap.getView().getCenter(), this.mapservice.project, 'EPSG:4326');
+//   const URL =
+//    this.publicVar.baseUrl +
+//    ':' +
+//    this.publicVar.portMap +
+//    '/api/map/identify?X=' +
+//    XYDecimal[0].toString() +
+//    '&Y=' +
+//    XYDecimal[1].toString() +
+//    '&ZoomLevel=' +
+//    this.mapservice.map.getView().getZoom().toFixed(0).toString();
+//   console.log(URL);
+
+//   this.httpClient.get(URL).toPromise().then((response) => {
+//    console.log(response[0]);
+//    let nearFeature = response[0];
+//   });
+//  }
 
 }
