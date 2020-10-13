@@ -332,7 +332,7 @@ export class PublicVarService {
    }
   }
   map.addLayer(this.layerStatus.osm.layerName, this.layerStatus.osm.olName, this.layerStatus.osm.zIndex);
-  map.addLayer(this.createCoverOSM(), 'coverOSM');
+//   map.addLayer(this.createCoverOSM(), 'coverOSM');
 
   map.addLayer(this.createWMTSLayer(NetWorkLayer, this.layerStatus.network.olName, this.layerStatus.network.zIndex));
   map.addLayer(

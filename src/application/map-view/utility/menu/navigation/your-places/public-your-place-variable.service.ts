@@ -9,6 +9,10 @@ import { Icon, Style } from 'ol/style';
 import { LoginInfo } from 'src/application/shared/interface/login-info';
 import { MapService } from 'src/application/shared/services/map.service';
 import { PublicVarService } from 'src/application/shared/services/public-var.service';
+import { YourPlaceInfo } from 'src/application/shared/interface/your-place-info';
+import { HttpClient } from '@angular/common/http';
+
+
 
 
 @Injectable({
@@ -18,6 +22,7 @@ export class PublicYourPlaceVariableService {
  constructor(
   public publicVar: PublicVarService,
   private mapservice: MapService,
+  private httpClient: HttpClient,
   // for ssr
   @Inject(PLATFORM_ID) private platformId: Object,
  ) {}
@@ -26,6 +31,9 @@ export class PublicYourPlaceVariableService {
  isOpenWork: boolean = false;
  isExistWork: boolean = false;
  isOpenOtherPlace: boolean = false;
+ Lon: number;
+ Lat: number;
+
 
 
  maplayer: VectorLayer;
@@ -56,7 +64,8 @@ export class PublicYourPlaceVariableService {
 
    this.mapservice.map.addLayer(this.maplayer);
    // for return value and show on input
-   const Drag = (( PointerInteraction ) => {
+   const Drag = (
+       ( PointerInteraction ) => {
     function Drag() {
      PointerInteraction.call(this, {
       handleDownEvent: handleDownEvent,
@@ -178,10 +187,13 @@ export class PublicYourPlaceVariableService {
   const source = this.maplayer.getSource();
   // Get the features of the layer
   const features = source.getFeatures();
+  console.log( 'features===>');
+  console.log( features);
   let feature;
   // iterate through the array
   for (let i = 0, ii = features.length; i < ii; ++i) {
    feature = features[i];
+   console.log( feature);
    // get the geometry for each feature point
    const geometry = feature.getGeometry();
    return geometry;
@@ -191,4 +203,29 @@ export class PublicYourPlaceVariableService {
  toFix(array: Array<number>) {
   return array[0].toFixed(0) + ' , ' + array[1].toFixed(0);
  }
+
+
+ dataYourPlace() {
+    // const useeID = this.loginVar.loginValue.ID;
+    // this.useID = this.loginVar.loginValue.ID;
+    const userID: LoginInfo = JSON.parse(localStorage.getItem('login').toString());
+    const userid = userID.ID; // this.userID.ID
+    const PointTypes = 1 ;
+    const url = `${this.publicVar.baseUrl}:${this.publicVar.portApi}/api/User/LoadInterestedPoints?userid=${userid}
+    &PointTypes=${PointTypes}`;
+    console.log('urlGET==> ' + url);
+    this.httpClient.get(url).toPromise().then((response) => {
+     console.log('responseGET: ' + response);
+     const result: YourPlaceInfo = JSON.parse(response.toString());
+    //  this.resultData = result[0];
+     const Id = result[0].Id;
+     this.Lat = result[0].Lat;
+     this.Lon = result[0].Lon;
+     console.log('id==>' + Id + '>>' + this.Lat + '>>' + this.Lon);
+  
+     console.log('*************************************');
+    });
+  
+   }
+  
 }

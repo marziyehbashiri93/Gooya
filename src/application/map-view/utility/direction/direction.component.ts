@@ -241,14 +241,26 @@ export class DirectionComponent {
      console.log(dirResult);
      const coord = dirResult.result.paths[0].points.coordinates;
      const dis = dirResult.result.paths[0].distance;
-     if (Math.floor(dis / 1000) > 0) {
-      this.directionDistance = (dis / 1000).toString().split('.')[0] + ' کیلومتر  ';
-      if (dis - Math.floor(dis / 1000) * 1000 > 0) {
-       this.directionDistance =
-        this.directionDistance + 'و ' + Math.round(dis - Math.floor(dis / 1000) * 1000).toString() + ' متر ';
-      }
+     if (this.publicVar.isPersian) {
+      if (Math.floor(dis / 1000) > 0) {
+        this.directionDistance = (dis / 1000).toString().split('.')[0] + ' کیلومتر  ';
+        if (dis - Math.floor(dis / 1000) * 1000 > 0) {
+         this.directionDistance =
+          this.directionDistance + 'و ' + Math.round(dis - Math.floor(dis / 1000) * 1000).toString() + ' متر ';
+        }
+       } else {
+        this.directionDistance = Math.round(dis).toString() + ' متر ';
+       }
      } else {
-      this.directionDistance = Math.round(dis).toString() + ' متر ';
+      if (Math.floor(dis / 1000) > 0) {
+        this.directionDistance = (dis / 1000).toString().split('.')[0] + ' Kilometer ';
+        if (dis - Math.floor(dis / 1000) * 1000 > 0) {
+         this.directionDistance =
+          this.directionDistance + 'and ' + Math.round(dis - Math.floor(dis / 1000) * 1000).toString() + ' Meter ';
+        }
+       } else {
+        this.directionDistance = Math.round(dis).toString() + ' Meter ';
+       }
      }
      const time = dirResult.result.paths[0].time;
      this.directionTime = this.msToTime(time);
@@ -352,11 +364,22 @@ export class DirectionComponent {
   const hours = (minutes / 60);
   minutes = minutes % 60;
 
-  if (ms < 3600000) {
-    return ` ${minutes.toFixed(0)} دقیقه و ${seconds.toFixed(0)} ثانیه `;
+  if (this.publicVar.isPersian) {
+    if (ms < 3600000) {
+      return ` ${minutes.toFixed(0)} دقیقه و ${seconds.toFixed(0)} ثانیه `;
+    } else {
+      return `${hours.toFixed(0)} ساعت و ${minutes.toFixed(0)} دقیقه و ${seconds.toFixed(0)} ثانیه`;
+    }
   } else {
-    return `${hours.toFixed(0)} ساعت و ${minutes.toFixed(0)} دقیقه و ${seconds.toFixed(0)} ثانیه`;
+    if (ms < 3600000) {
+      return ` ${minutes.toFixed(0)} Minute and ${seconds.toFixed(0)} Second `;
+    } else {
+      return `${hours.toFixed(0)} Hour and ${minutes.toFixed(0)} Minute and ${seconds.toFixed(0)} Second`;
+    }
+
   }
+
+  
  }
 
  calcDistance(loc1: Array<number>, loc2: Array<number>) {

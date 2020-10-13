@@ -146,8 +146,11 @@
         </div>
       </div>
       <div class="direction-result" *ngIf="directionDistance || directionTime ">
-        <span class="time">مسافت : {{directionDistance}}</span>
-        <span class="distance">زمان: {{directionTime}}</span>
+        <span class="time" *ngIf="this.publicVar.isPersian">مسافت : {{directionDistance}}</span>
+        <span class="time" *ngIf="!this.publicVar.isPersian">Distance : {{directionDistance}}</span>
+        <span class="distance" *ngIf="this.publicVar.isPersian">زمان : {{directionTime}}</span>
+        <span class="distance" *ngIf="!this.publicVar.isPersian">Time : {{directionTime}}</span>
+
       </div>
 
       <!-- <div class="error-search" *ngIf="showError">

@@ -47,8 +47,8 @@ export class LoginComponent implements OnInit {
    loginDeta = JSON.parse(localStorage.getItem('login').toString());
 
    console.log('has loginDeta');
-   console.log(loginDeta);
-   console.log(loginDeta.ID);
+//    console.log(loginDeta);
+//    console.log(loginDeta.ID);
 
    this.publicVar.isauthenticate = true;
    this.loginVar.loginValue = loginDeta;
