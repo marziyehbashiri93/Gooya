@@ -227,6 +227,16 @@ export class FavoritHomeComponent implements OnInit {
   this.publicVarYourPlace.isExistHome = false;
   this.publicVarYourPlace.isOpenHome = false;
   this.openCloseHome();
+  const URL = `${this.publicVar.baseUrl}:${this.publicVar.portApi}/api/User/DeleteInterestedPoints?id=${this.publicVarYourPlace.Id}`;
+  const body = this.publicVarYourPlace.result[0];
+  console.log('urlRemove==> ' + URL);
+  console.log('==>');
+  console.log(typeof body);
+  console.log(body);
+  this.httpClient.post(URL, body).toPromise().then((response) => {
+    console.log(response);
+  });
+  localStorage.removeItem('favorit');
  }
  NoDeleteHome() {
   this.isOpenHomeDelete = false;

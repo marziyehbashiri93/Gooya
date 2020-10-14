@@ -33,7 +33,8 @@ export class PublicYourPlaceVariableService {
  isOpenOtherPlace: boolean = false;
  Lon: number;
  Lat: number;
-
+ Id: number;
+ result: YourPlaceInfo;
 
 
  maplayer: VectorLayer;
@@ -206,26 +207,31 @@ export class PublicYourPlaceVariableService {
 
 
  dataYourPlace() {
-    // const useeID = this.loginVar.loginValue.ID;
-    // this.useID = this.loginVar.loginValue.ID;
     const userID: LoginInfo = JSON.parse(localStorage.getItem('login').toString());
     const userid = userID.ID; // this.userID.ID
-    const PointTypes = 1 ;
+    let PointTypes;
+    if (this.isOpenHome) {
+       PointTypes = 1;
+    } else if (this.isOpenWork) {
+        PointTypes = 2;
+    } else {
+        PointTypes = 3;
+    }
+    console.log('PointTypes=>>' + PointTypes);
     const url = `${this.publicVar.baseUrl}:${this.publicVar.portApi}/api/User/LoadInterestedPoints?userid=${userid}
     &PointTypes=${PointTypes}`;
     console.log('urlGET==> ' + url);
     this.httpClient.get(url).toPromise().then((response) => {
      console.log('responseGET: ' + response);
-     const result: YourPlaceInfo = JSON.parse(response.toString());
-    //  this.resultData = result[0];
-     const Id = result[0].Id;
-     this.Lat = result[0].Lat;
-     this.Lon = result[0].Lon;
-     console.log('id==>' + Id + '>>' + this.Lat + '>>' + this.Lon);
-  
+     this.result = JSON.parse(response.toString());
+     this.Id = this.result[0].Id;
+     this.Lat = this.result[0].Lat;
+     this.Lon = this.result[0].Lon;
+     console.log('id==>' + this.Id + '>>' + this.Lat + '>>' + this.Lon);
      console.log('*************************************');
     });
   
    }
-  
+
+
 }
