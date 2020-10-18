@@ -46,7 +46,6 @@ import { LoginInfo } from './../../../../../../shared/interface/login-info';
  ],
 })
 export class FavoritHomeComponent implements OnInit {
-  // @ViewChild(LoginPageComponent, { static: false })////////////////
  // ----for home ----
  existHome = '';
  // showAddhome = false;
@@ -57,8 +56,6 @@ export class FavoritHomeComponent implements OnInit {
  homelocation: Array<number>;
  homelocationVal: string;
  coordPoint: Array<number>;
-//  resultData: YourPlaceInfo;
-//  userID: LoginInfo = JSON.parse(localStorage.getItem('login').toString());
  favorDeta: Identity;
 
  
@@ -85,17 +82,14 @@ export class FavoritHomeComponent implements OnInit {
   console.log('has favoraiteDeta');
   console.log(this.favorDeta);
   console.log(typeof this.favorDeta);
-  // setTimeout(() => {
   this.homeAddres = this.publicVar.isPersian ? this.favorDeta.F_Name : this.favorDeta.E_Name ;
-    // }, 500);
 
-  
   }
  }
 
  // ----this function for save Home location ----
 
- // in this function has 2 part ,part 1 if home open ,we must close home with click and remove Point
+  // in this function has 2 part ,part 1 if home open ,we must close home with click and remove Point
  /// part 2 has 2 section:section 1 if Location of home exist , we must show location and when click on it , map goes to that location
  // section 2 : if Location of home does not exist, we must get user's home Location and save that
 
@@ -108,13 +102,12 @@ export class FavoritHomeComponent implements OnInit {
    this.publicVarYourPlace.isOpenHome = false;
   } else if (this.publicVar.isOpenPlaces) {
    console.log('OpenHome');
+   if (this.publicVarYourPlace.isOpenWork) {
+    this.publicVarYourPlace.isOpenWork = false;
+    this.publicVarYourPlace.removePoint();
+  }
    this.publicVarYourPlace.isOpenHome = true;
    if (this.publicVarYourPlace.isExistHome) {
-    // setTimeout(() => {
-    // this.homeAddres = this.favorDeta.F_Name;
-    // this.homeAddres = this.publicVar.isPersian ? this.favorDeta.F_Name : this.favorDeta.E_Name ;
-    // // // // const homeAddres = this.favorDeta.F_Name;
-    // }, 500);
     // this.homeAddres = 'اسدی ، ستارخان، منطقه 5 ، تهران';
     setTimeout(() => {
      this.existHome = 'HaveHome';
@@ -126,7 +119,6 @@ export class FavoritHomeComponent implements OnInit {
     const Center = this.mapservice.map.getView().getCenter();
     this.coordPoint = [ Center[0].toFixed(0), Center[1].toFixed(0) ];
     const geom = this.publicVarYourPlace.CreatAddresFromPoint(Center[0], Center[1]);
-    console.log(geom );
     geom.on('change', () => {
      this.coordPoint = [ geom.getFirstCoordinate()[0].toFixed(0), geom.getFirstCoordinate()[1].toFixed(0) ];
     });
@@ -135,12 +127,10 @@ export class FavoritHomeComponent implements OnInit {
   }
 
   this.existHome = '';
-  // this.publicVarYourPlace.isOpenHome = !this.publicVarYourPlace.isOpenHome;
+
  }
 
-
-
-
+ 
  addNewHome() {
   const userID: LoginInfo = JSON.parse(localStorage.getItem('login').toString());
   this.publicVarYourPlace.isExistHome = true;
@@ -228,7 +218,7 @@ export class FavoritHomeComponent implements OnInit {
   this.publicVarYourPlace.isOpenHome = false;
   this.openCloseHome();
   const URL = `${this.publicVar.baseUrl}:${this.publicVar.portApi}/api/User/DeleteInterestedPoints?id=${this.publicVarYourPlace.Id}`;
-  const body = this.publicVarYourPlace.result[0];
+  const body = this.publicVarYourPlace.result;
   console.log('urlRemove==> ' + URL);
   console.log('==>');
   console.log(typeof body);
@@ -242,17 +232,12 @@ export class FavoritHomeComponent implements OnInit {
   this.isOpenHomeDelete = false;
  }
 
-
-
-
-
  setAddress() {
   const URL =
    `${this.publicVar.baseUrl}:${this.publicVar.portMap}/api/map/identify?X=${this.publicVarYourPlace.Lon.toString()}
    &Y=${this.publicVarYourPlace.Lat.toString()}
    &ZoomLevel=${this.mapservice.map.getView().getZoom().toFixed(0).toString()}`;
   console.log(URL);
-
   this.httpClient.get<Identity>(URL).toPromise().then((identy) => {
    console.log(typeof identy);
    if ((!identy[0] || identy[0].F_Name === '?') && this.publicVar.isPersian) {

@@ -164,7 +164,7 @@ export class SearchBoxComponent implements OnInit {
   //  zoom: 17,
   //  duration: 2000,
   // });
-  this.flyTo(center, function(){});
+  this.flyTo(center, function() {});
   this.addMarkerToResult(i, 'iconClickSearch');
  }
  // animation openlayer baraye gotolocation
@@ -246,7 +246,7 @@ export class SearchBoxComponent implements OnInit {
    this.mapservice.map.addLayer(vectorLayer);
   }
  }
- // ---- for add or remve  point when click/hover to result----
+ // ---- for add or remove  point when click/hover to result----
  addMarkerToResult(i, nameLayer = 'iconHoverSearch') {
   if (isPlatformBrowser(this.platformId)) {
    const location = this.declareXYlocation(this.SearchResults[i].geometry);

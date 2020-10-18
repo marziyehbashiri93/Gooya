@@ -35,6 +35,7 @@ export class PublicYourPlaceVariableService {
  Lat: number;
  Id: number;
  result: YourPlaceInfo;
+ PointTypes: number;
 
 
  maplayer: VectorLayer;
@@ -188,8 +189,8 @@ export class PublicYourPlaceVariableService {
   const source = this.maplayer.getSource();
   // Get the features of the layer
   const features = source.getFeatures();
-  console.log( 'features===>');
-  console.log( features);
+//   console.log( 'features===>');
+//   console.log( features);
   let feature;
   // iterate through the array
   for (let i = 0, ii = features.length; i < ii; ++i) {
@@ -205,21 +206,21 @@ export class PublicYourPlaceVariableService {
   return array[0].toFixed(0) + ' , ' + array[1].toFixed(0);
  }
 
+ 
 
  dataYourPlace() {
     const userID: LoginInfo = JSON.parse(localStorage.getItem('login').toString());
     const userid = userID.ID; // this.userID.ID
-    let PointTypes;
+    // const PointTypes = 2;
+    // let PointTypes;
     if (this.isOpenHome) {
-       PointTypes = 1;
+      this.PointTypes = 1;
     } else if (this.isOpenWork) {
-        PointTypes = 2;
-    } else {
-        PointTypes = 3;
+        this.PointTypes = 2;
     }
-    console.log('PointTypes=>>' + PointTypes);
+    console.log('PointTypes=>>' + this.PointTypes);
     const url = `${this.publicVar.baseUrl}:${this.publicVar.portApi}/api/User/LoadInterestedPoints?userid=${userid}
-    &PointTypes=${PointTypes}`;
+    &PointTypes=${this.PointTypes}`;
     console.log('urlGET==> ' + url);
     this.httpClient.get(url).toPromise().then((response) => {
      console.log('responseGET: ' + response);
@@ -230,8 +231,46 @@ export class PublicYourPlaceVariableService {
      console.log('id==>' + this.Id + '>>' + this.Lat + '>>' + this.Lon);
      console.log('*************************************');
     });
-  
    }
+
+
+
+
+
+
+
+
+
+
+    // ---- for add point when insert ----
+//  addMarkerToAllResults() {
+//     // for ssr
+//     if (isPlatformBrowser(this.platformId)) {
+//      const markerStyle = {
+//       Point: new Style({
+//        image: new Icon({
+//         anchor: [ 0.5, 0.5 ],
+//         scale: 0.25,
+//         imgSize: [ 28, 28 ],
+//         src: '../../../../assets/img/icon-search-result.svg',
+//        }),
+//       }),
+//      };
+  
+//      const styleFunction = feature => {
+//       return [ markerStyle[feature.getGeometry().getType()] ];
+//      };
+//      const vectorLayer = new VectorLayer({
+//       source: new VectorSource({
+//     //    features: new GeoJSON().readFeatures(geoJsonObj),
+//       }),
+//       style: styleFunction,
+//       name: 'search',
+//       zIndex: 1008,
+//      });
+//      this.mapservice.map.addLayer(vectorLayer);
+//     }
+//    }
 
 
 }
