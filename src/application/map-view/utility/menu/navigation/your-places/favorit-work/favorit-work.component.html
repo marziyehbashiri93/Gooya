@@ -3,7 +3,7 @@
   [@openCloseWork]="
     this.publicVarYourPlace.isOpenWork
       ? this.publicVarYourPlace.isExistWork
-        ? this.isOpenWorkEdit
+        ? this.publicVarYourPlace.isOpenWorkEdit
           ? 'openEditWork'
           : 'openHaveWork'
         : 'openDontHaveWork'
@@ -60,7 +60,7 @@
     <div
       *ngIf="
         this.publicVarYourPlace.isOpenWork &&
-        !this.isOpenWorkEdit &&
+        !this.publicVarYourPlace.isOpenWorkEdit &&
         !this.isOpenWorkDelete &&
         this.existWork == 'HaveWork'
       "
@@ -74,7 +74,7 @@
           placement="top"
           fontSize="0.85"
           delay="500"
-          (click)="opendirectionWork()"
+          (click)="this.publicVarYourPlace.opendirection()"
         >
           <div>
             <svg width="20px" height="20px" viewBox="0 0 287.6 300">
@@ -90,7 +90,7 @@
           placement="top"
           fontSize="0.85"
           delay="500"
-          (click)="openWorkEdit()"
+          (click)="this.publicVarYourPlace.openPlaceEdit()"
         >
           <div>
             <svg x="0px" y="0px" viewBox="0 0 528.899 528.899">
@@ -120,6 +120,56 @@
               />
             </svg>
           </div>
+        </button>
+      </div>
+    </div>
+    <!-- editWorkBox -->
+    <div
+      class="work-showExistLocation-editWorkBox"
+      *ngIf="this.publicVarYourPlace.isOpenWork && this.publicVarYourPlace.isOpenWorkEdit"
+    >
+      <input
+        [appTooltips]="
+          this.publicVar.isPersian
+            ? 'آدرس را توسط مکان نما مشخص کنید'
+            : 'Select address with pointer'
+        "
+        placement="top"
+        delay="500"
+        fontSize="0.85"
+        [value]="this.publicVarYourPlace.placelocationVal"
+      />
+      <div class="editWorkBox-btn">
+        <button (click)="this.publicVarYourPlace.saveEditPlace()">
+          <span *ngIf="this.publicVar.isPersian">ویرایش</span>
+          <span *ngIf="!this.publicVar.isPersian">Edite</span>
+        </button>
+
+        <button (click)="this.publicVarYourPlace.cancelEditPlace()">
+          <span *ngIf="this.publicVar.isPersian">انصراف</span>
+          <span *ngIf="!this.publicVar.isPersian">Cancle</span>
+        </button>
+      </div>
+    </div>
+    <!-- DeleteWorkBox -->
+    <div
+      class="work-showExistLocation-deleteWork"
+      *ngIf="
+        this.publicVarYourPlace.isOpenWork &&
+        this.isOpenWorkDelete &&
+        this.existWork == 'HaveWork'
+      "
+    >
+      <span *ngIf="this.publicVar.isPersian">آیا از حذف اطمینان دارید ؟</span>
+      <span *ngIf="!this.publicVar.isPersian">Are youe Sure</span>
+      <div>
+        <button (click)="YesDeleteWork()">
+          <span *ngIf="this.publicVar.isPersian">بله</span>
+          <span *ngIf="!this.publicVar.isPersian">Yes</span>
+        </button>
+        <button (click)="NoDeleteWork()">
+          <span *ngIf="this.publicVar.isPersian">خیر</span>
+          <span *ngIf="!this.publicVar.isPersian">No</span>
         </button>
       </div>
     </div>

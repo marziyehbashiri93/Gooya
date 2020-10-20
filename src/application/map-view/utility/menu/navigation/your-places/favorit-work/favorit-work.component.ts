@@ -49,6 +49,8 @@ export class FavoritWorkComponent implements OnInit {
   workAddres;
   coordPoint: Array<number>;
   favorWork: Identity;
+  worklocation: Array<number>;
+  worklocationVal: string;
 
   constructor(
     private mapservice: MapService,
@@ -64,7 +66,7 @@ export class FavoritWorkComponent implements OnInit {
   haveFavorWorkData() {
     if (localStorage.getItem('favoritWork') !== null) {
     // let favorDeta: Identity;
-    this.favorWork = JSON.parse(localStorage.getItem('favorit').toString());
+    this.favorWork = JSON.parse(localStorage.getItem('favoritWork').toString());
     console.log('has favoraiteDeta');
     console.log(this.favorWork);
     console.log(typeof this.favorWork);
@@ -131,6 +133,7 @@ export class FavoritWorkComponent implements OnInit {
       this.openCloseWork();
      } else {
        alert ('ثبت مکان مورد نظر با مشکل مواجه شده است');
+       this.publicVarYourPlace.removePoint();
      }
     });
     setTimeout(() => {
@@ -144,8 +147,25 @@ export class FavoritWorkComponent implements OnInit {
   
    }
 
+   YesDeleteWork() {
+    // remove point by api
+    this.publicVarYourPlace.isExistWork = false;
+    this.publicVarYourPlace.isOpenWork = false;
+    this.openCloseWork();
+    const URL = `${this.publicVar.baseUrl}:${this.publicVar.portApi}/api/User/DeleteInterestedPoints?id=${this.publicVarYourPlace.Id}`;
+    const body = this.publicVarYourPlace.result[0];
+    this.httpClient.post(URL, body).toPromise().then((response) => {
+      console.log(response);
+    });
+    localStorage.removeItem('favoritWork');
+   }
+   NoDeleteWork() {
+    this.isOpenWorkDelete = false;
+   }
 
 
+
+  
 
 
 

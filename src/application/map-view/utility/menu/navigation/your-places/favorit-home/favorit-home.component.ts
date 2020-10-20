@@ -57,6 +57,8 @@ export class FavoritHomeComponent implements OnInit {
  homelocationVal: string;
  coordPoint: Array<number>;
  favorDeta: Identity;
+ homeAddres1;
+ pointType: number = 1;
 
  
  // ----for home ----
@@ -155,6 +157,7 @@ export class FavoritHomeComponent implements OnInit {
     this.openCloseHome();
    } else {
      alert ('ثبت مکان مورد نظر با مشکل مواجه شده است');
+     this.publicVarYourPlace.removePoint();
    }
   });
   setTimeout(() => {
@@ -169,64 +172,68 @@ export class FavoritHomeComponent implements OnInit {
  }
 
 
- opendirectionHome() {
-  this.homelocation = transform([ this.publicVarYourPlace.Lon, this.publicVarYourPlace.Lat ], 'EPSG:4326', this.mapservice.project);
-  console.log('this.homelocation==>' + this.homelocation);
-  this.publicVarYourPlace.removePoint();
-  // setTimeout(e => {
-    // this.closePlaces();
-  // }, this.publicVar.timeUtility / 4);
-  this.publicVar.isOpenPlaces = false;
-  this.publicVarYourPlace.isOpenHome = false;
-  setTimeout((e) => {
-   this.direction.openDirection('end-point');
-   this.direction.getClickLoctionAddress();
-   this.direction.LocationToAddress(this.homelocation);
-  }, 300);
-  this.mapservice.map.getView().setCenter(this.homelocation);
- }
+//  opendirectionHome() {
+//   this.homelocation = transform([ this.publicVarYourPlace.Lon, this.publicVarYourPlace.Lat ], 'EPSG:4326', this.mapservice.project);
+//   console.log('this.homelocation==>' + this.homelocation);
+//   this.publicVarYourPlace.removePoint();
+//   // setTimeout(e => {
+//     // this.closePlaces();
+//   // }, this.publicVar.timeUtility / 4);
+//   this.publicVar.isOpenPlaces = false;
+//   this.publicVarYourPlace.isOpenHome = false;
+//   setTimeout((e) => {
+//    this.direction.openDirection('end-point');
+//    this.direction.getClickLoctionAddress();
+//    this.direction.LocationToAddress(this.homelocation);
+//   }, 300);
+//   this.mapservice.map.getView().setCenter(this.homelocation);
+//  }
 
- openHomeEdit() {
-  this.isOpenHomeEdit = true;
-  this.homelocation = transform([ this.publicVarYourPlace.Lon, this.publicVarYourPlace.Lat], 'EPSG:4326', 'EPSG:900913');
-  // this.homelocation = [ this.Lon, this.Lat ];
-  // we must get home location from api and save in home locatin
-  this.mapservice.map.getView().setCenter(this.homelocation);
-  this.mapservice.map.getView().setZoom(16);
+//  openHomeEdit() {
+//   this.isOpenHomeEdit = true;
+//   this.homelocation = transform([ this.publicVarYourPlace.Lon, this.publicVarYourPlace.Lat], 'EPSG:4326', 'EPSG:900913');
+//   // this.homelocation = [ this.Lon, this.Lat ];
+//   // we must get home location from api and save in home locatin
+//   this.mapservice.map.getView().setCenter(this.homelocation);
+//   this.mapservice.map.getView().setZoom(16);
 
-  this.homelocationVal = this.publicVarYourPlace.toFix(this.homelocation);
-  const geom = this.publicVarYourPlace.CreatAddresFromPoint(this.homelocation[0], this.homelocation[1]);
-  geom.on('change', () => {
-   const geometryCoords: Array<number> = geom.getFirstCoordinate();
+//   this.homelocationVal = this.publicVarYourPlace.toFix(this.homelocation);
+//   const geom = this.publicVarYourPlace.CreatAddresFromPoint(this.homelocation[0], this.homelocation[1]);
+//   geom.on('change', () => {
+//    const geometryCoords: Array<number> = geom.getFirstCoordinate();
 
-   this.homelocationVal = this.publicVarYourPlace.toFix(geometryCoords);
-  });
- }
- cancelEditHome() {
-  this.isOpenHomeEdit = false;
-  this.publicVarYourPlace.removePoint();
- }
- saveEditHome() {
-  // for go bak to home
-  this.isOpenHomeEdit = false;
-  this.publicVarYourPlace.removePoint();
- }
+//    this.homelocationVal = this.publicVarYourPlace.toFix(geometryCoords);
+//   });
+//  }
+//  cancelEditHome() {
+//   this.isOpenHomeEdit = false;
+//   this.publicVarYourPlace.removePoint();
+//  }
+//  saveEditHome() {
+//   // for go bak to home
+//   this.isOpenHomeEdit = false;
+//   this.publicVarYourPlace.removePoint();
+//  }
 
  YesDeleteHome() {
   // remove point by api
-  this.publicVarYourPlace.isExistHome = false;
-  this.publicVarYourPlace.isOpenHome = false;
-  this.openCloseHome();
-  const URL = `${this.publicVar.baseUrl}:${this.publicVar.portApi}/api/User/DeleteInterestedPoints?id=${this.publicVarYourPlace.Id}`;
-  const body = this.publicVarYourPlace.result;
-  console.log('urlRemove==> ' + URL);
-  console.log('==>');
-  console.log(typeof body);
-  console.log(body);
-  this.httpClient.post(URL, body).toPromise().then((response) => {
-    console.log(response);
-  });
-  localStorage.removeItem('favorit');
+   this.publicVarYourPlace.isExistHome = false;
+   this.publicVarYourPlace.isOpenHome = false;
+   const id = this.publicVarYourPlace.Id;
+   console.log('id==>');
+   console.log(id);
+   this.openCloseHome();
+   const body = this.publicVarYourPlace.result[0];
+   const URL = `${this.publicVar.baseUrl}:${this.publicVar.portApi}/api/User/DeleteInterestedPoints?id=${this.publicVarYourPlace.Id}`;
+   console.log(body);
+   console.log('urlDelete==>');
+   console.log(URL);
+   this.httpClient.post(URL, body).toPromise().then((response) => {
+      console.log(response);
+     });
+
+   localStorage.removeItem('favorit');
+
  }
  NoDeleteHome() {
   this.isOpenHomeDelete = false;

@@ -1,3 +1,6 @@
+import GeoJSON from 'ol/format/GeoJSON.js';
+import { DirectionComponent } from 'src/application/map-view/utility/direction/direction.component';
+import { transform } from 'ol/proj';
 import { isPlatformBrowser } from '@angular/common';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import Feature from 'ol/Feature';
@@ -23,6 +26,7 @@ export class PublicYourPlaceVariableService {
   public publicVar: PublicVarService,
   private mapservice: MapService,
   private httpClient: HttpClient,
+  public direction: DirectionComponent,
   // for ssr
   @Inject(PLATFORM_ID) private platformId: Object,
  ) {}
@@ -36,6 +40,11 @@ export class PublicYourPlaceVariableService {
  Id: number;
  result: YourPlaceInfo;
  PointTypes: number;
+ placelocation: Array<number>;
+ placelocationVal: string;
+ isOpenHomeEdit: boolean = false;
+ isOpenWorkEdit: boolean = false;
+//  testid: number;
 
 
  maplayer: VectorLayer;
@@ -211,8 +220,6 @@ export class PublicYourPlaceVariableService {
  dataYourPlace() {
     const userID: LoginInfo = JSON.parse(localStorage.getItem('login').toString());
     const userid = userID.ID; // this.userID.ID
-    // const PointTypes = 2;
-    // let PointTypes;
     if (this.isOpenHome) {
       this.PointTypes = 1;
     } else if (this.isOpenWork) {
@@ -225,13 +232,76 @@ export class PublicYourPlaceVariableService {
     this.httpClient.get(url).toPromise().then((response) => {
      console.log('responseGET: ' + response);
      this.result = JSON.parse(response.toString());
-     this.Id = this.result[0].Id;
-     this.Lat = this.result[0].Lat;
-     this.Lon = this.result[0].Lon;
+     console.log('result===>');
+    //  if(this.result[0].PointTypeCode === 1) {
+    //    this.testid = this.result[0].Id;
+    //  }
+     const received = this.result[0];
+     console.log('received=>>>');
+     console.log(received);
+     console.log(this.result);
+     this.Id = received.Id;
+     this.Lat = received.Lat;
+     this.Lon = received.Lon;
      console.log('id==>' + this.Id + '>>' + this.Lat + '>>' + this.Lon);
      console.log('*************************************');
     });
    }
+
+
+   opendirection() {
+    this.placelocation = transform([ this.Lon, this.Lat ], 'EPSG:4326', this.mapservice.project);
+    console.log('this.placelocation==>' + this.placelocation);
+    this.removePoint();
+    // setTimeout(e => {
+      // this.closePlaces();
+    // }, this.publicVar.timeUtility / 4);
+    this.publicVar.isOpenPlaces = false;
+    this.isOpenHome = false;
+    this.isOpenWork = false;
+    setTimeout((e) => {
+     this.direction.openDirection('end-point');
+     this.direction.getClickLoctionAddress();
+     this.direction.LocationToAddress(this.placelocation);
+    }, 300);
+    this.mapservice.map.getView().setCenter(this.placelocation);
+    // this.direction.setpoint(this.placelocation, this.publicVar.DirectionFocusInput);
+   }
+
+
+
+   openPlaceEdit() {
+    this.isOpenHomeEdit = true;
+    this.isOpenWorkEdit = true;
+    this.placelocation = transform([ this.Lon, this.Lat], 'EPSG:4326', 'EPSG:900913');
+    // we must get home location from api and save in home locatin
+    this.mapservice.map.getView().setCenter(this.placelocation);
+    this.mapservice.map.getView().setZoom(16);
+
+    this.placelocationVal = this.toFix(this.placelocation);
+    const geom = this.CreatAddresFromPoint(this.placelocation[0], this.placelocation[1]);
+    geom.on('change', () => {
+     const geometryCoords: Array<number> = geom.getFirstCoordinate();
+     this.placelocationVal = this.toFix(geometryCoords);
+    });
+   }
+
+   cancelEditPlace() {
+    this.isOpenHomeEdit = false;
+    this.isOpenWorkEdit = false;
+    this.removePoint();
+   }
+   saveEditPlace() {
+    // for go bak to home
+    this.isOpenHomeEdit = false;
+    this.isOpenWorkEdit = false;
+    this.removePoint();
+   }
+
+
+
+
+
 
 
 

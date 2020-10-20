@@ -3,7 +3,7 @@
   [@openCloseHome]="
     this.publicVarYourPlace.isOpenHome
       ? this.publicVarYourPlace.isExistHome
-        ? this.isOpenHomeEdit
+        ? this.publicVarYourPlace.isOpenHomeEdit
           ? 'openEditHome'
           : 'openHaveHome'
         : 'openDontHaveHome'
@@ -51,7 +51,7 @@
     <div
       *ngIf="
         this.publicVarYourPlace.isOpenHome &&
-        !this.isOpenHomeEdit &&
+        !this.publicVarYourPlace.isOpenHomeEdit &&
         !this.isOpenHomeDelete &&
         this.existHome == 'HaveHome'
       "
@@ -65,7 +65,7 @@
           placement="top"
           fontSize="0.85"
           delay="500"
-          (click)="opendirectionHome()"
+          (click)="this.publicVarYourPlace.opendirection()"
         >
           <div>
             <svg width="20px" height="20px" viewBox="0 0 287.6 300">
@@ -81,7 +81,7 @@
           placement="top"
           fontSize="0.85"
           delay="500"
-          (click)="openHomeEdit()"
+          (click)="this.publicVarYourPlace.openPlaceEdit()"
         >
           <div>
             <svg x="0px" y="0px" viewBox="0 0 528.899 528.899">
@@ -117,26 +117,26 @@
     <!-- editHomeBox -->
     <div
       class="home-showExistLocation-editHomeBox"
-      *ngIf="this.publicVarYourPlace.isOpenHome && this.isOpenHomeEdit"
+      *ngIf="this.publicVarYourPlace.isOpenHome && this.publicVarYourPlace.isOpenHomeEdit"
     >
       <input
         [appTooltips]="
           this.publicVar.isPersian
-            ? 'آدرس را طریق مکان نما مشخص کنید'
+            ? 'آدرس را توسط مکان نما مشخص کنید'
             : 'Select address with pointer'
         "
         placement="top"
         delay="500"
         fontSize="0.85"
-        [value]="homelocationVal"
+        [value]="this.publicVarYourPlace.placelocationVal"
       />
       <div class="editHomeBox-btn">
-        <button (click)="saveEditHome()">
+        <button (click)="this.publicVarYourPlace.saveEditPlace()">
           <span *ngIf="this.publicVar.isPersian">ویرایش</span>
           <span *ngIf="!this.publicVar.isPersian">Edite</span>
         </button>
 
-        <button (click)="cancelEditHome()">
+        <button (click)="this.publicVarYourPlace.cancelEditPlace()">
           <span *ngIf="this.publicVar.isPersian">انصراف</span>
           <span *ngIf="!this.publicVar.isPersian">Cancle</span>
         </button>

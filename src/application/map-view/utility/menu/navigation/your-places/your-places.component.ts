@@ -25,8 +25,9 @@ export class YourPlacesComponent implements OnInit {
 
   closePlaces() {
     this.publicVar.isOpenPlaces = false;
-    // this.publicVarYourPlace.isOpenWork = false;
+    this.publicVarYourPlace.isOpenWork = false;
     this.favoritHome.openCloseHome();
+    this.publicVarYourPlace.removePoint();
   }
   openPlaces() {
     if (this.publicVar.isOpenMeasure) {
